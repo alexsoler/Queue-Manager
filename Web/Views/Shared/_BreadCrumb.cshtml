@@ -1,0 +1,57 @@
+﻿@{
+    var values = ViewContext.RouteData.Values;
+    string actionName = string.Empty;
+    string controllerName = string.Empty;
+
+    if (values.ContainsKey("action"))
+    {
+        actionName = values["action"].ToString();
+        controllerName = values["controller"].ToString();
+    }
+    else
+    {
+        actionName = values["page"].ToString();
+        controllerName = values["area"].ToString();
+    }
+
+}
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        @if (values.ContainsKey("action"))
+        {
+            @Html.ActionLink(controllerName, "Index", controllerName);
+        }
+        else
+        {
+            @Html.ActionLink("Home", "Index", "Home");
+        }
+    </li>
+    @if (actionName != ViewData["Title"].ToString() && actionName != "Index")
+    {
+        <li class="@(ViewData["Title"] != null ? "breadcrumb-item" : "breadcrumb-item active")">
+            @if (values.ContainsKey("action"))
+            {
+                @Html.ActionLink(actionName, actionName, controllerName, new { id = "" });
+            }
+            else
+            {
+                @Html.ActionLink(actionName.Substring(1), actionName, controllerName, new { id = "" });
+            }
+
+        </li>
+    }
+    @if (ViewData["Title"] != null)
+    {
+        <li class="breadcrumb-item active">
+            @ViewData["Title"]
+        </li>
+    }
+    <!-- Breadcrumb Menu-->
+    <li class="breadcrumb-menu d-md-down-none">
+        <div class="btn-group" role="group" aria-label="Button group">
+            <a class="btn" asp-controller="Home" asp-action="Index" asp-route-view=""><i class="fa fa-windows"></i> Home</a>
+            <a class="btn" asp-controller="Home" asp-action="About" asp-route-view=""><i class="icon-speech"></i> About</a>
+            <a class="btn" asp-controller="Home" asp-action="Contact" asp-route-view=""><i class="icon-envelope"></i> Contact</a>
+        </div>
+    </li>
+</ol>

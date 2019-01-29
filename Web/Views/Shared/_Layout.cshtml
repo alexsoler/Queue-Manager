@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Web</title>
+
+    <environment include="Development">
+        <link href="~/lib/@@coreui/icons/css/coreui-icons.min.css" rel="stylesheet" />
+        <link href="~/lib/flag-icon-css/css/flag-icon.css" rel="stylesheet" />
+        <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+        <link href="~/lib/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" />
+        <link href="~/lib/pace-progress/css/pace.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/lib/@@coreui/icons/css/coreui-icons.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
+
+
+    </environment>
+    <link rel="stylesheet" href="~/css/style.css" />
+    <!--<link rel="stylesheet" href="~/css/site.css" />-->
+</head>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+    <partial name="_AppHeader" />
+
+    <div class="app-body">
+        <div class="sidebar">
+
+            <partial name="_SidebarNav" />
+
+            <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+        </div>
+
+        <main class="main">
+
+            <partial name="_BreadCrumb" />
+            <div class="container-fluid">
+
+                @RenderBody()
+
+            </div>
+
+        </main>
+
+        <!-- <partial name="_AsideMenu" />-->
+
+    </div>
+
+    <partial name="_Footer" />
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        <script src="~/lib/pace-progress/js/pace.min.js"></script>
+        <script src="~/lib/popper.js/popper.js"></script>
+        <script src="~/lib/jquery.perfect-scrollbar/perfect-scrollbar.js"></script>
+        <script src="~/lib/@@coreui/coreui/js/coreui.min.js"></script>
+        <script src="~/lib/Chart.js/Chart.js"></script>
+        <script src="~/lib/@@coreui/coreui-plugin-chartjs-custom-tooltips/js/custom-tooltips.min.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
+        </script>
+    </environment>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
