@@ -1,0 +1,44 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "font-awesome@4.7.0",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "flag-icon-css@3.2.1",
+      "destination": "wwwroot/lib/flag-icon-css/"
+    },
+    {
+      "library": "simple-line-icons@2.4.1",
+      "destination": "wwwroot/lib/simple-line-icons/"
+    },
+    {
+      "library": "popper.js@1.14.6",
+      "destination": "wwwroot/lib/popper.js/",
+      "files": [
+        "popper.min.js",
+        "popper.js.map",
+        "popper.js",
+        "popper.min.js.map"
+      ]
+    },
+    {
+      "library": "jquery.perfect-scrollbar@1.4.0",
+      "destination": "wwwroot/lib/jquery.perfect-scrollbar/",
+      "files": [
+        "perfect-scrollbar.min.js",
+        "perfect-scrollbar.js"
+      ]
+    },
+    {
+      "library": "Chart.js@2.7.3",
+      "destination": "wwwroot/lib/Chart.js/",
+      "files": [
+        "Chart.min.js",
+        "Chart.js"
+      ]
+    }
+  ]
+}
