@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.QueueManager.Infrastructure.Identity;
 
 namespace Web
 {
@@ -25,6 +26,14 @@ namespace Web
 
         public IConfiguration Configuration { get; }
 
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            services.AddDbContext<AppIdentityDbContext>(options => 
+                options.UseInMemoryDatabase("Identity"));
+
+            ConfigureServices(services);
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -35,12 +44,10 @@ namespace Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddIdentity<ApplicationUser, IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
