@@ -26,6 +26,14 @@ namespace Web
 
         public IConfiguration Configuration { get; }
 
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            services.AddDbContext<AppIdentityDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            ConfigureServices(services);
+        }
+
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             services.AddDbContext<AppIdentityDbContext>(options => 
