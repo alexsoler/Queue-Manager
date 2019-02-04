@@ -1,37 +1,80 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Crear Usuario";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Create a new account.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-8 col-lg-7">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Crear Usuario</strong>
+                </div>
+                <div class="card-body">
+                    <form id="FormCreate" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal" autocomplete="off" >
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group row">
+                            <label asp-for="Input.Name" class="col-md-3 col-form-label"></label>
+                            <div class="col-md-9">
+                                <input asp-for="Input.Name" class="form-control" placeholder="Ingrese un nombre completo..." />
+                                <span asp-validation-for="Input.Name" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Input.UserName" class="col-md-3 col-form-label"></label>
+                            <div class="col-md-9">
+                                <input asp-for="Input.UserName" class="form-control" placeholder="Ingrese un nombre de usuario..." />
+                                <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Input.Email" class="col-md-3 col-form-label"></label>
+                            <div class="col-md-9">
+                                <input asp-for="Input.Email" class="form-control" placeholder="Ingrese un email..." />
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Input.PhoneNumber" class="col-md-3 col-form-label"></label>
+                            <div class="col-md-9">
+                                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Ingrese un numero de telefono..." />
+                                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Input.Password" class="col-md-3 col-form-label"></label>
+                            <div class="col-md-9">
+                                <input asp-for="Input.Password" class="form-control" placeholder="Ingrese una contraseña..." />
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Input.ConfirmPassword" class="col-md-3 col-form-label"></label>
+                            <div class="col-md-9">
+                                <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Confirmar contraseña..." />
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Input.Rol" class="col-md-3 col-form-label"></label>
+                            <div class="col-md-9">
+                                <select asp-for="Input.Rol" asp-items="Model.Roles" class="form-control">
+                                    <option value="">Seleccionar Rol</option>
+                                </select>
+                                <span asp-validation-for="Input.Rol" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" form="FormCreate" class="btn btn-primary"><i class="fa fa-dot-circle-o"></i> Crear</button>
+                    <button type="reset" form="FormCreate" class="btn btn-danger"><i class="fa fa-ban"></i> Restablecer</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
+        </div>
     </div>
 </div>
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
