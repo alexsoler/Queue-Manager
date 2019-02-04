@@ -10,7 +10,7 @@ namespace Microsoft.QueueManager.Infrastructure.Identity
     {
         public static async Task SeedAsync(UserManager<ApplicationUser> userManager)
         {
-            var defaultUser = new ApplicationUser { UserName = "demouser@queue.com", Email = "demouser@queue.com" };
+            var defaultUser = new ApplicationUser { UserName = "demouser", Email = "demouser@queue.com" };
             await userManager.CreateAsync(defaultUser, "Pass@word1");
         }
     }
