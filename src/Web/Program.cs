@@ -26,7 +26,8 @@ namespace Web
                 try
                 {
                     var usermanager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    AppIdentityDbContextSeed.SeedAsync(usermanager).Wait();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    AppIdentityDbContextSeed.SeedAsync(usermanager, roleManager).Wait();
                 }
                 catch (Exception ex)
                 {
