@@ -51,17 +51,17 @@ namespace Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "El campo {0} es requerido.")]
             [StringLength(100, ErrorMessage = "El campo {0} debe tener una longitud de {1} a {2} caracteres", MinimumLength = 4)]
             [Display(Name = "Nombre")]
             public string Name { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "El campo {0} es requerido.")]
             [StringLength(100, ErrorMessage = "El {0} debe tener longitud de {1} a {2} caracteres.", MinimumLength = 4)]
             [Display(Name = "Usuario")]
             public string UserName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "El campo {0} es requerido.")]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -70,7 +70,7 @@ namespace Web.Areas.Identity.Pages.Account
             [Display(Name = "Telefono")]
             public string PhoneNumber { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "El campo {0} es requerido.")]
             [StringLength(100, ErrorMessage = "El {0} debe tener longitud de {1} a {2} caracteres", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Contraseña")]
@@ -81,7 +81,7 @@ namespace Web.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "La contraseña y confirmar contraseña no coinciden.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "El campo {0} es requerido.")]
             [Display(Name = "Rol")]
             public string Rol { get; set; }
         }
