@@ -1,0 +1,36 @@
+﻿@model Web.Areas.Identity.ViewModels.UsuarioViewModel
+
+@{
+    Layout = "";
+    int i = 0;
+}
+<table class="table table-responsive-xl table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Usuario</th>
+            <th>Email</th>
+            <th>Telefono</th>
+            <th>Roles</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Usuarios)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.UserName</td>
+                <td>@item.Email</td>
+                <td>@item.PhoneNumber</td>
+                <td>@Model.Roles[i]</td>
+                <td class="d-flex">
+                    <a class="btn btn-primary mr-1" data-toggle="modal" data-target="#verModal">Ver</a>
+                    <a class="btn btn-success mr-1" data-toggle="modal" data-target="#editarModal">Editar</a>
+                    <a class="btn btn-danger" data-toggle="modal" data-target="#eliminarModal">Eliminar</a>
+                </td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>

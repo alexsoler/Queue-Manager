@@ -115,7 +115,7 @@ namespace Web.Areas.Identity.Pages.Account
                     
                     await _userManager.AddToRoleAsync(user, Input.Rol);
 
-                    return LocalRedirect(returnUrl);
+                    return LocalRedirect(Url.Page("index"));
                 }
                 foreach (var error in result.Errors)
                 {
