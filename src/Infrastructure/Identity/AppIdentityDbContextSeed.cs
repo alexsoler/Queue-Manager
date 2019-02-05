@@ -10,7 +10,11 @@ namespace Microsoft.QueueManager.Infrastructure.Identity
     {
         public static async Task SeedAsync(UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager)
         {
-            var defaultUser = new ApplicationUser { UserName = "demouser", Email = "demouser@queue.com" };
+            var defaultUser = new ApplicationUser {
+                Name = "Demo User",
+                UserName = "demouser",
+                Email = "demouser@queue.com"
+            };
             await userManager.CreateAsync(defaultUser, "Pass@word1");
 
             await roleManager.CreateAsync(new IdentityRole("Administrador"));
@@ -18,7 +22,7 @@ namespace Microsoft.QueueManager.Infrastructure.Identity
 
             var usuario = await userManager.FindByNameAsync("demouser");
 
-            await userManager.AddToRoleAsync(usuario, "Administrador");
+            await userManager.AddToRolesAsync(usuario, new string[] { "Administrador", "Agente de Atención" });
         }
     }
 }
