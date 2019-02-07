@@ -1,0 +1,37 @@
+﻿@model Web.Areas.Identity.ViewModels.DetallesUsuarioViewModel
+
+@{
+}
+
+<dl class="row lead">
+    <dt class="col-3">
+        @Html.DisplayNameFor(model => model.Nombre)
+    </dt>
+    <dd class="col-9">
+        @Html.DisplayFor(model => model.Nombre)
+    </dd>
+    <dt class="col-3">
+        @Html.DisplayNameFor(model => model.Usuario)
+    </dt>
+    <dd class="col-9">
+        @Html.DisplayFor(model => model.Usuario)
+    </dd>
+    <dt class="col-3">
+        @Html.DisplayNameFor(model => model.Email)
+    </dt>
+    <dd class="col-9">
+        @Html.DisplayFor(model => model.Email)
+    </dd>
+    <dt class="col-3">
+        @Html.DisplayNameFor(model => model.Telefono)
+    </dt>
+    <dd class="col-9">
+        @Html.DisplayFor(model => model.Telefono)
+    </dd>
+    <dt class="col-3">
+        @Html.DisplayNameFor(model => model.Roles)
+    </dt>
+    <dd class="col-9">
+        @String.Join(" - ", Model.Roles)
+    </dd>
+</dl>
