@@ -1,10 +1,17 @@
 ﻿@page
+@using Microsoft.QueueManager.Infrastructure.Identity;
 @model AccessDeniedModel
 @{
-    ViewData["Title"] = "Access denied";
+    Layout = "_Pages";
+ ViewData["Title"] = "Acceso Denegado";
 }
 
+@inject SignInManager<ApplicationUser> _signManager
+
+@{ 
+    await _signManager.SignOutAsync();
+}
 <header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">You do not have access to this resource.</p>
+    <h1 class="display-1 text-danger">@ViewData["Title"]</h1>
+    <p class="lead text-danger text-center" style="font-size: xx-large">Tú no tienes acceso a este recurso.</p>
 </header>
