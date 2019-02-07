@@ -69,6 +69,8 @@ namespace Web
 
             });
 
+            services.AddAntiforgery(options => options.HeaderName = "MY-XSRF-TOKEN");
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
