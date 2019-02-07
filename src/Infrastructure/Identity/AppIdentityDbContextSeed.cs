@@ -13,16 +13,26 @@ namespace Microsoft.QueueManager.Infrastructure.Identity
             var defaultUser = new ApplicationUser {
                 Name = "Demo User",
                 UserName = "demouser",
+                PhoneNumber = "55555555",
                 Email = "demouser@queue.com"
             };
+
+            var defaultUser2 = new ApplicationUser
+            {
+                Name = "Alex Geovany Soler",
+                UserName = "alexsoler",
+                PhoneNumber = "99900000",
+                Email = "alex@soler.com"
+            };
+
             await userManager.CreateAsync(defaultUser, "Pass@word1");
+            await userManager.CreateAsync(defaultUser2, "Pass@word2");
 
             await roleManager.CreateAsync(new IdentityRole("Administrador"));
             await roleManager.CreateAsync(new IdentityRole("Agente de Atención"));
 
-            var usuario = await userManager.FindByNameAsync("demouser");
-
-            await userManager.AddToRolesAsync(usuario, new string[] { "Administrador", "Agente de Atención" });
+            await userManager.AddToRolesAsync(defaultUser, new string[] { "Administrador", "Agente de Atención" });
+            await userManager.AddToRolesAsync(defaultUser2, new string[] { "Administrador" });
         }
     }
 }
