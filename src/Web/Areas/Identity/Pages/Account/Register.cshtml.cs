@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.QueueManager.Infrastructure.Identity;
+using Web.Areas.Identity.ViewModels;
 
 namespace Web.Areas.Identity.Pages.Account
 {
@@ -35,11 +36,6 @@ namespace Web.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
-
-            foreach (var item in _roleManager.Roles)
-            {
-                Roles.Add(new SelectListItem(item.Name, item.Name));
-            }
         }
 
         [BindProperty]
@@ -83,11 +79,18 @@ namespace Web.Areas.Identity.Pages.Account
 
             [Required(ErrorMessage = "El campo {0} es requerido.")]
             [Display(Name = "Rol")]
-            public string Rol { get; set; }
+            public List<RolesAsignadosData> Roles { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
         {
+            Input = new InputModel() {
+                Roles = new List<RolesAsignadosData>()
+            };
+            foreach(var rol in _roleManager.Roles)
+            {
+                Input.Roles.Add(new RolesAsignadosData { Rol = rol.Name, Asignado = false });
+            }
             ReturnUrl = returnUrl;
         }
 
@@ -112,8 +115,11 @@ namespace Web.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    
-                    await _userManager.AddToRoleAsync(user, Input.Rol);
+                    foreach (var rol in Input.Roles)
+                    {
+                        if(rol.Asignado)
+                            await _userManager.AddToRoleAsync(user, rol.Rol);
+                    }
 
                     return LocalRedirect(Url.Page("index"));
                 }
