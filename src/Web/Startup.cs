@@ -14,6 +14,7 @@ using Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.QueueManager.Infrastructure.Identity;
+using Web.Models.IdentityError;
 
 namespace Web
 {
@@ -55,7 +56,20 @@ namespace Web
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddErrorDescriber<IdentityError_es>();
+
+            services.Configure<IdentityOptions>(config =>
+            {
+                //Password settings
+                config.Password.RequireUppercase = false;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Password.RequiredLength = 6;
+                config.Password.RequireDigit = false;
+
+            });
+
+            services.AddAntiforgery(options => options.HeaderName = "MY-XSRF-TOKEN");
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
