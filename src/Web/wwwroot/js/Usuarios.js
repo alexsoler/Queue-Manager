@@ -18,7 +18,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '/Identity/Account?handler=ViewPartialEdit',
+            url: '/Usuarios/Edit',
             data: jsonData,
             contentType: "application/json",
             dataType: "json",
@@ -27,7 +27,14 @@
             },
             success: function (response) {
                 console.log(response);
-                loadTable();
+
+                if (document.URL.includes("EditarUsuario")) {
+                    $("#cardPrincipalBody > div.mb-2 > form").submit();
+                }
+                else {
+                    loadTable();
+                }
+                
                 loadAlert("El usuario ha sido actualizado con exito.", "Exito", "alert-success");
             },
             failure: function () {
@@ -45,7 +52,7 @@ function EliminarUsuario() {
 
     $.ajax({
         type: 'POST',
-        url: '/Identity/Account?handler=ViewPartialDelete',
+        url: '/Usuarios/delete',
         data: { username },
         dataType: "json",
         beforeSend: function (xhr) {
@@ -53,7 +60,14 @@ function EliminarUsuario() {
         },
         success: function (response) {
             console.log(response);
-            loadTable();
+
+            if (document.URL.includes("EliminarUsuario")) {
+                $("#cardPrincipalBody > div.mb-2 > form").submit();
+            }
+            else {
+                loadTable();
+            }
+
             loadAlert("El usuario ha sido eliminado con exito", "Exito", "alert-success");
         },
         failure: function () {
@@ -72,7 +86,7 @@ function loadTable() {
 function loadDetails(username) {
     $.ajax({
         type: 'GET',
-        url: '/Identity/Account?handler=ViewPartialDetails',
+        url: '/Usuarios/Details',
         data: { username },
         success: function (response) {
             $("#bodyDetails").html(response);
@@ -86,7 +100,7 @@ function loadDetails(username) {
 function loadEdit(username) {
     $.ajax({
         type: 'GET',
-        url: '/Identity/Account?handler=ViewPartialEdit',
+        url: '/Usuarios/Edit',
         data: { username },
         success: function (response) {
             $("#bodyEdit").html(response);
@@ -105,7 +119,7 @@ function loadEdit(username) {
 function loadDelete(username) {
     $.ajax({
         type: 'GET',
-        url: '/Identity/Account?handler=ViewPartialDelete',
+        url: '/Usuarios/Delete',
         data: { username },
         success: function (response) {
             $("#bodyDelete").html(response);
@@ -128,3 +142,27 @@ function loadAlert(mensaje, tipoMensaje, nameClass) {
         $(".alert").alert('close');
     }, 5000);
 }
+
+function searchUser(event) {
+
+    event.preventDefault();
+
+    let currentSearch = document.getElementById('inputSearch').value;
+    let typeResult = document.getElementById('inputTypeSearch').value;
+
+    var data = { currentSearch, typeResult };
+
+    $.ajax({
+        type: 'GET',
+        url: '/Usuarios/Search',
+        data: data,
+        success: function (result) {
+            $("#collapseResult").html(result).collapse();
+            
+        },
+        failure: function (response) {
+            console.log(response);
+        }
+    });
+}
+
