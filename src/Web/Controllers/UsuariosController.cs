@@ -11,7 +11,7 @@ using Web.Areas.Identity.ViewModels;
 
 namespace Web.Controllers
 {
-    [Authorize("Administrador")]
+    [Authorize(Roles = "Administrador")]
     [Route("Usuarios")]
     public class UsuariosController : Controller
     {
