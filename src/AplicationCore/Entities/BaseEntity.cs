@@ -4,8 +4,10 @@ using System.Text;
 
 namespace AplicationCore.Entities
 {
-    class BaseEntity
+    public class BaseEntity
     {
         public int Id { get; set; }
+        public bool Activo { get; set; }
+        public DateTime FechaCreacion { get; set; }
     }
 }
