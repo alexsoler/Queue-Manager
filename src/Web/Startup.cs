@@ -13,8 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.QueueManager.Infrastructure.Identity;
 using Web.Models.IdentityError;
+using AplicationCore.Entities;
+using Microsoft.QueueManager.Infrastructure.Data;
 
 namespace Web
 {
@@ -29,16 +30,16 @@ namespace Web
 
         public void ConfigureProductionServices(IServiceCollection services)
         {
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<QueueContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("QueueConnection")));
 
             ConfigureServices(services);
         }
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            services.AddDbContext<AppIdentityDbContext>(options => 
-                options.UseInMemoryDatabase("Identity"));
+            services.AddDbContext<QueueContext>(options => 
+                options.UseInMemoryDatabase("Queue"));
 
             ConfigureServices(services);
         }
@@ -55,7 +56,7 @@ namespace Web
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddEntityFrameworkStores<QueueContext>()
                 .AddDefaultTokenProviders()
                 .AddErrorDescriber<IdentityError_es>();
 
