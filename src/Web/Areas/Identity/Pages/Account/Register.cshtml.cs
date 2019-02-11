@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using AplicationCore.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.QueueManager.Infrastructure.Identity;
+using Microsoft.QueueManager.Infrastructure.Data;
 using Web.Areas.Identity.ViewModels;
 
 namespace Web.Areas.Identity.Pages.Account
@@ -24,7 +25,7 @@ namespace Web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly AppIdentityDbContext _context;
+        private readonly QueueContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -32,7 +33,7 @@ namespace Web.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
-            AppIdentityDbContext context)
+            QueueContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
