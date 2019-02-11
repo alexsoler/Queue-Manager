@@ -14,7 +14,8 @@ namespace Microsoft.QueueManager.Infrastructure.Identity
                 Name = "Demo User",
                 UserName = "demouser",
                 PhoneNumber = "55555555",
-                Email = "demouser@queue.com"
+                Email = "demouser@queue.com",
+                Activo = true
             };
 
             var defaultUser2 = new ApplicationUser
@@ -22,7 +23,8 @@ namespace Microsoft.QueueManager.Infrastructure.Identity
                 Name = "Alex Geovany Soler",
                 UserName = "alexsoler",
                 PhoneNumber = "99900000",
-                Email = "alex@soler.com"
+                Email = "alex@soler.com",
+                Activo = true
             };
 
             await userManager.CreateAsync(defaultUser, "Pass@word1");

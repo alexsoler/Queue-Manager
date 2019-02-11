@@ -9,5 +9,6 @@ namespace Microsoft.QueueManager.Infrastructure.Identity
     {
         [PersonalData]
         public string Name { get; set; }
+        public bool Activo { get; set; }
     }
 }
