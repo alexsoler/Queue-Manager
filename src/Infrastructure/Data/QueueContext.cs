@@ -17,15 +17,15 @@ namespace Microsoft.QueueManager.Infrastructure.Data
         {
         }
 
-        public DbSet<Ventanilla> Ventanillas { get; set; }
-        public DbSet<Tarea> Tareas { get; set; }
-        public DbSet<VentanillaTarea> VentanillasTareas { get; set; }
-        public DbSet<VentanillaOperador> VentanillasOperadores { get; set; }
+        public DbSet<Office> Ventanillas { get; set; }
+        public DbSet<TaskEntity> Tareas { get; set; }
+        public DbSet<OfficeTask> VentanillasTareas { get; set; }
+        public DbSet<OfficeOperator> VentanillasOperadores { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<VentanillaTarea>().HasKey(x => new { x.VentanillaId, x.TareaId });
-            builder.Entity<VentanillaOperador>().HasKey(x => new { x.VentanillaId, x.ApplicationUserId });
+            builder.Entity<OfficeTask>().HasKey(x => new { x.OfficeId, x.TaskId });
+            builder.Entity<OfficeOperator>().HasKey(x => new { x.OfficeId, x.ApplicationUserId });
 
             builder.Entity<ApplicationUser>().HasQueryFilter(x => x.Activo == true);
             base.OnModelCreating(builder);

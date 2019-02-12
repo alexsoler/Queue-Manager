@@ -9,6 +9,6 @@ namespace AplicationCore.Entities
     {
         public string Name { get; set; }
         public bool Activo { get; set; }
-        public List<VentanillaOperador> VentanillasOperadores { get; set; }
+        public List<OfficeOperator> VentanillasOperadores { get; set; }
     }
 }

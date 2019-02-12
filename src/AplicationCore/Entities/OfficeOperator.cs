@@ -4,11 +4,11 @@ using System.Text;
 
 namespace AplicationCore.Entities
 {
-    public class VentanillaOperador
+    public class OfficeOperator : BaseEntity
     {
-        public int VentanillaId { get; set; }
+        public int OfficeId { get; set; }
         public string ApplicationUserId { get; set; }
-        public Ventanilla Ventanilla { get; set; }
+        public Office Office { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
     }
 }
