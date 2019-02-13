@@ -1,9 +1,9 @@
-﻿using AplicationCore.Entities;
+﻿using ApplicationCore.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AplicationCore.Interfaces
+namespace ApplicationCore.Interfaces
 {
     public interface IRepository<T> where T : BaseEntity
     {

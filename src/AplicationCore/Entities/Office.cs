@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AplicationCore.Entities
+namespace ApplicationCore.Entities
 {
     public class Office : BaseEntity
     {

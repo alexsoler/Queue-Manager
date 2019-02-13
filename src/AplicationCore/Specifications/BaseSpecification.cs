@@ -1,10 +1,10 @@
-﻿using AplicationCore.Interfaces;
+﻿using ApplicationCore.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace AplicationCore.Specifications
+namespace ApplicationCore.Specifications
 {
     public abstract class BaseSpecification<T> : ISpecification<T>
     {

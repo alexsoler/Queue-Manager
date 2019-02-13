@@ -14,7 +14,7 @@ using Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Web.Models.IdentityError;
-using AplicationCore.Entities;
+using ApplicationCore.Entities;
 using Microsoft.QueueManager.Infrastructure.Data;
 
 namespace Web

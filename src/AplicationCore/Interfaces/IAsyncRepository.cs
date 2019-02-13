@@ -1,10 +1,10 @@
-﻿using AplicationCore.Entities;
+﻿using ApplicationCore.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AplicationCore.Interfaces
+namespace ApplicationCore.Interfaces
 {
     public interface IAsyncRepository<T> where T : BaseEntity
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using AplicationCore.Entities;
+using ApplicationCore.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,10 +17,10 @@ namespace Microsoft.QueueManager.Infrastructure.Data
         {
         }
 
-        public DbSet<Office> Ventanillas { get; set; }
-        public DbSet<TaskEntity> Tareas { get; set; }
-        public DbSet<OfficeTask> VentanillasTareas { get; set; }
-        public DbSet<OfficeOperator> VentanillasOperadores { get; set; }
+        public DbSet<Office> Offices { get; set; }
+        public DbSet<TaskEntity> Tasks { get; set; }
+        public DbSet<OfficeTask> OfficesTasks { get; set; }
+        public DbSet<OfficeOperator> OfficesOperators { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
