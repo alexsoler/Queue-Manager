@@ -45,14 +45,14 @@
                         <div class="form-group row">
                             <label asp-for="Input.Password" class="col-md-3 col-form-label"></label>
                             <div class="col-md-9">
-                                <input asp-for="Input.Password" class="form-control" placeholder="Ingrese una contraseña..." />
+                                <input asp-for="Input.Password" class="form-control" placeholder="Ingrese una contraseña..." autocomplete="new-password" />
                                 <span asp-validation-for="Input.Password" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label asp-for="Input.ConfirmPassword" class="col-md-3 col-form-label"></label>
                             <div class="col-md-9">
-                                <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Confirmar contraseña..." />
+                                <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Confirmar contraseña..." autocomplete="new-password" />
                                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                             </div>
                         </div>
