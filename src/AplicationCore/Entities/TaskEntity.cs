@@ -6,6 +6,7 @@ namespace ApplicationCore.Entities
 {
     public class TaskEntity : BaseEntity
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public List<OfficeTask> OfficesTasks { get; set; }
     }

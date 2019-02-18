@@ -7,6 +7,6 @@ namespace ApplicationCore.Entities
     public class BaseEntity
     {
         public bool Activo { get; set; }
-        public DateTime FechaCreacion { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }
