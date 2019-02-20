@@ -1,0 +1,77 @@
+﻿@model Web.ViewModels.TaskIndexViewModel
+@{
+    ViewData["Title"] = "Lista de Tareas";
+}
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Tareas
+                </div>
+                <div id="cardPrincipalBody" class="card-body">
+                    <div>
+                        <button id="addNewTask" type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalAddTask">
+                            Agregar nueva tarea
+                        </button>
+                    </div>
+                    <div id="divTabla">
+                        <partial name="_TablaTareas" model="Model.TasksList" />
+                        <partial name="_pagination" model="Model.PaginationInfo" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAddTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Agregar Tarea</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <partial name="_CreateTask" model="new Web.ViewModels.TaskViewModel()" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" form="FormCreateTask" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+@section Scripts{ 
+    <script>
+        function CrearTarea(event) {
+            event.preventDefault();
+            let formIsValid = $("#FormCreateTask").valid();
+
+            if (formIsValid) {
+                var data = $("#FormCreateTask").serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Tasks/Create',
+                    data: data
+                }).done(function (result) {
+                    console.log(result);
+                }).fail(function (result) {
+                    console.log(result);
+                });
+
+                $("#modalAddTask").modal("hide");
+                window.location.reload();
+            }
+        }
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}
