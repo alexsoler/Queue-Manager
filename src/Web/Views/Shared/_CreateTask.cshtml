@@ -1,0 +1,10 @@
+﻿@model Web.ViewModels.TaskViewModel
+
+<form id="FormCreateTask" asp-controller="Tasks" asp-action="Create" method="post" autocomplete="off" onsubmit="CrearTarea(event)">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name" class="col-form-label"></label>
+        <input asp-for="Name" type="text" class="form-control">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+</form>
