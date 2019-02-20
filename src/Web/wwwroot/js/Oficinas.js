@@ -146,3 +146,7 @@ function loadAlert(mensaje, tipoMensaje, nameClass) {
         $(".alert").alert('close');
     }, 5000);
 }
+
+function loadDetails(id) {
+    $("#bodyDetails").load(`/Offices/Details/${id}`);
+}

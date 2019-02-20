@@ -75,18 +75,18 @@ namespace Web.Controllers
         {
             List<string> errores = new List<string>();
 
-            if(officevm.OfficeTasks != null)
+            if(officevm.Tasks != null)
             {
                 var resultAddTasks = await _officeService.AddTasksAsync(
-                    officevm.OfficeTasks.Select(x => x.TaskId).ToArray(), officevm.Id);
+                    officevm.Tasks.Select(x => x.Id).ToArray(), officevm.Id);
 
                 errores.AddRange(resultAddTasks.Errors);
             }
            
-            if(officevm.OfficeOperators != null)
+            if(officevm.Operators != null)
             {
                 var resultAddOperators = await _officeService.AddOperatorsAsync(
-                officevm.OfficeOperators.Select(x => x.ApplicationUserId).ToArray(), officevm.Id);
+                officevm.Operators.Select(x => x.Id).ToArray(), officevm.Id);
 
                 errores.AddRange(resultAddOperators.Errors);
                 
@@ -151,6 +151,21 @@ namespace Web.Controllers
             var officeModel = _officeViewModel.GetOfficesPagination(pag ?? 1, itemsPage);
 
             return PartialView("_TableAndPagination", officeModel);
+        }
+
+        [ActionName("Details")]
+        public async Task<IActionResult> PartialViewDetailsAsync(int id)
+        {
+            var officevm = _mapper.Map<OfficeViewModel>(
+                await _officeService.GetOfficeAsync(id));
+
+            officevm.Tasks = _mapper.Map<IEnumerable<TaskEntity>, List<TaskViewModel>>(
+                await _officeService.GetTasksAsync(id));
+
+            officevm.Operators = _mapper.Map<IEnumerable<ApplicationUser>, List<OperatorViewModel>>(
+                await _officeService.GetOperatorsAsync(id));
+
+            return PartialView("_DetallesOficina", officevm);
         }
     }
 }
