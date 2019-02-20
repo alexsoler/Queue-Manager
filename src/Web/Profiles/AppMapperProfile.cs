@@ -17,6 +17,8 @@ namespace Web.Profiles
                     dest.Prefix,
                     opt => opt.MapFrom(src => src.Prefix.ToString()));
 
+            CreateMap<Office, OfficeViewModel>();
+
             CreateMap<TaskEntity, TaskCheckboxViewModel>()
                 .ForMember(dest =>
                     dest.Name,
