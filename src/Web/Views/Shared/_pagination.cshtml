@@ -1,0 +1,76 @@
+﻿@model Web.ViewModels.PaginationInfoViewModel
+
+@{ 
+    int Inicial = 1;
+    int Radio = 1;
+    var CantidadMaximaDePaginas = Radio * 2 + 1;
+    int Final = (Model.TotalPages > CantidadMaximaDePaginas) ? CantidadMaximaDePaginas : Model.TotalPages;
+    if(Model.ActualPage > Radio + 1)
+    {
+        Inicial = Model.ActualPage - Radio;
+        if (Model.TotalPages > Model.ActualPage + Radio)
+        {
+            Final = Model.ActualPage + Radio;
+        }
+        else
+        {
+            Final = Model.TotalPages;
+        }
+    }
+}
+
+    <nav aria-label="...">
+        <ul class="pagination">
+            <li class="page-item @Model.Previous">
+                <a class="page-link @Model.Previous"
+                   id="Previus"
+                   asp-controller="@Model.Controller"
+                   asp-action="@Model.Action"
+                   asp-route-pag="@(Model.ActualPage - 1)"
+                   aria-label="Previous">
+                    Anterior
+                </a>
+            </li>
+
+            @for (int i = Inicial; i <= Final; i++)
+            {
+                if (i == Model.ActualPage)
+                {
+                    <li class="page-item active">
+                        <span id="pageItemActive" class="page-link" data-val="@i">
+                            @i.ToString()
+                            <span class="sr-only">(current)</span>
+                        </span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-controller="@Model.Controller"
+                           asp-action="@Model.Action"
+                           asp-route-pag="@i">
+                            @i.ToString()
+                        </a>
+                    </li>
+
+                }
+            }
+
+            <li class="page-item mr-auto @Model.Next">
+                <a class="page-link @Model.Next"
+                   id="Next"
+                   asp-controller="@Model.Controller"
+                   asp-action="@Model.Action"
+                   asp-route-pag="@(Model.ActualPage + 1)">
+                    Siguiente
+                </a>
+            </li>
+
+            <li class="nav-item d-flex align-items-center">
+                <p class="card-text text-muted">
+                    Total: @Model.TotalItems
+                </p>
+            </li>
+        </ul>
+    </nav>
