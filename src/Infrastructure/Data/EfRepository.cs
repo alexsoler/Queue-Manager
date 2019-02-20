@@ -103,6 +103,12 @@ namespace Microsoft.QueueManager.Infrastructure.Data
             return List(spec).FirstOrDefault();
         }
 
+        public async Task<T> GetSingleBySpecAsync(ISpecification<T> spec)
+        {
+            var registro = await ListAsync(spec);
+            return registro.FirstOrDefault();
+        }
+
         public IEnumerable<T> List(ISpecification<T> spec)
         {
             return ApplySpecification(spec).AsEnumerable();
