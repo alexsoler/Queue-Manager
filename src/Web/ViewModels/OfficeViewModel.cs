@@ -25,12 +25,13 @@ namespace Web.ViewModels
         [Required(ErrorMessage = "El campo {0} es rquerido")]
         public Prefix Prefix { get; set; }
 
+        [Display(Name = "Creación")]
         public DateTime CreationDate { get; set; }
 
         [Display(Name = "Tareas")]
-        public List<OfficeTask> OfficeTasks { get; set; }
+        public List<TaskViewModel> Tasks { get; set; }
         [Display(Name = "Operadores")]
-        public List<OfficeOperator> OfficeOperators { get; set; }
+        public List<OperatorViewModel> Operators { get; set; }
     }
 
     public enum Prefix
