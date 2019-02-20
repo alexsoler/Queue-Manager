@@ -1,14 +1,14 @@
 ﻿function Guardar() {
 
-    office.OfficeTasks = $("input[name='Tareas']").map(function () {
+    office.Tasks = $("input[name='Tareas']").map(function () {
         if (this.checked) {
-            return { OfficeId: office.Id, TaskId: this.value };
+            return { Id: this.value };
         }
     }).get();
 
-    office.OfficeOperators = $("input[name='Operadores']").map(function () {
+    office.Operators = $("input[name='Operadores']").map(function () {
         if (this.checked) {
-            return { OfficeId: office.Id, ApplicationUserId: this.value };
+            return { Id: this.value };
         }
     }).get();
 
