@@ -15,6 +15,26 @@ namespace Microsoft.QueueManager.Infrastructure.Data
             using (var context = new QueueContext(
                 serviceProvider.GetRequiredService<DbContextOptions<QueueContext>>()))
             {
+                if (!await context.Tasks.AnyAsync())
+                {
+                    await context.Tasks.AddRangeAsync(
+                        new TaskEntity
+                        {
+                            Name = "Matricula",
+                            CreationDate = DateTime.Now,
+                            Activo = true
+                        },
+                        new TaskEntity
+                        {
+                            Name = "Pago de mensualidad",
+                            CreationDate = DateTime.Now,
+                            Activo = true
+                        }
+                    );
+
+                    await context.SaveChangesAsync();
+                }
+
                 if (!await context.Offices.AnyAsync())
                 {
                     await context.Offices.AddRangeAsync(
@@ -63,26 +83,6 @@ namespace Microsoft.QueueManager.Infrastructure.Data
                             Name = "Ventanilla 6",
                             Description = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, eos!",
                             Prefix = "D",
-                            CreationDate = DateTime.Now,
-                            Activo = true
-                        }
-                    );
-
-                    await context.SaveChangesAsync();
-                }
-
-                if(!await context.Tasks.AnyAsync())
-                {
-                    await context.Tasks.AddRangeAsync(
-                        new TaskEntity
-                        {
-                            Name = "Matricula",
-                            CreationDate = DateTime.Now,
-                            Activo = true
-                        },
-                        new TaskEntity
-                        {
-                            Name = "Pago de mensualidad",
                             CreationDate = DateTime.Now,
                             Activo = true
                         }
