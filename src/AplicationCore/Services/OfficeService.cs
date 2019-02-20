@@ -36,17 +36,30 @@ namespace ApplicationCore.Services
         {
             _logger.LogInformation($"Agregando un operador con id {IdOperator} a la oficina con id {idOffice}.");
             var officeHasOperator = await _officesOperatorsRepository.ExistAsync(
-                new OfficeWithOperatorsSpecification(IdOperator, idOffice));
+                new OfficeWithOperatorsSpecification(IdOperator, idOffice, ignoreQueryFilter: true));
 
             if (officeHasOperator)
             {
-                var operationResult = new OperationResult();
-                operationResult.Succeeded = false;
-                var error = $"La oficina ya tiene al operador con id {IdOperator}.";
-                _logger.LogInformation(error);
-                operationResult.Errors.Add(error);
+                var activateOperator = await _officesOperatorsRepository.GetSingleBySpecAsync(
+                        new OfficeWithOperatorsSpecification(IdOperator, idOffice, ignoreQueryFilter: true));
+                if (!activateOperator.Activo)
+                {
+                    activateOperator.Activo = true;
+                    await _officesOperatorsRepository.UpdateAsync(activateOperator);
+                    _logger.LogInformation($"Se volvio a activar el operador {IdOperator} en la oficina {idOffice}");
 
-                return operationResult;
+                    return new OperationResult { Succeeded = true };
+                }
+                else
+                {
+                    var operationResult = new OperationResult();
+                    operationResult.Succeeded = false;
+                    var error = $"La oficina ya tiene al operador con id {IdOperator}.";
+                    _logger.LogInformation(error);
+                    operationResult.Errors.Add(error);
+
+                    return operationResult;
+                }
             }
 
             var officeOperator = new OfficeOperator
@@ -71,7 +84,7 @@ namespace ApplicationCore.Services
             foreach (var id in IdOperators)
             {
                 var officeHasOperator = await _officesOperatorsRepository.ExistAsync(
-                    new OfficeWithOperatorsSpecification(id, idOffice));
+                    new OfficeWithOperatorsSpecification(id, idOffice, ignoreQueryFilter: true));
 
                 if (!officeHasOperator)
                 {
@@ -85,15 +98,30 @@ namespace ApplicationCore.Services
                 }
                 else
                 {
-                    var error = $"La oficina ya tiene al operador con id { id }.";
-                    _logger.LogInformation(error);
-                    operationResult.Errors.Add(error);
+                    var activateOperator = await _officesOperatorsRepository.GetSingleBySpecAsync(
+                        new OfficeWithOperatorsSpecification(id, idOffice, ignoreQueryFilter: true));
+                    if(!activateOperator.Activo)
+                    {
+                        activateOperator.Activo = true;
+                        await _officesOperatorsRepository.UpdateAsync(activateOperator);
+                        _logger.LogInformation($"Se volvio a activar el operador {id} en la oficina {idOffice}");
+                        operationResult.Succeeded = true;
+                    }
+                    else
+                    {
+                        var error = $"La oficina con id {idOffice} ya tiene al operador con id { id }.";
+                        _logger.LogInformation(error);
+                        operationResult.Errors.Add(error);
+                        operationResult.Succeeded = false;
+                    }
                 }
             }
 
-            await _officesOperatorsRepository.AddRangeAsync(officeOperators);
-
-            operationResult.Succeeded = true;
+            if (officeOperators.Count > 0)
+            {
+                await _officesOperatorsRepository.AddRangeAsync(officeOperators);
+                operationResult.Succeeded = true;
+            }
 
             return operationResult;
         }
@@ -101,20 +129,31 @@ namespace ApplicationCore.Services
         public async Task<OperationResult> AddTaskAsync(int idTask, int idOffice)
         {
             _logger.LogInformation($"Agregando una tarea con id {idTask} a la oficina con id {idOffice}.");
+            var operationResult = new OperationResult();
             var officeHasTask = await _officesTasksRepository.ExistAsync(
-                new OfficeWithTaskSpecification(idTask, idOffice));
+                new OfficeWithTaskSpecification(idTask, idOffice, true));
 
             if(officeHasTask)
             {
-                var operationResult = new OperationResult
+                var activateTask = await _officesTasksRepository.GetSingleBySpecAsync(
+                    new OfficeWithTaskSpecification(idTask, idOffice, true));
+                if (!activateTask.Activo)
                 {
-                    Succeeded = false
-                };
-                var error = $"La oficina ya tiene la tarea con id {idTask}.";
-                _logger.LogInformation(error);
-                operationResult.Errors.Add(error);
+                    activateTask.Activo = true;
+                    await _officesTasksRepository.UpdateAsync(activateTask);
+                    _logger.LogInformation($"Se volvio a activar la tarea con id {idTask} en la oficina con id {idOffice}");
+                    operationResult.Succeeded = true;
+                    return operationResult;
+                }
+                else
+                {
+                    operationResult.Succeeded = false;
+                    var error = $"La oficina ya tiene la tarea con id {idTask}.";
+                    _logger.LogInformation(error);
+                    operationResult.Errors.Add(error);
 
-                return operationResult;
+                    return operationResult;
+                }
             }
 
             var officeTask = new OfficeTask
@@ -126,8 +165,9 @@ namespace ApplicationCore.Services
             };
 
             await _officesTasksRepository.AddAsync(officeTask);
+            operationResult.Succeeded = true;
 
-            return new OperationResult { Succeeded = true };
+            return operationResult;
 
         }
 
@@ -140,7 +180,7 @@ namespace ApplicationCore.Services
             foreach (var taskid in idTasks)
             {
                 var officeHasTask = await _officesTasksRepository.ExistAsync(
-                    new OfficeWithTaskSpecification(taskid, idOffice));
+                    new OfficeWithTaskSpecification(taskid, idOffice, true));
 
                 if(!officeHasTask)
                 {
@@ -154,15 +194,31 @@ namespace ApplicationCore.Services
                 }
                 else
                 {
-                    var error = $"La oficina ya tiene la tarea con id {taskid}.";
-                    _logger.LogInformation(error);
-                    operationResult.Errors.Add(error);
+                    var activateTask = await _officesTasksRepository.GetSingleBySpecAsync(
+                        new OfficeWithTaskSpecification(taskid, idOffice, true));
+
+                    if (!activateTask.Activo)
+                    {
+                        activateTask.Activo = true;
+                        await _officesTasksRepository.UpdateAsync(activateTask);
+                        _logger.LogInformation($"Se volvio a activar la tarea con id {taskid} en la oficina on id {idOffice}");
+                        operationResult.Succeeded = true;
+                    }
+                    else
+                    {
+                        var error = $"La oficina ya tiene la tarea con id {taskid}.";
+                        _logger.LogInformation(error);
+                        operationResult.Errors.Add(error);
+                        operationResult.Succeeded = false;
+                    }
                 }
             }
 
-            await _officesTasksRepository.AddRangeAsync(officeTask);
-
-            operationResult.Succeeded = true;
+            if (officeTask.Count > 0)
+            {
+                await _officesTasksRepository.AddRangeAsync(officeTask);
+                operationResult.Succeeded = true;
+            }
 
             return operationResult;
         }
@@ -250,9 +306,21 @@ namespace ApplicationCore.Services
                 new OfficeWithTaskSpecification(id));
         }
 
-        public async Task<OperationResult> RemoveOperatorAsync(ApplicationUser applicationUser, int idOffice)
+        public async Task<bool> HasOperator(int idOffice, string idOperator)
         {
-            var operatorRemove = await _officesOperatorsRepository.GetByIdAsync(idOffice, applicationUser.Id);
+            return await _officesOperatorsRepository.ExistAsync(
+                new OfficeWithOperatorsSpecification(idOperator, idOffice));
+        }
+
+        public async Task<bool> HasTask(int idOffice, int idTask)
+        {
+            return await _officesTasksRepository.ExistAsync(
+                new OfficeWithTaskSpecification(idTask, idOffice));
+        }
+
+        public async Task<OperationResult> RemoveOperatorAsync(string idOperator, int idOffice)
+        {
+            var operatorRemove = await _officesOperatorsRepository.GetByIdAsync(idOffice, idOperator);
 
             if(operatorRemove == null)
             {

@@ -23,6 +23,8 @@ namespace ApplicationCore.Specifications
         public int Skip { get; private set; }
         public bool isPagingEnabled { get; private set; } = false;
 
+        public bool ignoreQueryFilter { get; private set; } = false;
+
         protected virtual void AddInclude(Expression<Func<T, object>> includeExpression)
         {
             Includes.Add(includeExpression);
@@ -38,6 +40,11 @@ namespace ApplicationCore.Specifications
             Skip = skip;
             Take = take;
             isPagingEnabled = true;
+        }
+
+        protected virtual void AddIgnoreQueryFilter()
+        {
+            ignoreQueryFilter = true;
         }
 
         protected virtual void ApplyOrderBy(Expression<Func<T, object>> orderByExpression)

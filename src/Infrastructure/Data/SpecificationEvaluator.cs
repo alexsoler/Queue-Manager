@@ -20,6 +20,12 @@ namespace Microsoft.QueueManager.Infrastructure.Data
                 query = query.Where(specification.Criterio);
             }
 
+            //Ignora el borrado suave
+            if (specification.ignoreQueryFilter)
+            {
+                query = query.IgnoreQueryFilters();
+            }
+
             //Se establece el include por medio de una expresion lambda
             query = specification.Includes.Aggregate(query,
                                     (current, include) => current.Include(include));

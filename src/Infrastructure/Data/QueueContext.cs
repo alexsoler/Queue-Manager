@@ -28,6 +28,10 @@ namespace Microsoft.QueueManager.Infrastructure.Data
             builder.Entity<OfficeOperator>().HasKey(x => new { x.OfficeId, x.ApplicationUserId });
 
             builder.Entity<ApplicationUser>().HasQueryFilter(x => x.Activo == true);
+            builder.Entity<OfficeOperator>().HasQueryFilter(x => x.Activo == true);
+            builder.Entity<OfficeTask>().HasQueryFilter(x => x.Activo == true);
+            builder.Entity<TaskEntity>().HasQueryFilter(x => x.Activo == true);
+
             base.OnModelCreating(builder);
         }
 
