@@ -16,5 +16,6 @@ namespace ApplicationCore.Interfaces
         int Take { get; }
         int Skip { get; }
         bool isPagingEnabled { get; }
+        bool ignoreQueryFilter { get; }
     }
 }
