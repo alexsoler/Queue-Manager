@@ -150,3 +150,36 @@ function loadAlert(mensaje, tipoMensaje, nameClass) {
 function loadDetails(id) {
     $("#bodyDetails").load(`/Offices/Details/${id}`);
 }
+
+function loadDelete(id) {
+    $("#bodyDelete").load(`/Offices/Delete/${id}`);
+}
+
+function EliminarOficina() {
+    let id = $("#deleteOffice").val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/offices/delete',
+        data: { id },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("MY-XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+        }
+    }).done(function (response) {
+        console.log(response);
+
+        if (document.URL.includes("EliminarOficina")) {
+            $("#cardPrincipalBody > div.mb-2 > form").submit();
+        }
+        else {
+            loadTable();
+        }
+
+        loadAlert("La oficina ha sido eliminada con exito", "Exito", "alert-success");
+    }).fail(function () {
+        console.log("No se pudo eliminar la oficina");
+        loadAlert("No se pudo eliminar la oficina", "Error", "alert-danger")
+    });
+
+    $("#eliminarModal").modal('hide');
+}

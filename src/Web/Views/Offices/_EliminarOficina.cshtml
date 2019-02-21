@@ -1,0 +1,7 @@
+﻿@model Web.ViewModels.OfficeViewModel
+
+<p class="lead">¿Seguro que quiere eliminar @Model.Name?</p>
+
+<form method="post">
+    <input type="hidden" id="deleteOffice" value="@Model.Id" />
+</form>
