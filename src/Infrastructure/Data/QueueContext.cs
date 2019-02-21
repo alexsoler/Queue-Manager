@@ -31,6 +31,7 @@ namespace Microsoft.QueueManager.Infrastructure.Data
             builder.Entity<OfficeOperator>().HasQueryFilter(x => x.Activo == true);
             builder.Entity<OfficeTask>().HasQueryFilter(x => x.Activo == true);
             builder.Entity<TaskEntity>().HasQueryFilter(x => x.Activo == true);
+            builder.Entity<Office>().HasQueryFilter(x => x.Activo == true);
 
             base.OnModelCreating(builder);
         }
