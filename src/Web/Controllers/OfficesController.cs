@@ -167,5 +167,27 @@ namespace Web.Controllers
 
             return PartialView("_DetallesOficina", officevm);
         }
+
+        [ActionName("Delete")]
+        public async Task<IActionResult> PartialViewDelete(int id)
+        {
+            var officevm = _mapper.Map<Office, OfficeViewModel>(await _officeService.GetOfficeAsync(id));
+
+            if (officevm == null)
+                return NotFound($"No se encontro la oficina con id {id}.");
+
+            return PartialView("_EliminarOficina", officevm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _officeService.DeleteOfficeAsync(id);
+
+            if (!result.Succeeded)
+                return BadRequest($"No se pudo eliminar la oficina con id {id}.");
+
+            return Ok("Oficina eliminada con exito");
+        }
     }
 }
