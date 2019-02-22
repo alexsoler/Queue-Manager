@@ -64,14 +64,14 @@ namespace Web.Services
             return vm;
         }
 
-        public OfficeIndexViewModel GetOfficesPagination(int pageIndex, int itemsPage)
+        public OfficeIndexViewModel GetOfficesPagination(int pageIndex, int itemsPage, string filterName = "")
         {
             var filterPaginatedSpecification =
-                new OfficesFilterPaginatedSpecification(itemsPage * (pageIndex - 1), itemsPage);
+                new OfficesFilterPaginatedSpecification(itemsPage * (pageIndex - 1), itemsPage, filterName);
 
             var officesOnPage = _mapper.Map<IEnumerable<Office>, IEnumerable<OfficeViewModel>>(
                 _officeRepository.List(filterPaginatedSpecification));
-            var totalOffices = _officeRepository.Count(new OfficeSpecification());
+            var totalOffices = _officeRepository.Count(new OfficeSpecification(filterName));
 
             var vm = new OfficeIndexViewModel()
             {

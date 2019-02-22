@@ -145,10 +145,12 @@ namespace Web.Controllers
         }
 
         [ActionName("TableOffices")]
-        public IActionResult PartialViewTableOfficesAsync(int? pag)
+        public IActionResult PartialViewTableOfficesAsync(int? pag, string view, string filterName = "")
         {
             var itemsPage = 5;
-            var officeModel = _officeViewModel.GetOfficesPagination(pag ?? 1, itemsPage);
+            var officeModel = _officeViewModel.GetOfficesPagination(pag ?? 1, itemsPage, filterName);
+
+            ViewData["view"] = view;
 
             return PartialView("_TableAndPagination", officeModel);
         }
@@ -189,5 +191,15 @@ namespace Web.Controllers
 
             return Ok("Oficina eliminada con exito");
         }
+
+        public IActionResult EditarOficina()
+        {
+            return View();
+        }
+
+        //public async Task<IActionResult> SearchAsync(string currentSearch, string typeResult)
+        //{
+            
+        //}
     }
 }

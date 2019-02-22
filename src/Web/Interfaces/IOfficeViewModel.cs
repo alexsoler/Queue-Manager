@@ -8,7 +8,7 @@ namespace Web.Interfaces
 {
     public interface IOfficeViewModel
     {
-        OfficeIndexViewModel GetOfficesPagination(int pageIndex, int itemsPage);
+        OfficeIndexViewModel GetOfficesPagination(int pageIndex, int itemsPage, string filteName = "");
         Task<OfficeEditViewModel> GetEditViewModel(int idOffice);
     }
 }

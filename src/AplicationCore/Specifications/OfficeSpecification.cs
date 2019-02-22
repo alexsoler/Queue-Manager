@@ -7,11 +7,13 @@ namespace ApplicationCore.Specifications
 {
     public sealed class OfficeSpecification : BaseSpecification<Office>
     {
-        public OfficeSpecification()
-            : base(null)
+        public OfficeSpecification(string filterName = "")
+            : base(x => string.IsNullOrEmpty(filterName) ||
+                x.Name.Contains(filterName, StringComparison.CurrentCultureIgnoreCase))
         {
 
         }
+
         public OfficeSpecification(int idOffice)
             : base(x => x.Id == idOffice)
         {
