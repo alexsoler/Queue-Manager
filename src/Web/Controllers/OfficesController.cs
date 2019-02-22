@@ -56,6 +56,7 @@ namespace Web.Controllers
             {
                 officeViewModel.CreationDate = DateTime.Now;
                 var office = _mapper.Map<Office>(officeViewModel);
+                office.Activo = true;
                 await _officeService.AddOfficeAsync(office);
                 return RedirectToAction(nameof(AddTasksAndOperators), new { office.Id });
             }
@@ -197,7 +198,12 @@ namespace Web.Controllers
             return View();
         }
 
-        public IActionResult SearchAsync(string currentSearch, string typeResult)
+        public IActionResult EliminarOficina()
+        {
+            return View();
+        }
+
+        public IActionResult Search(string currentSearch, string typeResult)
         {
             var allOffices = _officeService.GetOfficesAsync().Result.AsQueryable();
 

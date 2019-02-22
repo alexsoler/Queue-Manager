@@ -196,7 +196,7 @@ function searchOffice(event) {
     const currentSearch = document.getElementById('inputSearch').value;
     const typeResult = document.getElementById('inputTypeSearch').value;
 
-    $("#collapseResult").load(`/offices/SearchAsync?currentSearch=${currentSearch}&typeResult=${typeResult}`,
+    $("#collapseResult").load(`/offices/Search?currentSearch=${currentSearch}&typeResult=${typeResult}`,
         (textStatus) => {
             if (textStatus) {
                 $("#collapseResult").collapse();

@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewData["Title"] = "Eliminar Oficina";
+}
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Eliminar Oficina
+                </div>
+                <div id="cardPrincipalBody" class="card-body">
+                    <div class="mb-2">
+                        <form method="get" onsubmit="searchOffice(event)">
+                            <div class="form-row align-items-center justify-content-center">
+                                <div class="col-sm-8 col-md-5 my-1">
+                                    <label class="sr-only" for="inputSearch">Oficina</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fa fa-search"></i></div>
+                                        </div>
+                                        <input type="text" class="form-control" id="inputSearch" placeholder="Nombre de oficina...">
+                                        <input type="hidden" id="inputTypeSearch" value="delete" />
+                                    </div>
+                                </div>
+                                <div class="col-auto my-1">
+                                    <button type="submit" class="btn btn-primary">
+                                        Buscar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="collapse mt-3" id="collapseResult" style="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Eliminar</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodyDelete" class="modal-body">
+                <!--Contenido Delete-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" onclick="EliminarOficina()">Eliminar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+@section Scripts{
+    <script src="~/js/Oficinas.js"></script>
+
+    <partial name="_ValidationScriptsPartial" />
+}
