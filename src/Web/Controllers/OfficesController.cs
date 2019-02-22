@@ -197,9 +197,22 @@ namespace Web.Controllers
             return View();
         }
 
-        //public async Task<IActionResult> SearchAsync(string currentSearch, string typeResult)
-        //{
-            
-        //}
+        public IActionResult SearchAsync(string currentSearch, string typeResult)
+        {
+            var allOffices = _officeService.GetOfficesAsync().Result.AsQueryable();
+
+            var offices = from o in allOffices
+                          select o;
+
+            if (!string.IsNullOrEmpty(currentSearch))
+                offices = offices.Where(x => x.Name.Contains(
+                    currentSearch, StringComparison.CurrentCultureIgnoreCase));
+
+            var officesvm = _mapper.Map<IEnumerable<Office>, IEnumerable<OfficeViewModel>>(offices.ToList());
+
+            ViewData["typeResult"] = typeResult;
+
+            return PartialView("_ResultadoSearch", officesvm);
+        }
     }
 }

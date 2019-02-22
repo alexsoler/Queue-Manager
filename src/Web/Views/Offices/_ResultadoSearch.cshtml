@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Web.ViewModels.OfficeViewModel>
+
+@{
+    var mode = (string)ViewData["typeResult"];
+}
+
+@if (Model.Count() > 0)
+{
+    <table class="table table-responsive-xl table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Prefijo</th>
+                <th>Fecha de creación</th>
+                <th>Descripción</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Prefix</td>
+                    <td>@item.CreationDate</td>
+                    <td>@item.Description</td>
+                    <td class="d-flex">
+                        @if (mode.Equals("edit"))
+                        {
+                            <a class="btn btn-success mr-1" data-toggle="modal" data-target="#editarModal" onclick="loadEdit('@item.Id')">Editar</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-danger" data-toggle="modal" data-target="#eliminarModal" onclick="loadDelete('@item.Id')">Eliminar</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="lead text-center">No se encontraron resultados</p>
+}

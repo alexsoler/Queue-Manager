@@ -120,8 +120,14 @@ function EditarOficina(event) {
             xhr.setRequestHeader("MY-XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
         }
     }).done(response => {
-        console.log(response);
-        loadTable("Index");
+            console.log(response);
+        if (window.location.pathname.includes("EditarOficina")) {
+            $("#cardPrincipalBody > div.mb-2 > form").submit();
+        }
+        else {
+            loadTable("Index");
+        }
+
         loadAlert("La oficina ha sido editada con exito.", "Exito", "alert-success");
 
     }).fail(response => {
@@ -182,4 +188,19 @@ function EliminarOficina() {
     });
 
     $("#eliminarModal").modal('hide');
+}
+
+function searchOffice(event) {
+    event.preventDefault();
+
+    const currentSearch = document.getElementById('inputSearch').value;
+    const typeResult = document.getElementById('inputTypeSearch').value;
+
+    $("#collapseResult").load(`/offices/SearchAsync?currentSearch=${currentSearch}&typeResult=${typeResult}`,
+        (textStatus) => {
+            if (textStatus) {
+                $("#collapseResult").collapse();
+            }
+        });
+   
 }
