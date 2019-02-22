@@ -121,7 +121,7 @@ function EditarOficina(event) {
         }
     }).done(response => {
         console.log(response);
-        loadTable();
+        loadTable("Index");
         loadAlert("La oficina ha sido editada con exito.", "Exito", "alert-success");
 
     }).fail(response => {
@@ -132,9 +132,9 @@ function EditarOficina(event) {
     $("#editarModal").modal('hide');
 }
 
-function loadTable() {
+function loadTable(view, filterName = "") {
     var pag = $("#pageItemActive").data("val");
-    $("#divTabla").load(`/Offices/TableOffices?pag=${pag}`);
+    $("#divTabla").load(`/Offices/TableOffices?pag=${pag}&view=${view}&filterName=${filterName}`);
 }
 
 function loadAlert(mensaje, tipoMensaje, nameClass) {
@@ -172,13 +172,13 @@ function EliminarOficina() {
             $("#cardPrincipalBody > div.mb-2 > form").submit();
         }
         else {
-            loadTable();
+            loadTable("Index");
         }
 
         loadAlert("La oficina ha sido eliminada con exito", "Exito", "alert-success");
     }).fail(function () {
         console.log("No se pudo eliminar la oficina");
-        loadAlert("No se pudo eliminar la oficina", "Error", "alert-danger")
+        loadAlert("No se pudo eliminar la oficina", "Error", "alert-danger");
     });
 
     $("#eliminarModal").modal('hide');
