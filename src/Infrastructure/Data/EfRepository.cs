@@ -138,6 +138,7 @@ namespace Microsoft.QueueManager.Infrastructure.Data
         public async Task UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
+            _dbContext.Entry(entity).Property(x => x.Activo).IsModified = false;
             await _dbContext.SaveChangesAsync();
         }
 
