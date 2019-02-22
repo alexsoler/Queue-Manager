@@ -29,6 +29,11 @@ namespace ApplicationCore.Services
             return await _taskRepository.ListAllAsync();
         }
 
+        public async Task<TaskEntity> GetTaskAsync(int id)
+        {
+            return await _taskRepository.GetByIdAsync(id);
+        }
+
         public async Task<OperationResult> RemoveTaskAsync(int id)
         {
             var taskRemove = await _taskRepository.GetByIdAsync(id);
