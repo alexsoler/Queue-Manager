@@ -24,6 +24,24 @@ namespace ApplicationCore.Services
             return await _taskRepository.AddAsync(task);
         }
 
+        public async Task<OperationResult> EditTaskAsync(TaskEntity task)
+        {
+            var operationResult = new OperationResult();
+
+            try
+            {
+                await _taskRepository.UpdateAsync(task);
+                operationResult.Succeeded = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex.Message);
+                operationResult.Succeeded = false;
+            }
+
+            return operationResult;
+        }
+
         public async Task<IEnumerable<TaskEntity>> GetAllAsync()
         {
             return await _taskRepository.ListAllAsync();

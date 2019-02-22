@@ -12,5 +12,6 @@ namespace ApplicationCore.Interfaces
         Task<OperationResult> RemoveTaskAsync(int id);
         Task<TaskEntity> GetTaskAsync(int id);
         Task<IEnumerable<TaskEntity>> GetAllAsync();
+        Task<OperationResult> EditTaskAsync(TaskEntity task);
     }
 }
