@@ -17,8 +17,7 @@
                         </button>
                     </div>
                     <div id="divTabla">
-                        <partial name="_TablaTareas" model="Model.TasksList" />
-                        <partial name="_pagination" model="Model.PaginationInfo" />
+                        <partial name="_TableAndPagination" model="Model" />
                     </div>
                 </div>
             </div>
@@ -47,10 +46,62 @@
     </div>
 </div>
 
+<div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-success" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Editar</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodyEdit" class="modal-body">
+                <!--Contenido Edit-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" form="FormEdit" class="btn btn-success">Guardar Cambios</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Eliminar</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodyDelete" class="modal-body">
+                <!--Contenido Delete-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" onclick="EliminarTarea()">Eliminar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 @Html.AntiForgeryToken()
 
-@section Scripts{ 
+@section Scripts{
     <script>
+        $(function () {
+            $("#addNewTask").click(function () {
+                $("#Name").select();
+            });
+        });
+
         function CrearTarea(event) {
             event.preventDefault();
             let formIsValid = $("#FormCreateTask").valid();
@@ -64,13 +115,57 @@
                     data: data
                 }).done(function (result) {
                     console.log(result);
+                    loadTable();
                 }).fail(function (result) {
                     console.log(result);
                 });
 
                 $("#modalAddTask").modal("hide");
-                window.location.reload();
             }
+        }
+
+        function loadTable() {
+            var pag = $("#pageItemActive").data("val");
+            $("#divTabla").load(`/Tasks/TableTasks?pag=${pag}`);
+        }
+
+        function loadEdit(Id) {
+            $("#bodyEdit").load(`/Tasks/Edit/${Id}`);
+        }
+
+        function EditarTarea(event) {
+            event.preventDefault();
+
+            var formIsValid = $("#FormEdit").valid();
+
+            if (!formIsValid)
+                return;
+            const data = $("#FormEdit").serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: '/Tasks/Edit',
+                data: data
+            }).done((response) => {
+                console.log(response);
+                loadTable();
+                loadAlert("Se edito la tarea con exito", "Exito", "alert-success");
+            }).fail((response) => {
+                console.log(response);
+                loadAlert("No se pudo editar la tarea", "Error", "alert-danger");
+            });
+
+            $("#editarModal").modal('hide');
+        }
+
+        function loadAlert(mensaje, tipoMensaje, nameClass) {
+            $("#cardPrincipalBody").prepend(`<div class="alert ${nameClass} alert-dismissible fade show" role="alert">
+        <strong>${tipoMensaje}!</strong > ${mensaje}<button class="close" type = "button" data-dismiss="alert" aria-label="Close" >
+        <span aria-hidden="true">×</span></button></div>`);
+
+            setTimeout(function () {
+                $(".alert").alert('close');
+            }, 5000);
         }
     </script>
     <partial name="_ValidationScriptsPartial" />

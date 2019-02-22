@@ -52,5 +52,44 @@ namespace Web.Controllers
 
             return Ok(task);
         }
+
+        [ActionName("TableTasks")]
+        public IActionResult PartialViewTableTasks(int? pag)
+        {
+            var itemsPage = 5;
+            var taskModel = _taskIndexViewModel.GetTasksPagination(pag ?? 1, itemsPage);
+
+            return PartialView("_TableAndPagination", taskModel);
+        }
+
+        [ActionName("Edit")]
+        public async Task<IActionResult> PartialViewEditAsync(int? Id)
+        {
+            if (Id == null)
+                return NotFound();
+
+            var task = await _taskService.GetTaskAsync(Id.Value);
+
+            var taskvm = _mapper.Map<TaskViewModel>(task);
+
+            return PartialView("_EditarTarea", taskvm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit([FromForm]TaskViewModel taskViewModel)
+        {
+            if (taskViewModel == null)
+                return Conflict();
+
+            var task = _mapper.Map<TaskEntity>(taskViewModel);
+
+            var result = await _taskService.EditTaskAsync(task);
+
+            if (!result.Succeeded)
+                return BadRequest("No se pudo editar la tarea");
+
+            return Ok("Se edito la tarea");
+        }
     }
 }

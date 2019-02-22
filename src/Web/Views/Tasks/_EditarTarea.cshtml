@@ -1,0 +1,14 @@
+﻿@model Web.ViewModels.TaskViewModel
+
+<form id="FormEdit" method="post" class="form-horizontal" autocomplete="off" onsubmit="EditarTarea(event)">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="CreationDate"/>
+    <div class="form-group row">
+        <label asp-for="Name" class="col-md-3 col-form-label"></label>
+        <div class="col-md-9">
+            <input asp-for="Name" class="form-control" placeholder="Ingrese un nombre..." />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+</form>
