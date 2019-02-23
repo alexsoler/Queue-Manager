@@ -35,6 +35,12 @@ namespace Web.Controllers
             return View(taskModel);
         }
 
+        [ActionName("Create")]
+        public IActionResult PartialViewCreate()
+        {
+            return PartialView("_CreateTask");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromForm]TaskViewModel newTask)
@@ -90,6 +96,33 @@ namespace Web.Controllers
                 return BadRequest("No se pudo editar la tarea");
 
             return Ok("Se edito la tarea");
+        }
+
+        [ActionName("Delete")]
+        public async Task<IActionResult> PartialViewDelete(int? Id)
+        {
+            if (Id == null)
+                return NotFound();
+
+            var task = await _taskService.GetTaskAsync(Id.Value);
+
+            var taskvm = _mapper.Map<TaskViewModel>(task);
+
+            return PartialView("_EliminarTarea", taskvm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int? Id)
+        {
+            if (!Id.HasValue)
+                return NotFound();
+
+            var result = await _taskService.RemoveTaskAsync(Id.Value);
+            if (!result.Succeeded)
+                return BadRequest($"No se pudo eliminar la tarea con id {Id.Value}");
+
+            return Ok("La tarea fue eliminada con exito");
         }
     }
 }

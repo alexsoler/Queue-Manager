@@ -12,7 +12,8 @@
                 </div>
                 <div id="cardPrincipalBody" class="card-body">
                     <div>
-                        <button id="addNewTask" type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalAddTask">
+                        <button id="addNewTask" type="button" class="btn btn-primary mb-3" data-toggle="modal" 
+                                data-target="#modalAddTask" onclick="loadCreate()">
                             Agregar nueva tarea
                         </button>
                     </div>
@@ -35,8 +36,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <partial name="_CreateTask" model="new Web.ViewModels.TaskViewModel()" />
+            <div id="bodyCreate" class="modal-body">
+                <!--Contenido Create-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -70,7 +71,7 @@
 <!-- /.modal -->
 
 <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-danger" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Eliminar</h4>
@@ -96,12 +97,6 @@
 
 @section Scripts{
     <script>
-        $(function () {
-            $("#addNewTask").click(function () {
-                $("#Name").select();
-            });
-        });
-
         function CrearTarea(event) {
             event.preventDefault();
             let formIsValid = $("#FormCreateTask").valid();
@@ -129,8 +124,16 @@
             $("#divTabla").load(`/Tasks/TableTasks?pag=${pag}`);
         }
 
+        function loadCreate() {
+            $("#bodyCreate").load(`/Tasks/Create`);
+        }
+
         function loadEdit(Id) {
             $("#bodyEdit").load(`/Tasks/Edit/${Id}`);
+        }
+
+        function loadDelete(Id) {
+            $("#bodyDelete").load(`/Tasks/Delete/${Id}`);
         }
 
         function EditarTarea(event) {
@@ -156,6 +159,28 @@
             });
 
             $("#editarModal").modal('hide');
+        }
+
+        function EliminarTarea() {
+            const id = $("#deleteTask").val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/Tasks/Delete',
+                data: { id },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("MY-XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+                }
+            }).done((response) => {
+                console.log(response);
+                loadTable();
+                loadAlert("La tarea fue eliminada con exito", "Exito", "alert-success");
+            }).fail((response) => {
+                console.log(response);
+                loadAlert("No se pudo eliminar la tarea", "Error", "alert-danger");
+            });
+
+            $("#eliminarModal").modal('hide');
         }
 
         function loadAlert(mensaje, tipoMensaje, nameClass) {
