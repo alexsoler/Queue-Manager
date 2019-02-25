@@ -28,5 +28,5 @@
 }
 
 function Cancelar() {
-    window.location = "/";
+    window.location = "/Offices/Index";
 }
