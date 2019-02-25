@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,7 +15,7 @@ namespace ApplicationCore.Interfaces
         Task<bool> HasTask(int idOffice, int idTask);
         Task<bool> HasOperator(int idOffice, string idOperator);
         Task<Office> GetOfficeAsync(int id);
-        Task<IEnumerable<Office>> GetOfficesAsync();
+        Task<IEnumerable<Office>> GetOfficesAsync(OfficeSpecification officeSpecification = null);
         Task<Office> AddOfficeAsync(Office office);
         Task<OperationResult> AddTaskAsync(int idTask, int idOffice);
         Task<OperationResult> AddTasksAsync(int[] idTasks, int idOffice);

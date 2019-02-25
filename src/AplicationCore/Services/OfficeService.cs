@@ -253,9 +253,12 @@ namespace ApplicationCore.Services
             return await _officeRepository.GetByIdAsync(id);
         }
 
-        public async Task<IEnumerable<Office>> GetOfficesAsync()
+        public async Task<IEnumerable<Office>> GetOfficesAsync(OfficeSpecification officeSpecification = null)
         {
-            return await _officeRepository.ListAllAsync();
+            if(officeSpecification == null)
+                return await _officeRepository.ListAllAsync();
+
+            return await _officeRepository.ListAsync(officeSpecification);
         }
 
         public async Task<int> GetOfficesCountAsync(int id)
