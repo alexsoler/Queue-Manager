@@ -7,6 +7,13 @@ namespace ApplicationCore.Specifications
 {
     public sealed class OfficeSpecification : BaseSpecification<Office>
     {
+        public OfficeSpecification(bool showOff = false)
+            : base(x => x.Activo == false)
+        {
+            if (showOff)
+                AddIgnoreQueryFilter();
+        }
+
         public OfficeSpecification(string filterName = "")
             : base(x => string.IsNullOrEmpty(filterName) ||
                 x.Name.Contains(filterName, StringComparison.CurrentCultureIgnoreCase))
