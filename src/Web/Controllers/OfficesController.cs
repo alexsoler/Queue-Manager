@@ -269,7 +269,7 @@ namespace Web.Controllers
         public IActionResult Search(string currentSearch, string typeResult)
         {
             IQueryable<Office> allOffices;
-            if (typeResult == "Edit")
+            if (typeResult == "edit")
                 allOffices = _officeService.GetOfficesAsync().Result.AsQueryable();
             else
             {

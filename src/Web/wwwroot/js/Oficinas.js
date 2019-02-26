@@ -99,9 +99,8 @@ function EditarOficina(event) {
     let oficina = {
         Id: document.forms['FormEdit'][0].value,
         Name: document.forms['FormEdit'][1].value,
-        Prefix: document.forms['FormEdit'][2].value,
-        Description: document.forms['FormEdit'][3].value,
-        CreationDate: document.forms['FormEdit'][4].value
+        Description: document.forms['FormEdit'][2].value,
+        CreationDate: document.forms['FormEdit'][3].value
     };
 
     var data = {

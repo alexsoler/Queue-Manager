@@ -21,12 +21,21 @@ namespace Microsoft.QueueManager.Infrastructure.Data
                         new TaskEntity
                         {
                             Name = "Matricula",
+                            Prefix = "M",
                             CreationDate = DateTime.Now,
                             Activo = true
                         },
                         new TaskEntity
                         {
                             Name = "Pago de mensualidad",
+                            Prefix = "P",
+                            CreationDate = DateTime.Now,
+                            Activo = true
+                        },
+                        new TaskEntity
+                        {
+                            Name = "Pago de equivalencias",
+                            Prefix = "E",
                             CreationDate = DateTime.Now,
                             Activo = true
                         }
@@ -42,7 +51,6 @@ namespace Microsoft.QueueManager.Infrastructure.Data
                         {
                             Name = "Ventanilla 1",
                             Description = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore, aspernatur.",
-                            Prefix = "A",
                             CreationDate = DateTime.Now,
                             Activo = true
                         },
@@ -50,7 +58,6 @@ namespace Microsoft.QueueManager.Infrastructure.Data
                         {
                             Name = "Ventanilla 2",
                             Description = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, eos!",
-                            Prefix = "B",
                             CreationDate = DateTime.Now,
                             Activo = true
                         },
@@ -58,7 +65,6 @@ namespace Microsoft.QueueManager.Infrastructure.Data
                         {
                             Name = "Ventanilla 3",
                             Description = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore, aspernatur.",
-                            Prefix = "C",
                             CreationDate = DateTime.Now,
                             Activo = true
                         },
@@ -66,7 +72,6 @@ namespace Microsoft.QueueManager.Infrastructure.Data
                         {
                             Name = "Ventanilla 4",
                             Description = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, eos!",
-                            Prefix = "B",
                             CreationDate = DateTime.Now,
                             Activo = true
                         },
@@ -74,7 +79,6 @@ namespace Microsoft.QueueManager.Infrastructure.Data
                         {
                             Name = "Ventanilla 5",
                             Description = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, eos!",
-                            Prefix = "C",
                             CreationDate = DateTime.Now,
                             Activo = true
                         },
@@ -82,7 +86,6 @@ namespace Microsoft.QueueManager.Infrastructure.Data
                         {
                             Name = "Ventanilla 6",
                             Description = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, eos!",
-                            Prefix = "D",
                             CreationDate = DateTime.Now,
                             Activo = true
                         }

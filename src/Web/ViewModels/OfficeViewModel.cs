@@ -21,10 +21,6 @@ namespace Web.ViewModels
         [StringLength(200)]
         public string Description { get; set; }
 
-        [Display(Name = "Prefijo")]
-        [Required(ErrorMessage = "El campo {0} es rquerido")]
-        public Prefix Prefix { get; set; }
-
         [Display(Name = "Creación")]
         public DateTime CreationDate { get; set; }
 
@@ -32,11 +28,5 @@ namespace Web.ViewModels
         public List<TaskViewModel> Tasks { get; set; }
         [Display(Name = "Operadores")]
         public List<OperatorViewModel> Operators { get; set; }
-    }
-
-    public enum Prefix
-    {
-        A, B, C, D, E, F, G, H, I, J, K, L, M, N, Ñ, O, P, Q, R,
-        S, T, U, V, W, X, Y, Z
     }
 }

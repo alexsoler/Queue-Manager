@@ -9,7 +9,6 @@ namespace ApplicationCore.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Prefix { get; set; }
         public List<OfficeTask> OfficeTasks { get; set; }
         public List<OfficeOperator> OfficeOperators { get; set; }
     }

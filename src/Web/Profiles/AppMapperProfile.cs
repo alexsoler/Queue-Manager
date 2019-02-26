@@ -12,10 +12,7 @@ namespace Web.Profiles
     {
         public AppMapperProfile()
         {
-            CreateMap<OfficeViewModel, Office>()
-                .ForMember(dest =>
-                    dest.Prefix,
-                    opt => opt.MapFrom(src => src.Prefix.ToString()));
+            CreateMap<OfficeViewModel, Office>();
 
             CreateMap<Office, OfficeViewModel>();
 
