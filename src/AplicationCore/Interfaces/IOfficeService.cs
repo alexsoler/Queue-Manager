@@ -14,8 +14,8 @@ namespace ApplicationCore.Interfaces
         Task<int> GetOperatorsCountAsync(int id);
         Task<bool> HasTask(int idOffice, int idTask);
         Task<bool> HasOperator(int idOffice, string idOperator);
-        Task<Office> GetOfficeAsync(int id);
-        Task<IEnumerable<Office>> GetOfficesAsync(OfficeSpecification officeSpecification = null);
+        Task<Office> GetOfficeAsync(int id, bool ignoreQueryFilter = false);
+        Task<IEnumerable<Office>> GetOfficesAsync(bool ignoreQueryFilter = false);
         Task<Office> AddOfficeAsync(Office office);
         Task<OperationResult> AddTaskAsync(int idTask, int idOffice);
         Task<OperationResult> AddTasksAsync(int[] idTasks, int idOffice);
@@ -25,7 +25,7 @@ namespace ApplicationCore.Interfaces
         Task<IEnumerable<ApplicationUser>> GetOperatorsAsync(int idOffice);
         Task<OperationResult> RemoveTaskAsync(int idTask, int idOffice);
         Task<OperationResult> RemoveOperatorAsync(string idOperator, int idOffice);
-        Task<OperationResult> DeleteOfficeAsync(int id);
+        Task<OperationResult> DeleteOfficeAsync(int id, bool ignoreQueryFilter = false);
         Task<OperationResult> EditOfficeAsync(Office office);
     }
 }

@@ -223,10 +223,18 @@ namespace ApplicationCore.Services
             return operationResult;
         }
 
-        public async Task<OperationResult> DeleteOfficeAsync(int id)
+        public async Task<OperationResult> DeleteOfficeAsync(int id, bool ignoreQueryFilter = false)
         {
             _logger.LogInformation($"Eliminando oficina con id {id}.");
-            var office = await _officeRepository.GetByIdAsync(id);
+
+            Office office = null;
+            if(!ignoreQueryFilter)
+                office = await _officeRepository.GetByIdAsync(id);
+            else
+            {
+                var especificacion = new OfficeSpecification(id, ignoreFilter: true);
+                office = await _officeRepository.GetSingleBySpecAsync(especificacion);
+            }
 
             if(office == null)
             {
@@ -248,16 +256,21 @@ namespace ApplicationCore.Services
             return new OperationResult { Succeeded = true };
         }
 
-        public async Task<Office> GetOfficeAsync(int id)
+        public async Task<Office> GetOfficeAsync(int id, bool ignoreQueryFilter = false)
         {
-            return await _officeRepository.GetByIdAsync(id);
+            if(!ignoreQueryFilter)
+                return await _officeRepository.GetByIdAsync(id);
+
+            var officeSpecification = new OfficeSpecification(id, ignoreFilter: true);
+            return await _officeRepository.GetSingleBySpecAsync(officeSpecification);
         }
 
-        public async Task<IEnumerable<Office>> GetOfficesAsync(OfficeSpecification officeSpecification = null)
+        public async Task<IEnumerable<Office>> GetOfficesAsync(bool ignoreQueryFilter = false)
         {
-            if(officeSpecification == null)
+            if(!ignoreQueryFilter)
                 return await _officeRepository.ListAllAsync();
 
+            var officeSpecification = new OfficeSpecification(showOff: ignoreQueryFilter);
             return await _officeRepository.ListAsync(officeSpecification);
         }
 

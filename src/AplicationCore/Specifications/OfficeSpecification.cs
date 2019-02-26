@@ -7,7 +7,7 @@ namespace ApplicationCore.Specifications
 {
     public sealed class OfficeSpecification : BaseSpecification<Office>
     {
-        public OfficeSpecification(bool showOff = false)
+        public OfficeSpecification(bool showOff)
             : base(x => x.Activo == false)
         {
             if (showOff)
@@ -21,12 +21,8 @@ namespace ApplicationCore.Specifications
 
         }
 
-        public OfficeSpecification(int idOffice)
-            : base(x => x.Id == idOffice)
-        {
-        }
-
-        public OfficeSpecification(int idOffice, bool withTasks = false, bool withOperators = false)
+        public OfficeSpecification(int idOffice, bool withTasks = false,
+            bool withOperators = false, bool ignoreFilter = false)
             :base(x => x.Id == idOffice)
         {
             if(withTasks)
@@ -36,6 +32,10 @@ namespace ApplicationCore.Specifications
             if(withOperators)
             {
                 AddInclude(x => x.OfficeOperators);
+            }
+            if(ignoreFilter)
+            {
+                AddIgnoreQueryFilter();
             }
         }
     }
