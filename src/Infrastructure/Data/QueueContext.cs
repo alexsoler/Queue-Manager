@@ -42,8 +42,11 @@ namespace Microsoft.QueueManager.Infrastructure.Data
                 .Where(e => e.State == EntityState.Deleted &&
                 e.Metadata.GetProperties().Any(x => x.Name == "Activo")))
             {
-                item.State = EntityState.Unchanged;
-                item.CurrentValues["Activo"] = false;
+                if ((bool)item.CurrentValues["Activo"])
+                {
+                    item.State = EntityState.Unchanged;
+                    item.CurrentValues["Activo"] = false;
+                }
             }
             return base.SaveChangesAsync(cancellationToken);
         }
