@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AplicationCore
+namespace ApplicationCore
 {
     class CatalogSettings
     {

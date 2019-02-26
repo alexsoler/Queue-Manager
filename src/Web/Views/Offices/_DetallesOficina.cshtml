@@ -1,0 +1,44 @@
+﻿@model Web.ViewModels.OfficeViewModel
+
+<dl class="row lead">
+    <dt class="col-3">
+        @Html.DisplayNameFor(model => model.Name)
+    </dt>
+    <dd class="col-9">
+        @Html.DisplayFor(model => model.Name)
+    </dd>
+    <dt class="col-3">
+        @Html.DisplayNameFor(model => model.Description)
+    </dt>
+    <dd class="col-9">
+        @Html.DisplayFor(model => model.Description)
+    </dd>
+    <dt class="col-3">
+        @Html.DisplayNameFor(model => model.CreationDate)
+    </dt>
+    <dd class="col-9">
+        @Html.DisplayFor(model => model.CreationDate)
+    </dd>
+    <dt class="col-3">
+        @Html.DisplayNameFor(model => model.Tasks)
+    </dt>
+    <dd class="col-9">
+        <ul>
+            @foreach (var item in Model.Tasks)
+            {
+                <li>@item.Name</li>
+            }
+        </ul>
+    </dd>
+    <dt class="col-3">
+        @Html.DisplayNameFor(model => model.Operators)
+    </dt>
+    <dd class="col-9">
+        <ul>
+            @foreach (var item in Model.Operators)
+            {
+                <li>@item.Name</li>
+            }
+        </ul>
+    </dd>
+</dl>

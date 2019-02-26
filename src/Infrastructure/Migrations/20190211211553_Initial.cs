@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Microsoft.QueueManager.Infrastructure.Identity.Migrations
+namespace Microsoft.QueueManager.Infrastructure.Migrations
 {
-    public partial class InitialIdentityModel : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,11 +40,45 @@ namespace Microsoft.QueueManager.Infrastructure.Identity.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Activo = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tareas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Activo = table.Column<bool>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    Nombre = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tareas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ventanillas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Activo = table.Column<bool>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    Nombre = table.Column<string>(nullable: true),
+                    Descripcion = table.Column<string>(nullable: true),
+                    Prefijo = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ventanillas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,6 +187,54 @@ namespace Microsoft.QueueManager.Infrastructure.Identity.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "VentanillasOperadores",
+                columns: table => new
+                {
+                    VentanillaId = table.Column<int>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VentanillasOperadores", x => new { x.VentanillaId, x.ApplicationUserId });
+                    table.ForeignKey(
+                        name: "FK_VentanillasOperadores_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_VentanillasOperadores_Ventanillas_VentanillaId",
+                        column: x => x.VentanillaId,
+                        principalTable: "Ventanillas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "VentanillasTareas",
+                columns: table => new
+                {
+                    VentanillaId = table.Column<int>(nullable: false),
+                    TareaId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VentanillasTareas", x => new { x.VentanillaId, x.TareaId });
+                    table.ForeignKey(
+                        name: "FK_VentanillasTareas_Tareas_TareaId",
+                        column: x => x.TareaId,
+                        principalTable: "Tareas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_VentanillasTareas_Ventanillas_VentanillaId",
+                        column: x => x.VentanillaId,
+                        principalTable: "Ventanillas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -191,6 +273,16 @@ namespace Microsoft.QueueManager.Infrastructure.Identity.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VentanillasOperadores_ApplicationUserId",
+                table: "VentanillasOperadores",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VentanillasTareas_TareaId",
+                table: "VentanillasTareas",
+                column: "TareaId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,10 +303,22 @@ namespace Microsoft.QueueManager.Infrastructure.Identity.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "VentanillasOperadores");
+
+            migrationBuilder.DropTable(
+                name: "VentanillasTareas");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Tareas");
+
+            migrationBuilder.DropTable(
+                name: "Ventanillas");
         }
     }
 }

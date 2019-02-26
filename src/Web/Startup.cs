@@ -13,8 +13,17 @@ using Microsoft.EntityFrameworkCore;
 using Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.QueueManager.Infrastructure.Identity;
 using Web.Models.IdentityError;
+using ApplicationCore.Entities;
+using Microsoft.QueueManager.Infrastructure.Data;
+using ApplicationCore.Interfaces;
+using ApplicationCore.Services;
+using Microsoft.QueueManager.Infrastructure.Logging;
+using AutoMapper;
+using Web.Profiles;
+using Web.Interfaces;
+using Web.ViewModels;
+using Web.Services;
 
 namespace Web
 {
@@ -29,16 +38,16 @@ namespace Web
 
         public void ConfigureProductionServices(IServiceCollection services)
         {
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<QueueContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("QueueConnection")));
 
             ConfigureServices(services);
         }
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            services.AddDbContext<AppIdentityDbContext>(options => 
-                options.UseInMemoryDatabase("Identity"));
+            services.AddDbContext<QueueContext>(options => 
+                options.UseInMemoryDatabase("Queue"));
 
             ConfigureServices(services);
         }
@@ -53,9 +62,12 @@ namespace Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddAutoMapper();
+            Mapper.Initialize(cfg => cfg.AddProfile<AppMapperProfile>());
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddEntityFrameworkStores<QueueContext>()
                 .AddDefaultTokenProviders()
                 .AddErrorDescriber<IdentityError_es>();
 
@@ -68,6 +80,18 @@ namespace Web
                 config.Password.RequireDigit = false;
 
             });
+
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
+            services.AddScoped<IOfficeService, OfficeService>();
+            services.AddScoped<ITaskService, TaskService>();
+
+            services.AddScoped<IOfficeViewModel, OfficeViewModelService>();
+            services.AddScoped<ITaskIndexViewModel, TaskViewModelService>();
+            services.AddScoped<IAddTasksOperatorsToNewOfficeViewModel, AddTasksOperatorsToNewOfficeViewModelService>();
+
+            services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 
             services.AddAntiforgery(options => options.HeaderName = "MY-XSRF-TOKEN");
 

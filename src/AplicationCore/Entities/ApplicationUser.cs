@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.QueueManager.Infrastructure.Identity
+namespace ApplicationCore.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        [PersonalData]
         public string Name { get; set; }
         public bool Activo { get; set; }
+        public List<OfficeOperator> VentanillasOperadores { get; set; }
     }
 }

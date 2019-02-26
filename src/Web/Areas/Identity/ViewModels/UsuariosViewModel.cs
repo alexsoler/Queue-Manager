@@ -1,4 +1,4 @@
-﻿using Microsoft.QueueManager.Infrastructure.Identity;
+﻿using ApplicationCore.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ApplicationCore.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Microsoft.QueueManager.Infrastructure.Identity
+namespace Microsoft.QueueManager.Infrastructure.Data
 {
     public class AppIdentityDbContextSeed
     {

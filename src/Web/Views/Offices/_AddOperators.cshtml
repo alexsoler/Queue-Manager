@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Web.ViewModels.OperatorCheckBoxViewModel>
+
+<div id="checkTasks" class="d-flex flex-wrap">
+    @foreach (var item in Model)
+    {
+        <div class="form-check" style="width: 200px">
+            <input type="checkbox"
+                   class="form-check-input"
+                   name="Operadores"
+                   value="@item.Id"
+                   @(Html.Raw(item.Asignado ? "checked" : "")) />
+            <label class="form-check-label" for="Operadores">@item.Name</label>
+        </div>
+    }
+</div>

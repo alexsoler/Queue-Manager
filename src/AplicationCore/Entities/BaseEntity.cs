@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AplicationCore.Entities
+namespace ApplicationCore.Entities
 {
-    class BaseEntity
+    public class BaseEntity
     {
-        public int Id { get; set; }
+        public bool Activo { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }
