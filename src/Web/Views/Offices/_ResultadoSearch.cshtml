@@ -31,7 +31,8 @@
                         }
                         else
                         {
-                            <a class="btn btn-danger" data-toggle="modal" data-target="#eliminarModal" onclick="loadDelete('@item.Id')">Eliminar</a>
+                            <a class="btn btn-info mr-1" onclick="activateOffice('@item.Id')">Activar</a>
+                            <a class="btn btn-danger" data-toggle="modal" data-target="#eliminarModal" onclick="loadDeletePermanent('@item.Id')">Eliminar</a>
                         }
                     </td>
                 </tr>

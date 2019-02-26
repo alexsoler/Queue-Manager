@@ -161,6 +161,10 @@ function loadDelete(id) {
     $("#bodyDelete").load(`/Offices/Delete/${id}`);
 }
 
+function loadDeletePermanent(id) {
+    $("#bodyDelete").load(`/Offices/DeletePermanent/${id}`);
+}
+
 function EliminarOficina() {
     let id = $("#deleteOffice").val();
 
@@ -174,13 +178,48 @@ function EliminarOficina() {
     }).done(function (response) {
         console.log(response);
 
-        if (document.URL.includes("EliminarOficina")) {
-            $("#cardPrincipalBody > div.mb-2 > form").submit();
-        }
-        else {
-            loadTable("Index");
-        }
+        loadTable("Index");
 
+        loadAlert("La oficina ha sido desactivada con exito", "Exito", "alert-success");
+    }).fail(function () {
+        console.log("No se pudo desactivar la oficina");
+        loadAlert("No se pudo desactivar la oficina", "Error", "alert-danger");
+    });
+
+    $("#eliminarModal").modal('hide');
+}
+
+function activateOffice(id) {
+    $.ajax({
+        type: 'POST',
+        url: '/Offices/ActivateOffice',
+        data: { id },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("MY-XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+        }
+    }).done((result) => {
+        console.log(result);
+        loadAlert("Se activo la oficina con exito.", "Exito", "alert-success");
+        $("#FormSearch").submit();
+    }).fail((result) => {
+        console.log(result);
+        loadAlert("No se pudo activar la oficina.", "Error", "alert-danger");
+    });
+}
+
+function eliminarPermanentemente() {
+    let id = $("#deleteOffice").val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/offices/DeletePermanent',
+        data: { id },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("MY-XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+        }
+    }).done(function (response) {
+        console.log(response);
+        $("#cardPrincipalBody > div.mb-2 > form").submit();
         loadAlert("La oficina ha sido eliminada con exito", "Exito", "alert-success");
     }).fail(function () {
         console.log("No se pudo eliminar la oficina");

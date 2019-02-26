@@ -12,7 +12,7 @@
                 </div>
                 <div id="cardPrincipalBody" class="card-body">
                     <div class="mb-2">
-                        <form method="get" onsubmit="searchOffice(event)">
+                        <form id="FormSearch" method="get" onsubmit="searchOffice(event)">
                             <div class="form-row align-items-center justify-content-center">
                                 <div class="col-sm-8 col-md-5 my-1">
                                     <label class="sr-only" for="inputSearch">Oficina</label>
@@ -55,7 +55,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-danger" onclick="EliminarOficina()">Eliminar</button>
+                <button type="button" class="btn btn-danger" onclick="eliminarPermanentemente()">Eliminar</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -65,7 +65,7 @@
 <!-- /.modal -->
 
 @section Scripts{
-    <script src="~/js/Oficinas.js"></script>
+    <script src="~/js/Oficinas.js" asp-append-version="true"></script>
 
     <partial name="_ValidationScriptsPartial" />
 }

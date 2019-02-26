@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using ApplicationCore;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
+using ApplicationCore.Specifications;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Web.Interfaces;
 using Web.ViewModels;
 
@@ -172,9 +174,12 @@ namespace Web.Controllers
         }
 
         [ActionName("Delete")]
-        public async Task<IActionResult> PartialViewDelete(int id)
+        public async Task<IActionResult> PartialViewDelete(int? id)
         {
-            var officevm = _mapper.Map<Office, OfficeViewModel>(await _officeService.GetOfficeAsync(id));
+            if (!id.HasValue)
+                return NotFound();
+
+            var officevm = _mapper.Map<Office, OfficeViewModel>(await _officeService.GetOfficeAsync(id.Value));
 
             if (officevm == null)
                 return NotFound($"No se encontro la oficina con id {id}.");
@@ -184,14 +189,71 @@ namespace Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            var result = await _officeService.DeleteOfficeAsync(id);
+            if (!id.HasValue)
+                return NotFound();
+
+            var result = await _officeService.DeleteOfficeAsync(id.Value);
+
+            if (!result.Succeeded)
+                return BadRequest($"No se pudo desactivar la oficina con id {id}.");
+
+            return Ok("Oficina desactivada con exito");
+        }
+
+        [ActionName("DeletePermanent")]
+        public async Task<IActionResult> PartialViewDeletePermanent(int? id)
+        {
+            if (!id.HasValue)
+                return NotFound();
+
+            var officevm = _mapper.Map<Office, OfficeViewModel>(
+                await _officeService.GetOfficeAsync(id.Value, ignoreQueryFilter: true));
+
+            if (officevm == null)
+                return NotFound($"No se encontro la oficina con id {id}.");
+
+            return PartialView("_EliminarOficinaPermanente", officevm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeletePermanent(int? id)
+        {
+            if (!id.HasValue)
+                return NotFound();
+
+            var result = await _officeService.DeleteOfficeAsync(id.Value, ignoreQueryFilter: true);
 
             if (!result.Succeeded)
                 return BadRequest($"No se pudo eliminar la oficina con id {id}.");
 
             return Ok("Oficina eliminada con exito");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActivateOffice(int? id)
+        {
+            if (!id.HasValue)
+                return NotFound();
+
+            var office = await _officeService.GetOfficeAsync(id.Value, ignoreQueryFilter: true);
+
+            if (!office.Activo)
+                office.Activo = true;
+
+            try
+            {
+                await _officeService.EditOfficeAsync(office);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+            
+            return Ok();
         }
 
         public IActionResult EditarOficina()
@@ -206,7 +268,14 @@ namespace Web.Controllers
 
         public IActionResult Search(string currentSearch, string typeResult)
         {
-            var allOffices = _officeService.GetOfficesAsync().Result.AsQueryable();
+            IQueryable<Office> allOffices;
+            if (typeResult == "Edit")
+                allOffices = _officeService.GetOfficesAsync().Result.AsQueryable();
+            else
+            {
+                allOffices = _officeService.GetOfficesAsync(ignoreQueryFilter: true)
+                    .Result.AsQueryable();
+            }
 
             var offices = from o in allOffices
                           select o;
