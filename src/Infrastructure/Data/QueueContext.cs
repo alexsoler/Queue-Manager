@@ -21,6 +21,7 @@ namespace Microsoft.QueueManager.Infrastructure.Data
         public DbSet<TaskEntity> Tasks { get; set; }
         public DbSet<OfficeTask> OfficesTasks { get; set; }
         public DbSet<OfficeOperator> OfficesOperators { get; set; }
+        public DbSet<Media> Medias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
