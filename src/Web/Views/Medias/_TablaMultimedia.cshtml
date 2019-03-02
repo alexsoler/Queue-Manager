@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Web.ViewModels.MediaViewModel>
+
+<table class="table table-responsive-sm table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Usado</th>
+            <th>Fecha de creación</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Tipo</td>
+                <td>@item.Used</td>
+                <td>@item.CreationDate</td>
+                <td class="d-flex">
+                    <a class="btn btn-primary mr-1" data-toggle="modal" data-target="#verModal" onclick="loadDetails('@item.Id')">Ver</a>
+                    <a class="btn btn-danger" data-toggle="modal" data-target="#eliminarModal" onclick="loadDelete('@item.Id')">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
