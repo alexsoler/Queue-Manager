@@ -31,6 +31,23 @@ namespace Web.Profiles
                     dest.Activo,
                     opt => opt.MapFrom(x => true));
 
+            CreateMap<Media, MediaViewModel>()
+                .ForMember(dest =>
+                    dest.Tipo,
+                    opt => opt.MapFrom((media, mediavm) =>
+                    {
+                        if (media.Img)
+                            return "Imagen";
+                        else if (media.Video)
+                            return "Video";
+                        else if (media.Audio)
+                            return "Audio";
+                        return string.Empty;
+                    }))
+                .ForMember(dest =>
+                    dest.File,
+                    opt => opt.MapFrom(x => default(byte[])));
+
         }
     }
 }
