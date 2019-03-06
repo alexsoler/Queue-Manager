@@ -32,7 +32,7 @@ namespace Web.Services
                 new MediasFilterPaginatedSpecification(itemsPage * (pageIndex - 1), itemsPage);
 
             var mediasOnPage = _mapper.Map<IEnumerable<Media>, IEnumerable<MediaViewModel>>(
-                _repository.ListAll());
+                _repository.List(filterPaginatedSpecification));
 
             var totalMedias = _repository.Count(new MediaSpecification());
 
@@ -41,8 +41,8 @@ namespace Web.Services
                 MediaList = mediasOnPage,
                 PaginationInfo = new PaginationInfoViewModel
                 {
-                    ActualPage = totalMedias,
-                    ItemsPerPage = itemsPage,
+                    ActualPage = pageIndex,
+                    ItemsPerPage = mediasOnPage.Count(),
                     TotalItems = totalMedias,
                     TotalPages = int.Parse(Math.Ceiling((decimal)totalMedias / itemsPage).ToString())
                 }
