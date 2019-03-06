@@ -1,7 +1,9 @@
 ﻿using ApplicationCore.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.ViewModels;
@@ -48,6 +50,32 @@ namespace Web.Profiles
                     dest.File,
                     opt => opt.MapFrom(x => default(byte[])));
 
+            CreateMap<IFormFile, Media>()
+                .ForMember(dest =>
+                    dest.Name,
+                    opt => opt.MapFrom(src => src.FileName))
+                .ForMember(dest =>
+                    dest.CreationDate,
+                    opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(dest =>
+                    dest.File,
+                    opt => opt.MapFrom((formFile, media) =>
+                    {
+                        using (var binaryFile = new BinaryReader(formFile.OpenReadStream()))
+                        {
+                            return binaryFile.ReadBytes((int)formFile.Length);
+                        }
+
+                    }))
+                .ForMember(dest =>
+                    dest.Img,
+                    opt => opt.MapFrom(src => src.ContentType.Contains("image")))
+                .ForMember(dest =>
+                    dest.Video,
+                    opt => opt.MapFrom(src => src.ContentType.Contains("video")))
+                .ForMember(dest =>
+                    dest.Audio,
+                    opt => opt.MapFrom(src => src.ContentType.Contains("audio")));
         }
     }
 }
