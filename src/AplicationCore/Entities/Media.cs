@@ -12,6 +12,7 @@ namespace ApplicationCore.Entities
         public bool Img { get; set; }
         public bool Used { get; set; }
         public string Name { get; set; }
+        public string ContentType { get; set; }
         public byte[] File { get; set; }
     }
 }

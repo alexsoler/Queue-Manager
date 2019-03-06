@@ -17,5 +17,6 @@ namespace Web.ViewModels
         public byte[] File { get; set; }
         [Display(Name = "Fecha de Creación")]
         public DateTime CreationDate { get; set; }
+        public string ContentType { get; set; }
     }
 }
