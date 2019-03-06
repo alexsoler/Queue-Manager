@@ -19,7 +19,7 @@ namespace ApplicationCore.Services
             _logger = logger;
         }
 
-        public async Task<Media> AddMedia(Media media)
+        public async Task<Media> AddMediaAsync(Media media)
         {
             _logger.LogInformation($"Se comenzo a guardar un archivo multimedia de nombre { media.Name }");
 

@@ -8,7 +8,7 @@ namespace ApplicationCore.Interfaces
 {
     public interface IMediaService
     {
-        Task<Media> AddMedia(Media media);
+        Task<Media> AddMediaAsync(Media media);
         Task<Media> GetMediaAsync(int id);
         Task<IEnumerable<Media>> GetAllMediaAsync();
         Task<OperationResult> RemoveAsync(int id);
