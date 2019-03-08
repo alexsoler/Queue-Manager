@@ -10,11 +10,17 @@
                     <i class="fa fa-align-justify"></i> Oficinas
                 </div>
                 <div id="cardPrincipalBody" class="card-body">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="customFileLang" lang="es">
-                        <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+                    <form method="post" id="formFile" enctype="multipart/form-data" asp-action="UploadFiles" onsubmit="sentFiles(event)">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="files" size="1" name="files" lang="es"
+                                   multiple accept="audio/*,video/*,image/*" onchange="sentFiles('files')">
+                            <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+                        </div>
+                    </form>
+                    <div class="progress mt-2 d-none">
+                        <div id="progressUpload" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                     </div>
-                    <div id="divTabla">
+                    <div id="divTabla" class="mt-4">
                         <!--Tabla de archivos multimedia-->
                     </div>
                 </div>
@@ -27,16 +33,51 @@
     <div class="modal-dialog modal-lg modal-primary" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Detalles</h4>
+                <h4 class="modal-title">Vista</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div id="bodyDetails" class="modal-body">
-                <!--Contenido detalles-->
+            <div id="bodyView" class="modal-body text-center">
+                <img id="img" class="img-fluid" alt="Imagen" style="display: none;" />
+
+                <div id="embedVideo" class="embed-responsive embed-responsive-16by9" style="display: none;">
+                    <video controls autoplay class="embed-responsive-item">
+                        <source id="vid" />
+                    </video>
+                </div>
+
+                <div id="embedAudio" style="display: none;">
+                    <audio controls autoplay class="w-100" >
+                        <source id="aud" />
+                    </audio>
+                </div>
+            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Eliminar</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodyDelete" class="modal-body">
+                <!--Contenido Delete-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" onclick="EliminarMedia()">Eliminar</button>
             </div>
         </div>
         <!-- /.modal-content -->
