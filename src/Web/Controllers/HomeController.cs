@@ -9,9 +9,9 @@ using Web.Models;
 
 namespace Web.Controllers
 {
-    [Authorize(Roles = "Administrador")]
     public class HomeController : Controller
     {
+        [Authorize]
         public IActionResult Index()
         {
             return View();

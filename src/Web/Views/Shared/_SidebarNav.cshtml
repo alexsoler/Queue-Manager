@@ -1,11 +1,13 @@
 ﻿<nav class="sidebar-nav">
     <ul class="nav">
         <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" asp-controller="Home" asp-action="Index">
                 <i class="nav-icon icon-speedometer"></i> Dashboard
                 <span class="badge badge-primary">NEW</span>
             </a>
         </li>
+        @if (User.IsInRole("Administrador"))
+        {
         <li class="nav-title">App</li>
         <li class="nav-item nav-dropdown">
             <a class="nav-link nav-dropdown-toggle" href="#">
@@ -78,5 +80,6 @@
                 </li>
             </ul>
         </li>
+        }
     </ul>
 </nav>
