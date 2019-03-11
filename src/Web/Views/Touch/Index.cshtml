@@ -1,0 +1,86 @@
+﻿@model Web.ViewModels.TouchViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Seleccionar Boleto</title>
+
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel=" stylesheet" href="~/css/TouchStyle.css" asp-append-version="true"/>
+
+</head>
+<body class="bg-dark">
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="display-4">Seleccione un servicio:</h1>
+                </div>
+            </div>
+            @for (int i = 0; i < Model.Tasks.Count(); i += 2)
+            {
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <button class="btn btn-lg btn-primary btn-block" style="height: 100px" type="button" onclick="openNav(@Model.Tasks[i].Id)">
+                            <h3>@Model.Tasks[i].Name</h3>
+                        </button>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        @if ((i + 1) < Model.Tasks.Count)
+                        {
+                            <button class="btn btn-lg btn-primary btn-block" style="height: 100px" type="button" onclick="openNav(@Model.Tasks[i + 1].Id)">
+                                <h3>@Model.Tasks[i + 1].Name</h3>
+                            </button>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </main>
+
+
+    <div id="myNav" class="overlay">
+        <div class="container-fluid text-center">
+            <div class="row">
+                <div class="col-12 text-right">
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="display-4">Prioridad:</h1>
+                </div>
+            </div>
+            @for (int i = 0; i < Model.Priorities.Count; i += 2)
+            {
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <button class="btn btn-lg btn-success mb-3 btn-block" type="button" onclick="crearToken(@Model.Priorities[i].Id)">
+                        <h3>@Model.Priorities[i].Name</h3>
+                    </button>
+                </div>
+                <div class="col-md-4">
+                    @if ((i + 1) < Model.Priorities.Count)
+                    {
+                        <button class="btn btn-lg btn-success mb-3 btn-block" type="button" onclick="crearToken(@Model.Priorities[i + 1].Id)">
+                            <h3>@Model.Priorities[i + 1].Name</h3>
+                        </button>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/popper.js/popper.js"></script>
+    <script src="~/lib/@@coreui/coreui/js/coreui.min.js"></script>
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/Touch.js" asp-append-version="true"></script>
+</body>
+</html>
