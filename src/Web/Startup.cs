@@ -24,6 +24,7 @@ using Web.Profiles;
 using Web.Interfaces;
 using Web.ViewModels;
 using Web.Services;
+using Web.Hubs;
 
 namespace Web
 {
@@ -97,6 +98,8 @@ namespace Web
 
             services.AddAntiforgery(options => options.HeaderName = "MY-XSRF-TOKEN");
 
+            services.AddSignalR();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -120,6 +123,11 @@ namespace Web
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<QueueHub>("/queueHub");
+            });
 
             app.UseMvc(routes =>
             {
