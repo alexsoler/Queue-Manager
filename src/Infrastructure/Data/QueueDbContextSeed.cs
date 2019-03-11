@@ -93,6 +93,20 @@ namespace Microsoft.QueueManager.Infrastructure.Data
 
                     await context.SaveChangesAsync();
                 }
+
+                if(!await context.Priorities.AnyAsync())
+                {
+                    await context.Priorities.AddRangeAsync(
+                        new Priority { Name = "Normal" },
+                        new Priority { Name = "Embarazo" },
+                        new Priority { Name = "Incapacidad" },
+                        new Priority { Name = "Tercera Edad" },
+                        new Priority { Name = "Otros" }
+                    );
+
+                    await context.SaveChangesAsync();
+
+                }
             }
         }
     }
