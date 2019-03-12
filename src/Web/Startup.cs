@@ -88,6 +88,7 @@ namespace Web
             services.AddScoped<IOfficeService, OfficeService>();
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IMediaService, MediaService>();
+            services.AddScoped<ITicketService, TicketService>();
 
             services.AddScoped<IOfficeViewModel, OfficeViewModelService>();
             services.AddScoped<ITaskIndexViewModel, TaskViewModelService>();
