@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Hubs.ParametersObject;
 using Web.ViewModels;
 
 namespace Web.Profiles
@@ -76,6 +77,14 @@ namespace Web.Profiles
                 .ForMember(dest =>
                     dest.Audio,
                     opt => opt.MapFrom(src => src.ContentType.Contains("audio")));
+
+            CreateMap<Ticket, TicketParameter>()
+                .ForMember(dest =>
+                    dest.NamePriority,
+                    opt => opt.MapFrom(x => x.Priority.Name))
+                .ForMember(dest =>
+                    dest.NameTask,
+                    opt => opt.MapFrom(x => x.TaskEntity.Name));
         }
     }
 }
