@@ -7,6 +7,11 @@ namespace Web.Hubs.ParametersObject
 {
     public class TicketParameter
     {
-        public int Token { get; set; }
+        public int Id { get; set; }
+        public string DisplayTokenName { get; set; }
+        public int NumberTicket { get; set; }
+        public string NameTask { get; set; }
+        public string NamePriority { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }
