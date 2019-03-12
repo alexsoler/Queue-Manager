@@ -16,5 +16,11 @@ namespace ApplicationCore.Entities
         public DateTime CompletionAttentionDate { get; set; }
         public int NumberTicket { get; set; }
         public string DisplayTokenName { get; set; }
+
+        public TaskEntity TaskEntity { get; set; }
+        public Office Office { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+        public Status Status { get; set; }
+        public Priority Priority { get; set; }
     }
 }
