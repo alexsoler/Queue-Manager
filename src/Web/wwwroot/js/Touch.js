@@ -1,7 +1,22 @@
 ﻿"use strict";
 var tarea, prioridad;
+var ticketParameter = TicketParameter;
+
+function TicketParameter (Id, DisplayTokenName, NumberTicket, NameTask, NamePriority, CreationDate) {
+    this.Id = Id;
+    this.DisplayTokenName = DisplayTokenName;
+    this.NumberTicket = NumberTicket;
+    this.NameTask = NameTask;
+    this.NamePriority = NamePriority;
+    this.CreationDate = CreationDate;
+}
+
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/queueHub").build();
+
+connection.on("ReceiveToken", function (ticketParameter) {
+    console.log(ticketParameter);
+});
 
 connection.start().catch(function (err) {
     return console.error(err.toString());

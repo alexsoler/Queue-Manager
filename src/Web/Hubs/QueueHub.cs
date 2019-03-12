@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using ApplicationCore.Interfaces;
+using AutoMapper;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +11,23 @@ namespace Web.Hubs
 {
     public class QueueHub : Hub<IQueueClient>
     {
-        public QueueHub()
-        {
+        private readonly ITicketService _ticketService;
+        private readonly IMapper _mapper;
 
+        public QueueHub(ITicketService ticketService,
+            IMapper mapper)
+        {
+            _ticketService = ticketService;
+            _mapper = mapper;
         }
 
         public async Task CreateToken(CreateTicketParameter createTokenParameter)
         {
-            var ticketParameter = new TicketParameter();
+            var ticket = await _ticketService.CreateNewTicket(createTokenParameter.IdTarea, createTokenParameter.IdPrioridad);
 
-            await Clients.All.ReceiveToken(ticketParameter);
+            var ticketParameter = _mapper.Map<TicketParameter>(ticket);
+
+            await Clients.Caller.ReceiveToken(ticketParameter);
         }
     }
 }
