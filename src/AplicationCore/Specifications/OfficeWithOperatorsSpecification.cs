@@ -15,15 +15,11 @@ namespace ApplicationCore.Specifications
                 AddIgnoreQueryFilter();
         }
 
-        public OfficeWithOperatorsSpecification(int officeId)
+        public OfficeWithOperatorsSpecification(int officeId, bool includeOperators = false)
             : base(x => x.OfficeId == officeId)
         {
-        }
-
-        public OfficeWithOperatorsSpecification(int officeId, Expression<Func<OfficeOperator, object>> expressionInclude)
-            : base(x => x.OfficeId == officeId)
-        {
-            AddInclude(expressionInclude);
+            if (includeOperators)
+                AddInclude(x => x.ApplicationUser);
         }
     }
 }
