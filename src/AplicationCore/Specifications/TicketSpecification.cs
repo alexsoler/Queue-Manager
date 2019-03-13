@@ -8,10 +8,28 @@ namespace ApplicationCore.Specifications
 {
     public class TicketSpecification : BaseSpecification<Ticket>
     {
-        public TicketSpecification(StatusTicket statusTicket)
+        public TicketSpecification(StatusTicket statusTicket, bool OrderByDescending = false)
             : base(x => x.StatusId == (int)statusTicket)
         {
-            ApplyOrderByDescending(x => x.NumberTicket);
+            if (OrderByDescending)
+                ApplyOrderByDescending(x => x.NumberTicket);
+            else
+                ApplyOrderBy(x => x.NumberTicket);
+
+            AddInclude(x => x.Priority);
+            AddInclude(x => x.TaskEntity);
+        }
+
+        public TicketSpecification(StatusTicket statusTicket, List<TaskEntity> tasks, bool OrderByDescending = false)
+            : base( x => x.StatusId == (int)statusTicket && tasks.Contains(x.TaskEntity))
+        {
+            if (OrderByDescending)
+                ApplyOrderByDescending(x => x.NumberTicket);
+            else
+                ApplyOrderBy(x => x.NumberTicket);
+
+            AddInclude(x => x.Priority);
+            AddInclude(x => x.TaskEntity);
         }
 
         public TicketSpecification(long idTicket)
