@@ -1,6 +1,8 @@
 ﻿using ApplicationCore.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.QueueManager.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +29,17 @@ namespace Web.Hubs
 
             var ticketParameter = _mapper.Map<TicketParameter>(ticket);
 
+            var idOffices = await _ticketService.GetOfficesTask(createTokenParameter.IdTarea);
+
+            await Clients.Groups(idOffices).ReceiveToken(ticketParameter);
             await Clients.Caller.ReceiveToken(ticketParameter);
+        }
+
+        public async Task AddToGroup(string groupName)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+
+            await Clients.Group(groupName).ConnectToOffice($"Se agrego el usuario al grupo de la oficina de id: {groupName}");
         }
     }
 }
