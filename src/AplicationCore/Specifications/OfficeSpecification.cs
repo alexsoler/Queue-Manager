@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ApplicationCore.Specifications
@@ -37,6 +38,13 @@ namespace ApplicationCore.Specifications
             {
                 AddIgnoreQueryFilter();
             }
+        }
+
+        public OfficeSpecification(int idTask)
+            : base(x => x.OfficeTasks.Any(t => t.TaskId == idTask))
+        {
+            AddInclude(x => x.OfficeTasks);
+            AddInclude(X => X.OfficeOperators);
         }
     }
 }
