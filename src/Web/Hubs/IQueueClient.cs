@@ -9,5 +9,6 @@ namespace Web.Hubs
     public interface IQueueClient
     {
         Task ReceiveToken(TicketParameter tokenParameter);
+        Task ConnectToOffice(string message);
     }
 }
