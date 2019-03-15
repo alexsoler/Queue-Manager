@@ -10,5 +10,7 @@ namespace Web.Hubs
     {
         Task ReceiveToken(TicketParameter tokenParameter);
         Task ConnectToOffice(string message);
+        Task RemoveTicketCalled(long id);
+        Task ToAttendTicket(long id);
     }
 }
