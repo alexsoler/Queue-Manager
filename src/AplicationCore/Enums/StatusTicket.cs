@@ -7,8 +7,9 @@ namespace ApplicationCore.Enums
     public enum StatusTicket
     {
         OnHold = 1,
-        InAssistance = 2,
-        Processed = 3,
-        NotProcessed = 4
+        Called = 2,
+        InAssistance = 3,
+        Processed = 4,
+        NotProcessed = 5
     }
 }
