@@ -2,6 +2,7 @@
 using ApplicationCore.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace ApplicationCore.Specifications
@@ -20,14 +21,9 @@ namespace ApplicationCore.Specifications
             AddInclude(x => x.TaskEntity);
         }
 
-        public TicketSpecification(StatusTicket statusTicket, List<TaskEntity> tasks, bool OrderByDescending = false)
+        public TicketSpecification(StatusTicket statusTicket, List<TaskEntity> tasks)
             : base( x => x.StatusId == (int)statusTicket && tasks.Contains(x.TaskEntity))
         {
-            if (OrderByDescending)
-                ApplyOrderByDescending(x => x.NumberTicket);
-            else
-                ApplyOrderBy(x => x.NumberTicket);
-
             AddInclude(x => x.Priority);
             AddInclude(x => x.TaskEntity);
         }

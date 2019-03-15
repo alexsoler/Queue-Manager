@@ -17,6 +17,8 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<OfficeTask> _officeTaskRepository;
         private readonly IAppLogger<TicketService> _logger;
 
+        private static int numberTicket = 0;
+
         public TicketService(IAsyncRepository<Ticket> asyncRepository,
             IAsyncRepository<TaskEntity> taskRepository,
             IAsyncRepository<OfficeTask> officeTaskRepository,
@@ -31,26 +33,25 @@ namespace ApplicationCore.Services
         public async Task<Ticket> CreateNewTicket(int idTask, int idPriority)
         {
             _logger.LogInformation("Creando un nuevo ticket");
-            int numberTicket = 0;
+            //int numberTicket = 0;
 
-            var specificationTicket = new TicketSpecification(StatusTicket.OnHold, OrderByDescending: true);
-            var lastTicket = await _asyncRepository.GetSingleBySpecAsync(specificationTicket);
+            //var specificationTicket = new TicketSpecification(StatusTicket.OnHold, OrderByDescending: true);
+            //var lastTicket = await _asyncRepository.GetSingleBySpecAsync(specificationTicket);
 
             var task = await _taskRepository.GetByIdAsync(idTask);
 
-            if (lastTicket != null)
-            {
-                if (lastTicket.NumberTicket < 999)
-                    numberTicket = lastTicket.NumberTicket;
-            }
+ 
+                if (numberTicket >= 99)
+                    numberTicket = 0;
+            
 
             var newTicket = new Ticket
             {
                 TaskEntityId = idTask,
                 PriorityId = idPriority,
                 StatusId = (int)StatusTicket.OnHold,
-                NumberTicket = numberTicket + 1,
-                DisplayTokenName = string.Format("{0}{1:000}", task.Prefix, numberTicket + 1),
+                NumberTicket = ++numberTicket,
+                DisplayTokenName = string.Format("{0}{1:000}", task.Prefix, numberTicket),
                 CreationDate = DateTime.Now
             };
 
@@ -80,6 +81,26 @@ namespace ApplicationCore.Services
             var taskOffices = await _officeTaskRepository.ListAsync(new TaskWithOffices(idTask, includeOffice: true));
 
             return taskOffices.Select(x => x.Office.Id.ToString()).ToList();
+        }
+
+        /// <summary>
+        /// Cambia el status del ticket a llamado y agrega la oficina donde se llamo asi como el operador
+        /// </summary>
+        /// <param name="idTicket">Id del ticket que se va a modificar</param>
+        /// <param name="idOffice">Id de la oficina donde se llamo</param>
+        /// <param name="idOperator">Id del operador que lo llamo</param>
+        /// <returns>El ticket modificado</returns>
+        public async Task<Ticket> SetTicketInCalled(long idTicket, int idOffice, string idOperator)
+        {
+            var ticket = await _asyncRepository.GetByIdAsync(idTicket);
+
+            ticket.StatusId = (int)StatusTicket.Called;
+            ticket.OfficeId = idOffice;
+            ticket.ApplicationUserId = idOperator;
+
+            await _asyncRepository.UpdateAsync(ticket);
+
+            return ticket;
         }
     }
 }

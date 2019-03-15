@@ -12,5 +12,6 @@ namespace ApplicationCore.Interfaces
         Task<Ticket> CreateNewTicket(int idTask, int idPriority);
         Task<IEnumerable<Ticket>> GetTickets(StatusTicket statusTicket, int idOffice);
         Task<IReadOnlyList<string>> GetOfficesTask(int idTask);
+        Task<Ticket> SetTicketInCalled(long idTicket, int idOffice, string idOperator);
     }
 }
