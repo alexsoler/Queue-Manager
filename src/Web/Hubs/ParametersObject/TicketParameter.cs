@@ -12,6 +12,6 @@ namespace Web.Hubs.ParametersObject
         public int NumberTicket { get; set; }
         public string NameTask { get; set; }
         public string NamePriority { get; set; }
-        public DateTime CreationDate { get; set; }
+        public string CreationDate { get; set; }
     }
 }

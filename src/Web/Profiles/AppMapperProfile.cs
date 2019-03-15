@@ -84,7 +84,10 @@ namespace Web.Profiles
                     opt => opt.MapFrom(x => x.Priority.Name))
                 .ForMember(dest =>
                     dest.NameTask,
-                    opt => opt.MapFrom(x => x.TaskEntity.Name));
+                    opt => opt.MapFrom(x => x.TaskEntity.Name))
+                .ForMember(dest =>
+                    dest.CreationDate,
+                    opt => opt.MapFrom(x => x.CreationDate.TimeOfDay.ToString(@"hh\:mm\:ss")));
         }
     }
 }
