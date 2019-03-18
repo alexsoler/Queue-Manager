@@ -24,6 +24,7 @@ using Web.Profiles;
 using Web.Interfaces;
 using Web.ViewModels;
 using Web.Services;
+using Web.Hubs;
 
 namespace Web
 {
@@ -87,6 +88,8 @@ namespace Web
             services.AddScoped<IOfficeService, OfficeService>();
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IMediaService, MediaService>();
+            services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<IOperatorService, OperatorService>();
 
             services.AddScoped<IOfficeViewModel, OfficeViewModelService>();
             services.AddScoped<ITaskIndexViewModel, TaskViewModelService>();
@@ -96,6 +99,8 @@ namespace Web
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 
             services.AddAntiforgery(options => options.HeaderName = "MY-XSRF-TOKEN");
+
+            services.AddSignalR();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -120,6 +125,11 @@ namespace Web
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<QueueHub>("/queueHub");
+            });
 
             app.UseMvc(routes =>
             {

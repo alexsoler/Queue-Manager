@@ -39,6 +39,15 @@
         "Chart.min.js",
         "Chart.js"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "@aspnet/signalr@1.1.2",
+      "destination": "wwwroot/lib/signalr/",
+      "files": [
+        "dist/browser/signalr.js",
+        "dist/browser/signalr.min.js"
+      ]
     }
   ]
 }

@@ -1,82 +1,100 @@
 ﻿<nav class="sidebar-nav">
     <ul class="nav">
         <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" asp-controller="Home" asp-action="Index">
                 <i class="nav-icon icon-speedometer"></i> Dashboard
                 <span class="badge badge-primary">NEW</span>
             </a>
         </li>
-        <li class="nav-title">App</li>
-        <li class="nav-item nav-dropdown">
-            <a class="nav-link nav-dropdown-toggle" href="#">
-                <i class="nav-icon icon-user"></i> Usuarios
-            </a>
-            <ul class="nav-dropdown-items">
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">
-                        <i class="nav-icon icon-user-follow"></i> Crear
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="Identity" asp-page="/Account/Index">
-                        <i class="nav-icon icon-list"></i> Ver
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="Identity" asp-page="/Account/EditarUsuario">
-                        <i class="nav-icon icon-pencil"></i> Editar
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="Identity" asp-page="/Account/EliminarUsuario">
-                        <i class="nav-icon icon-trash"></i> Eliminar
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item nav-dropdown">
-            <a class="nav-link nav-dropdown-toggle" href="#">
-                <i class="nav-icon icon-cursor"></i> Oficinas
-            </a>
-            <ul class="nav-dropdown-items">
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Offices" asp-action="Create">
-                        <i class="nav-icon icon-cursor"></i> Crear
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Offices" asp-action="Index">
-                        <i class="nav-icon icon-cursor"></i> Ver
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Offices" asp-action="EditarOficina">
-                        <i class="nav-icon icon-cursor"></i> Editar
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Offices" asp-action="EliminarOficina">
-                        <i class="nav-icon icon-cursor"></i> Eliminar
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Tasks" asp-action="Index">
-                        <i class="nav-icon icon-cursor"></i> Tareas
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item nav-dropdown">
-            <a class="nav-link nav-dropdown-toggle" href="#">
-                <i class="nav-icon icon-star"></i> Recursos
-            </a>
-            <ul class="nav-dropdown-items">
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Medias" asp-action="Index">
-                        <i class="nav-icon icon-star"></i> Multimedia
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @if (User.IsInRole("Administrador"))
+        {
+            <li class="nav-title">App</li>
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#">
+                    <i class="nav-icon icon-user"></i> Usuarios
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">
+                            <i class="nav-icon icon-user-follow"></i> Crear
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Index">
+                            <i class="nav-icon icon-list"></i> Ver
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/EditarUsuario">
+                            <i class="nav-icon icon-pencil"></i> Editar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/EliminarUsuario">
+                            <i class="nav-icon icon-trash"></i> Eliminar
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#">
+                    <i class="nav-icon icon-cursor"></i> Oficinas
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Offices" asp-action="Create">
+                            <i class="nav-icon icon-cursor"></i> Crear
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Offices" asp-action="Index">
+                            <i class="nav-icon icon-cursor"></i> Ver
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Offices" asp-action="EditarOficina">
+                            <i class="nav-icon icon-cursor"></i> Editar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Offices" asp-action="EliminarOficina">
+                            <i class="nav-icon icon-cursor"></i> Eliminar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Tasks" asp-action="Index">
+                            <i class="nav-icon icon-cursor"></i> Tareas
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#">
+                    <i class="nav-icon icon-star"></i> Recursos
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Medias" asp-action="Index">
+                            <i class="nav-icon icon-star"></i> Multimedia
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
+        @if (User.IsInRole("Agente de Atención"))
+        {
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#">
+                    <i class="nav-icon icon-star"></i> Atención al Cliente
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Attention" asp-action="Index">
+                            <i class="nav-icon icon-star"></i> Iniciar
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
     </ul>
 </nav>

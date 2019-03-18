@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ApplicationCore.Entities;
+using ApplicationCore.Enums;
+using ApplicationCore;
 
 namespace Microsoft.QueueManager.Infrastructure.Data
 {
@@ -89,6 +91,33 @@ namespace Microsoft.QueueManager.Infrastructure.Data
                             CreationDate = DateTime.Now,
                             Activo = true
                         }
+                    );
+
+                    await context.SaveChangesAsync();
+                }
+
+                if(!await context.Priorities.AnyAsync())
+                {
+                    await context.Priorities.AddRangeAsync(
+                        new Priority { Name = PrioritiesStatic.Normal, Activo = true },
+                        new Priority { Name = PrioritiesStatic.Pregnancy, Activo = true },
+                        new Priority { Name = PrioritiesStatic.Disability, Activo = true },
+                        new Priority { Name = PrioritiesStatic.Seniors, Activo = true },
+                        new Priority { Name = PrioritiesStatic.Other, Activo = true }
+                    );
+
+                    await context.SaveChangesAsync();
+
+                }
+
+                if(!await context.Status.AnyAsync())
+                {
+                    await context.Status.AddRangeAsync(
+                        new Status { Id = (int)StatusTicket.OnHold, Name = "En Espera", Activo = true },
+                        new Status { Id = (int)StatusTicket.Called, Name = "Llamado", Activo = true },
+                        new Status { Id = (int)StatusTicket.InAssistance, Name = "En Atención", Activo = true },
+                        new Status { Id = (int)StatusTicket.Processed, Name = "Procesado", Activo = true },
+                        new Status { Id = (int)StatusTicket.NotProcessed, Name = "No se presento", Activo = true }
                     );
 
                     await context.SaveChangesAsync();

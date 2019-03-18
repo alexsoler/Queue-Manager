@@ -1,0 +1,121 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col text-center">
+            <div class="btn-group">
+                <button id="SelectOffice" class="btn btn-block btn-primary btn-lg dropdown-toggle mb-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Escoja una Oficina
+                </button>
+                <div class="dropdown-menu">
+                    @foreach (var item in (IEnumerable<ApplicationCore.Entities.Office>)ViewData["offices"])
+                    {
+                        <a class="dropdown-item" href="#" onclick="loadOffice(@item.Id, this)">@item.Name</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-5 col-md-2">
+                            <h2 id="NameTicket" class="bg-danger border rounded text-center py-2 mb-1 m-lg-0">
+                                &nbsp;
+                            </h2>
+                        </div>
+                        <div class="col-sm-7 col-md-4">
+                            <dl class="row mb-0">
+                                <dt class="col-5">Servicio:</dt>
+                                <dd id="ddServicio" class="col-7"></dd>
+
+                                <dt class="col-5">Prioridad:</dt>
+                                <dd id="ddPrioridad" class="col-7 mb-0"></dd>
+                            </dl>
+                        </div>
+                        <div class="col-4 col-md-2 text-md-right">
+                            <button id="RepetirLlamado" class="btn btn-secondary" type="button" disabled>
+                                <i class="fa fa-bullhorn"></i>
+                                <br />
+                                Repetir llamado
+                            </button>
+                        </div>
+                        <div class="col-4 col-md-2 text-md-right">
+                            <button id="IniciarAtencion" class="btn btn-secondary" type="button" data-mode="start" onclick="startOrFinalizeAttention(this)" disabled>
+                                <i class="fa fa-play"></i>
+                                <br />
+                                Iniciar Atención
+                            </button>
+                        </div>
+                        <div class="col-4 col-md-2 text-md-right">
+                            <button id="NoSePresento" class="btn btn-secondary" type="button" onclick="NotAttention(this)" disabled>
+                                <i class="fa fa-user-times"></i>
+                                <br />
+                                No se presento
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-8">
+                            <button id="btnLlamarSiguiente" class="btn btn-primary" type="button" disabled onclick="CallNext()">
+                                <i class="fa fa-dot-circle-o"></i> Llamar Siguiente
+                            </button>
+                        </div>
+                        <div id="stopwatch" class="col-4 text-right">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div id="cardPrincipalBody" class="card-body">
+                    <div id="divTabla">
+                        <!--Table-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="limpiarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Limpiar Todos</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodyDelete" class="modal-body lead">
+                Se quitaran todos los tickets en espera y no podra procesarlos posteriormente.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-dark" onclick="LimpiarTickets()">Limpiar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+@section Scripts{
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/Attention.js" asp-append-version="true"></script>
+    <script src="~/js/StopWatch.js"></script>
+}

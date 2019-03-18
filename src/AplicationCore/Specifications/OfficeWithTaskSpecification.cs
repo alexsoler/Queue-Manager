@@ -15,16 +15,11 @@ namespace ApplicationCore.Specifications
                 AddIgnoreQueryFilter();
         }
 
-        public OfficeWithTaskSpecification(int idOffice)
+        public OfficeWithTaskSpecification(int idOffice, bool includeTask = false)
             : base(x => x.OfficeId == idOffice)
         {
-            
-        }
-
-        public OfficeWithTaskSpecification(int idOffice, Expression<Func<OfficeTask, object>> expressionInclude)
-            : base(x => x.OfficeId == idOffice)
-        {
-            AddInclude(expressionInclude);
+            if (includeTask)
+                AddInclude(x => x.Task);
         }
     }
 }

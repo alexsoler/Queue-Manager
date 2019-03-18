@@ -277,13 +277,13 @@ namespace ApplicationCore.Services
         public async Task<int> GetOfficesCountAsync(int id)
         {
             return await _officeRepository.CountAsync(
-                new OfficeSpecification(id));
+                new OfficeSpecification(idOffice: id));
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetOperatorsAsync(int idOffice)
         {
             var result = await _officesOperatorsRepository.ListAsync(
-                new OfficeWithOperatorsSpecification(idOffice, x => x.ApplicationUser));
+                new OfficeWithOperatorsSpecification(idOffice, includeOperators: true));
 
             var operators = new List<ApplicationUser>();
 
@@ -304,7 +304,7 @@ namespace ApplicationCore.Services
         public async Task<IEnumerable<TaskEntity>> GetTasksAsync(int idOffice)
         {
             var result = await _officesTasksRepository.ListAsync(
-                new OfficeWithTaskSpecification(idOffice, x => x.Task));
+                new OfficeWithTaskSpecification(idOffice, includeTask: true));
 
             var tasks = new List<TaskEntity>();
 
