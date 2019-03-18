@@ -102,5 +102,40 @@ namespace ApplicationCore.Services
 
             return ticket;
         }
+
+        public async Task<Ticket> SetTicketInAssistance(long idTicket)
+        {
+            var ticket = await _asyncRepository.GetByIdAsync(idTicket);
+
+            ticket.StatusId = (int)StatusTicket.InAssistance;
+            ticket.StartAttentionDate = DateTime.Now;
+
+            await _asyncRepository.UpdateAsync(ticket);
+
+            return ticket;
+        }
+
+        public async Task<Ticket> SetTicketInProcessed(long idTicket)
+        {
+            var ticket = await _asyncRepository.GetByIdAsync(idTicket);
+
+            ticket.StatusId = (int)StatusTicket.Processed;
+            ticket.CompletionAttentionDate = DateTime.Now;
+
+            await _asyncRepository.UpdateAsync(ticket);
+
+            return ticket;
+        }
+
+        public async Task<Ticket> SetTicketInNotProcessed(long idTicket)
+        {
+            var ticket = await _asyncRepository.GetByIdAsync(idTicket);
+
+            ticket.StatusId = (int)StatusTicket.NotProcessed;
+
+            await _asyncRepository.UpdateAsync(ticket);
+
+            return ticket;
+        }
     }
 }
