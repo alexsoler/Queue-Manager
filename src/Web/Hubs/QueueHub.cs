@@ -44,8 +44,8 @@ namespace Web.Hubs
 
             var officesGroup = await _ticketService.GetOfficesTask(ticket.TaskEntityId);
 
-            await Clients.Groups(officesGroup).RemoveTicketCalled(idTicket);
             await Clients.Caller.ToAttendTicket(idTicket);
+            await Clients.Groups(officesGroup).RemoveTicketCalled(idTicket);   
         }
 
         public async Task AddToGroup(string groupName)
