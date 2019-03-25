@@ -45,6 +45,10 @@ namespace Web
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((webhost, config) =>
+                {
+                    config.AddJsonFile("websettings.json", optional: true, reloadOnChange: true);
+                })
                 .UseStartup<Startup>();
     }
 }
