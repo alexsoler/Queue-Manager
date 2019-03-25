@@ -15,6 +15,7 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<Ticket> _asyncRepository;
         private readonly IAsyncRepository<TaskEntity> _taskRepository;
         private readonly IAsyncRepository<OfficeTask> _officeTaskRepository;
+        private readonly IAsyncRepository<Office> _officeRepository;
         private readonly IAppLogger<TicketService> _logger;
 
         private static int numberTicket = 0;
@@ -22,11 +23,13 @@ namespace ApplicationCore.Services
         public TicketService(IAsyncRepository<Ticket> asyncRepository,
             IAsyncRepository<TaskEntity> taskRepository,
             IAsyncRepository<OfficeTask> officeTaskRepository,
+            IAsyncRepository<Office> officeRepository,
             IAppLogger<TicketService> logger)
         {
             _asyncRepository = asyncRepository;
             _taskRepository = taskRepository;
             _officeTaskRepository = officeTaskRepository;
+            _officeRepository = officeRepository;
             _logger = logger;
         }
 
@@ -92,7 +95,13 @@ namespace ApplicationCore.Services
         /// <returns>El ticket modificado</returns>
         public async Task<Ticket> SetTicketInCalled(long idTicket, int idOffice, string idOperator)
         {
-            var ticket = await _asyncRepository.GetByIdAsync(idTicket);
+            var ticketTask = _asyncRepository.GetByIdAsync(idTicket);
+            var officeTask = _officeRepository.GetByIdAsync(idOffice);
+
+            await Task.WhenAll(ticketTask, officeTask);
+
+            var ticket = ticketTask.Result;
+            var office = officeTask.Result;
 
             ticket.StatusId = (int)StatusTicket.Called;
             ticket.OfficeId = idOffice;
@@ -136,6 +145,11 @@ namespace ApplicationCore.Services
             await _asyncRepository.UpdateAsync(ticket);
 
             return ticket;
+        }
+
+        public async Task<Ticket> GetTicket(long idTicket)
+        {
+            return await _asyncRepository.GetSingleBySpecAsync(new TicketSpecification(idTicket, includeOffice: true));
         }
     }
 }
