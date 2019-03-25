@@ -25,6 +25,8 @@ using Web.Interfaces;
 using Web.ViewModels;
 using Web.Services;
 using Web.Hubs;
+using Web.Extensions;
+using Web.Models;
 
 namespace Web
 {
@@ -97,6 +99,8 @@ namespace Web
             services.AddScoped<IAddTasksOperatorsToNewOfficeViewModel, AddTasksOperatorsToNewOfficeViewModelService>();
 
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+
+            services.ConfigureWritable<DisplayTickets>(Configuration.GetSection("DisplayTickets"), "websettings.json");
 
             services.AddAntiforgery(options => options.HeaderName = "MY-XSRF-TOKEN");
 
