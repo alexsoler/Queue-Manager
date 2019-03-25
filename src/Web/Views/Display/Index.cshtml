@@ -1,0 +1,93 @@
+﻿@using Web.Interfaces
+@using Web.Models
+@{
+    Layout = null;
+}
+
+@inject IWritableOptions<DisplayTickets> _options
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Pantalla de visualización</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="~/css/DisplayStyle.css" />
+</head>
+<body>
+    <!-- Side navigation -->
+    <div class="sidenav bg-primary">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col text-center">
+                    <div id="displayTicket">
+                        @_options.Value.ActualTicket
+                    </div>
+                    <div id="displayOffice">
+                        @_options.Value.ActualOffice
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card text-white bg-dark w-100 mx-3 mt-2">
+                    <div class="card-header text-center p-2"><span class="h4">HISTÓRICO</span></div>
+                    <div class="card-body text-center p-1">
+                        <span id="ticketHistorico1" class="h1">@_options.Value.TicketH1</span><br />
+                        <span id="officeHistorico1" class="h4">@_options.Value.OfficeH1</span>
+                        <hr class="m-2" />
+                        <span id="ticketHistorico2" class="h1">@_options.Value.TicketH2</span><br />
+                        <span id="officeHistorico2" class="h4">@_options.Value.OfficeH2</span>
+                        <hr class="m-2" />
+                        <span id="ticketHistorico3" class="h1">@_options.Value.TicketH3</span><br />
+                        <span id="officeHistorico3" class="h4">@_options.Value.OfficeH3</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="">
+                        <div class="widget">
+                            <div class="fecha">
+                                <p id="diaSemana" class="diaSemana">Martes</p>
+                                <p id="dia" class="dia">27</p>
+                                <p>de </p>
+                                <p id="mes" class="mes">Octubre</p>
+                                <p>del </p>
+                                <p id="year" class="year">2015</p>
+                            </div>
+
+                            <div class="reloj">
+                                <p id="horas" class="horas">11</p>
+                                <p>:</p>
+                                <p id="minutos" class="minutos">48</p>
+                                <p>:</p>
+                                <div class="caja-segundos">
+                                    <p id="ampm" class="ampm">AM</p>
+                                    <p id="segundos" class="segundos">12</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page content -->
+    <div class="main">
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/videoseries?list=PLhSj3UTs2_yVHt2DgHky_MzzRC58UHE4z&autoplay=1" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/popper.js/popper.js"></script>
+    <script src="~/lib/@@coreui/coreui/js/coreui.min.js"></script>
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/Clock.js"></script>
+    <script src="~/js/Display.js" asp-append-version="true"></script>
+</body>
+</html>
