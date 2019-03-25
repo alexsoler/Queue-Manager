@@ -48,6 +48,15 @@ connection.on("RemoveTicketCalled", function (id) {
 connection.on("ToAttendTicket", function (id) {
     estado = estadosTicket.CALLED;
     actualTicketId = id;
+
+    let actualTicket = $("#NameTicket").text().trim();
+    let actualOffice = $("#SelectOffice").text().trim().toUpperCase();
+
+    $.ajax({
+        type: 'POST',
+        data: { actualTicket, actualOffice },
+        url: "/Display/SaveState"
+    });
 });
 
 //Inicio de conexion signalr
@@ -143,6 +152,13 @@ function CallNext() {
         return;
 
     $(rowTicket[4].firstElementChild).trigger("click");
+}
+
+//Vuelve a repetir el llamado de un ticket
+function CallBackTicket() {
+    connection.invoke("CallBackClient", actualTicketId, idOffice).catch(function (err) {
+        return console.error(err.toString());
+    });
 }
 
 //Limpia todos los tickets en espera
