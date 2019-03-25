@@ -88,6 +88,14 @@ namespace Web.Profiles
                 .ForMember(dest =>
                     dest.CreationDate,
                     opt => opt.MapFrom(x => x.CreationDate.TimeOfDay.ToString(@"hh\:mm\:ss")));
+
+            CreateMap<Ticket, TicketDisplayParameter>()
+                .ForMember(dest =>
+                    dest.Ticket,
+                    opt => opt.MapFrom(x => x.DisplayTokenName))
+                .ForMember(dest =>
+                    dest.Office,
+                    opt => opt.MapFrom(x => x.Office.Name));
         }
     }
 }
