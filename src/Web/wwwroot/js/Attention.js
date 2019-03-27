@@ -91,6 +91,23 @@ function loadOffice(id, e) {
         return console.error(err.toString());
     });
 
+    if (estado === estadosTicket.CALLED) {
+        $.ajax({
+            type: 'POST',
+            url: '/Attention/NotAttention',
+            data: { id: actualTicketId }
+        }).done(() => {
+            estado = estadosTicket.NONE;
+
+            document.getElementById("NameTicket").innerHTML = "&nbsp;";
+            document.getElementById("ddServicio").innerText = "";
+            document.getElementById("ddPrioridad").innerText = "";
+            document.getElementById("RepetirLlamado").disabled = true;
+            document.getElementById("IniciarAtencion").disabled = true;
+            document.getElementById("NoSePresento").disabled = true;
+        });
+    }
+
     $("#SelectOffice").text(e.text); //El boton para seleccionar la oficina adquiere el nombre de la oficina seleccionada
 
     idOffice = id;
@@ -226,6 +243,7 @@ function startOrFinalizeAttention(BUTTON) {
                                 Finalizar Atención`;
             BUTTON.dataset.mode = "finalize";
 
+            document.getElementById("SelectOffice").disabled = true;
             document.getElementById("RepetirLlamado").disabled = true;
             document.getElementById("NoSePresento").disabled = true;
             document.getElementById("btnLlamarSiguiente").disabled = true;
@@ -254,6 +272,7 @@ function startOrFinalizeAttention(BUTTON) {
             document.getElementById("ddServicio").innerText = "";
             document.getElementById("ddPrioridad").innerText = "";
             document.getElementById("btnLlamarSiguiente").disabled = false;
+            document.getElementById("SelectOffice").disabled = false;
 
             estado = estadosTicket.FINISHED;
 

@@ -82,8 +82,8 @@ function speak(text) {
     var msg = new SpeechSynthesisUtterance();
     msg.text = text;
     msg.volume = 1;
-    msg.rate = 0.9;
-    msg.pitch = 0.8;
+    msg.rate = 0.8;
+    msg.pitch = 0.4;
     msg.lang = "es-MX";
 
     window.speechSynthesis.speak(msg);
