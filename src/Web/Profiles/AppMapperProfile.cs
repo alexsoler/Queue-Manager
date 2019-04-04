@@ -51,6 +51,29 @@ namespace Web.Profiles
                     dest.File,
                     opt => opt.MapFrom(x => default(byte[])));
 
+            CreateMap<DisplayMedia, DisplayMediaViewModel>()
+                .ForMember(dest =>
+                    dest.Tipo,
+                    opt => opt.MapFrom((displayMedia, displayMediavm) =>
+                    {
+                        if (displayMedia.Media.Img)
+                            return "Imagen";
+                        else if (displayMedia.Media.Video)
+                            return "Video";
+                        else if (displayMedia.Media.Audio)
+                            return "Audio";
+                        return string.Empty;
+                    }))
+               .ForMember(dest =>
+                    dest.Nombre,
+                    opt => opt.MapFrom(x => x.Media.Name))
+               .ForMember(dest =>
+                    dest.IdMedia,
+                    opt => opt.MapFrom(x => x.Media.Id))
+               .ForMember(dest =>
+                    dest.Id,
+                    opt => opt.MapFrom(x => x.Id));
+
             CreateMap<IFormFile, Media>()
                 .ForMember(dest =>
                     dest.Name,
