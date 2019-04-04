@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewData["Title"] = "Personalización Display";
+    var medias = (IEnumerable<Web.ViewModels.MediaViewModel>)ViewData["listMedia"];
+    var displayMedias = (IEnumerable<Web.ViewModels.DisplayMediaViewModel>)ViewData["listDisplayMedia"];
+}
+
+@section Styles{ 
+    <style>
+        #listDisplay, #listMedia {
+            position: relative;
+            height: 300px;
+        }
+    </style>
+}
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Multimedia a mostrar
+                </div>
+                <div id="cardPrincipalBody" class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="text-center mb-2">
+                                <span class="h3">Multimedia a mostrar:</span>
+                            </div>
+                            <div id="divLoadDisplay">
+                                @if (displayMedias.Count() == 0)
+                                {
+                                    <p class="lead text-center">No hay ningun archivo multimedia</p>
+                                }
+                                else
+                                {
+                                    <partial name="_listDisplay" model="displayMedias" />
+                                }
+                            </div>
+                            
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center mb-2">
+                                <span class="h3">Multimedia disponible:</span>
+                            </div>
+                            <div id="divLoadMedia">
+                                @if (medias.Count() == 0)
+                                {
+                                    <p class="lead text-center">No hay ningun archivo multimedia</p>
+                                }
+                                else
+                                {
+                                    <partial name="_listMedia" model="medias" />
+                                }
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{ 
+    <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+    <script>
+        let ps1, ps2;
+        if ($("#listDisplay").length > 0) {
+            ps1 = new PerfectScrollbar("#listDisplay");
+        }
+        if ($("#listMedia").length > 0) {
+            ps2 = new PerfectScrollbar("#listMedia");
+        }
+    </script>
+    <script src="~/js/CustomDisplay.js" asp-append-version="true"></script>
+}
