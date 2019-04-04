@@ -16,6 +16,7 @@ namespace ApplicationCore.Interfaces
         void Update(T entity);
         bool Exist(ISpecification<T> spec);
         void Delete(T entity);
+        int Count();
         int Count(ISpecification<T> spec);
     }
 }

@@ -51,6 +51,11 @@ namespace Microsoft.QueueManager.Infrastructure.Data
             return ApplySpecification(spec).Count();
         }
 
+        public int Count()
+        {
+            return _dbContext.Set<T>().Count();
+        }
+
         public async Task<int> CountAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).CountAsync();
