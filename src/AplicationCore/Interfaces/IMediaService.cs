@@ -11,7 +11,10 @@ namespace ApplicationCore.Interfaces
         Task<Media> AddMediaAsync(Media media);
         Task<Media> GetMediaAsync(int id);
         Task<IEnumerable<Media>> GetAllMediaAsync();
+        Task<IEnumerable<Media>> GetAllMediaNotUsedAsync();
         Task<OperationResult> RemoveAsync(int id);
+        Task<OperationResult> SetAsUsed(int id);
+        Task<OperationResult> SetAsNotUsed(int id);
         Task<OperationResult> EditAsync(Media media);
     }
 }
