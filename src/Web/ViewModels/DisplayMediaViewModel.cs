@@ -12,5 +12,6 @@ namespace Web.ViewModels
         public string Nombre { get; set; }
         public int IdMedia { get; set; }
         public string Tipo { get; set; }
+        public string ContentType { get; set; }
     }
 }

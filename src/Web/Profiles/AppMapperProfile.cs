@@ -64,6 +64,9 @@ namespace Web.Profiles
                             return "Audio";
                         return string.Empty;
                     }))
+                .ForMember(dest =>
+                    dest.ContentType,
+                    opt => opt.MapFrom(x => x.Media.ContentType))
                .ForMember(dest =>
                     dest.Nombre,
                     opt => opt.MapFrom(x => x.Media.Name))
