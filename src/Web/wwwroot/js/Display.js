@@ -1,4 +1,6 @@
-﻿
+﻿let listaDeReproduccion, contadorMedia;
+
+
 var connection = new signalR.HubConnectionBuilder().withUrl("/queueHub").build();
 
 //Inicio de conexion signalr
@@ -62,9 +64,90 @@ connection.on("CallBackDisplayTicket", function (ticket) {
 
 
 $(function () {
-
+    getMediaList();
+    document.getElementById("video").addEventListener("ended", nextMediaPlay, false);
+    document.getElementById("audio").addEventListener("ended", nextMediaPlay, false);
 });
 
+function getMediaList() {
+    $.get("/Display/GetPlayList", function (response) {
+        listaDeReproduccion = response;
+
+        if (listaDeReproduccion.length > 0) {
+            contadorMedia = 0;
+            playMedia(listaDeReproduccion[contadorMedia].idMedia, listaDeReproduccion[contadorMedia].contentType);
+        }
+    });
+}
+
+function playMedia(id, contentType) {
+    if (contentType.includes("image")) {
+        var img = document.getElementById("img");
+        img.src = `/Medias/GetMedia/${id}`;
+        $(img).fadeIn("slow", () => {
+            setTimeout(() => $(img).fadeOut("slow", () => nextMediaPlay()), 5000);
+        });
+    }
+    else if (contentType.includes("video")) {
+        var video = document.getElementsByTagName('video')[0];
+
+        if (video.canPlayType(contentType) === "")
+            return;
+
+        var source = document.getElementById("vid");
+        source.src = `/Medias/GetMedia/${id}`;
+        source.type = contentType;
+        $("#embedVideo").show();
+
+        video.load();
+        video.volume = 0.1;
+    }
+    else if (contentType.includes("audio")) {
+        var audio = document.getElementsByTagName('audio')[0];
+
+        if (audio.canPlayType(contentType) === "")
+            return;
+
+        var sourceAud = document.getElementById("aud");
+        sourceAud.src = `/Medias/GetMedia/${id}`;
+        sourceAud.type = contentType;
+
+        $("#embedAudio").show();
+        audio.load();
+        audio.volume = 0.1;
+    }
+}
+
+function nextMediaPlay() {
+    var img = document.getElementById("img");
+    var vid = document.getElementById("vid");
+    var aud = document.getElementById("aud");
+
+    if (img.hasAttribute('src')) {
+        img.removeAttribute('src');
+    }
+    else if (vid.hasAttribute('src')) {
+        vid.parentElement.pause();
+        vid.removeAttribute('src');
+        vid.removeAttribute('type');
+        vid.parentElement.load();
+    }
+    else if (aud.hasAttribute('src')) {
+        aud.parentElement.pause();
+        aud.removeAttribute('src');
+        aud.removeAttribute('type');
+        aud.parentElement.load();
+    }
+
+    $("#img, #embedVideo, #embedAudio").hide();
+
+    if (listaDeReproduccion.length === ++contadorMedia) {
+        getMediaList();
+    }
+    else {
+        playMedia(listaDeReproduccion[contadorMedia].idMedia, listaDeReproduccion[contadorMedia].contentType);
+    }
+}
 
 //Remueve la pantalla del ddisplay 
 window.addEventListener("beforeunload", function (event) {

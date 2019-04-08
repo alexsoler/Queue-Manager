@@ -2,19 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Web.Interfaces;
 using Web.Models;
+using Web.ViewModels;
 
 namespace Web.Controllers
 {
     public class DisplayController : Controller
     {
         private readonly IWritableOptions<DisplayTickets> _options;
+        private readonly IDisplayMediaService _displayMediaService;
+        private readonly IMapper _mapper;
 
-        public DisplayController(IWritableOptions<DisplayTickets> options)
+        public DisplayController(IWritableOptions<DisplayTickets> options,
+            IDisplayMediaService displayMediaService,
+            IMapper mapper)
         {
             _options = options;
+            _displayMediaService = displayMediaService;
+            _mapper = mapper;
         }
         public IActionResult Index()
         {
@@ -36,6 +45,14 @@ namespace Web.Controllers
             });
 
             return Ok();
+        }
+
+        public async Task<IActionResult> GetPlayList()
+        {
+            var displayMedia = await _displayMediaService.ListAllAsync();
+            var displayMediavm = _mapper.Map<IEnumerable<DisplayMediaViewModel>>(displayMedia);
+
+            return Json(displayMediavm);
         }
     }
 }

@@ -78,9 +78,31 @@
 
     <!-- Page content -->
     <div class="main">
-        <div class="embed-responsive embed-responsive-16by9">
-            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/videoseries?list=PLhSj3UTs2_yVHt2DgHky_MzzRC58UHE4z&autoplay=1" frameborder="0" allowfullscreen></iframe>
+        <div>
+            <img id="img" class="img-fluid" alt="Imagen" style="display: none;" />
+
+            <div id="embedVideo" class="embed-responsive embed-responsive-16by9" style="display: none;">
+                <video id="video" controls autoplay class="embed-responsive-item">
+                    <source id="vid" />
+                </video>
+            </div>
+
+            <div id="embedAudio" style="display: none;">
+                <audio id="audio" controls autoplay class="w-100">
+                    <source id="aud" />
+                </audio>
+            </div>
         </div>
+        
+        <div class="position-fixed" style="bottom: 0px; right: 0px; left: 360px;">
+            <div class="card text-white bg-dark mt-4 mx-3" style="height: 150px;">
+                <div class="card-body">
+                    <span class="card-text h3">Some quick example text to build on the card title and make up the bulk of the card's content.</span>
+                </div>
+            </div>
+        </div>
+
+        
     </div>
 
     <script src="~/lib/jquery/dist/jquery.js"></script>
