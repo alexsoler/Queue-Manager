@@ -84,6 +84,7 @@ namespace ApplicationCore.Services
             {
                 _logger.LogInformation($"No se pudo eliminar el archivo multimedia de id: {id}." +
                     $"Excepcion: {ex.Message}");
+                operationResult.Succeeded = false;
             }
 
             return operationResult;

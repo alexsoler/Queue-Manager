@@ -44,8 +44,8 @@ namespace ApplicationCore.Services
             var task = await _taskRepository.GetByIdAsync(idTask);
 
  
-                if (numberTicket >= 99)
-                    numberTicket = 0;
+            if (numberTicket >= 99)
+                numberTicket = 0;
             
 
             var newTicket = new Ticket

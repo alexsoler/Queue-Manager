@@ -227,7 +227,7 @@ namespace ApplicationCore.Services
         {
             _logger.LogInformation($"Eliminando oficina con id {id}.");
 
-            Office office = null;
+            Office office;
             if(!ignoreQueryFilter)
                 office = await _officeRepository.GetByIdAsync(id);
             else
@@ -252,7 +252,9 @@ namespace ApplicationCore.Services
 
         public async Task<OperationResult> EditOfficeAsync(Office office)
         {
+            _logger.LogInformation($"Se va a editar la oficina: {office.Name}.");
             await _officeRepository.UpdateAsync(office);
+            _logger.LogInformation($"Se edito la oficina: {office.Name}.");
             return new OperationResult { Succeeded = true };
         }
 
