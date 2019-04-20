@@ -3,13 +3,23 @@
     ViewData["Title"] = "Personalización Display";
     var medias = (IEnumerable<Web.ViewModels.MediaViewModel>)ViewData["listMedia"];
     var displayMedias = (IEnumerable<Web.ViewModels.DisplayMediaViewModel>)ViewData["listDisplayMedia"];
+    var displayMessages = (IEnumerable<Web.ViewModels.DisplayMessageViewModel>)ViewData["listDisplayMessage"];
 }
 
-@section Styles{ 
+@section Styles{
     <style>
         #listDisplay, #listMedia {
             position: relative;
             height: 300px;
+        }
+
+        .alert {
+            position: fixed;
+            min-width: 367px;
+            margin-left: -183.5px;
+            z-index: 100;
+            left: 50%;
+            top: 70px;
         }
     </style>
 }
@@ -23,7 +33,7 @@
                 </div>
                 <div id="cardPrincipalBody" class="card-body">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <div class="text-center mb-2">
                                 <span class="h3">Multimedia a mostrar:</span>
                             </div>
@@ -37,9 +47,9 @@
                                     <partial name="_listDisplay" model="displayMedias" />
                                 }
                             </div>
-                            
+
                         </div>
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <div class="text-center mb-2">
                                 <span class="h3">Multimedia disponible:</span>
                             </div>
@@ -53,16 +63,53 @@
                                     <partial name="_listMedia" model="medias" />
                                 }
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Mensajes
+                </div>
+                <div id="cardMessagesBody" class="card-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Mensaje</span>
+                        </div>
+                        <textarea id="txtAreaMessage" class="form-control" aria-label="With textarea" rows="4" maxlength="200"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-block my-3" onclick="NuevoMensaje()">Agregar</button>
+                    <ul id="listMensajes" class="list-group pre-scrollable" style="height: 300px;">
+                        @foreach (var item in displayMessages)
+                        {
+                            <li class="list-group-item list-group-item-action" data-id="@item.Id">
+                                <p contenteditable="true">@item.Message</p>
+                                <button type="button" class="btn btn-success btn-sm" onclick="EditarMensaje(@item.Id, this)">Guardar</button>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="EliminarMensaje(@item.Id, this)">Eliminar</button>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Personalización
+                </div>
+                <div class="card-body">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-@section Scripts{ 
+@section Scripts{
     <script src="~/lib/jquery-ui/jquery-ui.js"></script>
     <script>
         let ps1, ps2;

@@ -12,6 +12,20 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
+async function start() {
+    try {
+        await connection.start();
+        console.log('connected');
+    } catch (err) {
+        console.log(err);
+        setTimeout(() => start(), 5000);
+    }
+}
+
+connection.onclose(async () => {
+    await start();
+});
+
 connection.on("ConnectToOffice", function (message) {
     console.log(message);
 });
@@ -67,6 +81,8 @@ $(function () {
     getMediaList();
     document.getElementById("video").addEventListener("ended", nextMediaPlay, false);
     document.getElementById("audio").addEventListener("ended", nextMediaPlay, false);
+
+    loadMessages();
 });
 
 function getMediaList() {
@@ -147,6 +163,21 @@ function nextMediaPlay() {
     else {
         playMedia(listaDeReproduccion[contadorMedia].idMedia, listaDeReproduccion[contadorMedia].contentType);
     }
+}
+
+//Mostrar mensajes
+function loadMessages() {
+
+    $("#messagesCard").load("/Display/MessagesPV", function () {
+        const $carousel = $("#carouselExampleSlidesOnly");
+        $carousel.on("slide.bs.carousel", function () {
+            if ($("#messagesCarousel").children().last().hasClass("active")) {
+                loadMessages();
+            }
+        });
+
+        $carousel.carousel();
+    });
 }
 
 //Remueve la pantalla del ddisplay 

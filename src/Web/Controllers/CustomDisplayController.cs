@@ -14,14 +14,17 @@ namespace Web.Controllers
     {
         private readonly IMediaService _mediaService;
         private readonly IDisplayMediaService _displayMediaService;
+        private readonly IAsyncRepository<DisplayMessage> _repositoryMessage;
         private readonly IMapper _mapper;
 
         public CustomDisplayController(IMediaService mediaService,
             IDisplayMediaService displayMediaService,
+            IAsyncRepository<DisplayMessage> repositoryMessages,
             IMapper mapper)
         {
             _mediaService = mediaService;
             _displayMediaService = displayMediaService;
+            _repositoryMessage = repositoryMessages;
             _mapper = mapper;
         }
 
@@ -29,9 +32,11 @@ namespace Web.Controllers
         {
             var mediaList = await _mediaService.GetAllMediaNotUsedAsync();
             var displayMedia = await _displayMediaService.ListAllAsync();
+            var messageList = await _repositoryMessage.ListAllAsync();
 
             ViewData["listMedia"] = _mapper.Map<IEnumerable<MediaViewModel>>(mediaList);
             ViewData["listDisplayMedia"] = _mapper.Map<IEnumerable<DisplayMediaViewModel>>(displayMedia);
+            ViewData["listDisplayMessage"] = _mapper.Map<IEnumerable<DisplayMessageViewModel>>(messageList);
 
             return View();
         }
@@ -90,6 +95,47 @@ namespace Web.Controllers
                 return BadRequest();
 
             await _displayMediaService.UpdateOrder(id.Value, order.Value);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddNewMessage(string message)
+        {
+            if (string.IsNullOrEmpty(message))
+                return NotFound();
+
+            var displayMessage = new DisplayMessage {
+                Message = message,
+                CreationDate = DateTime.Now
+            };
+
+            await _repositoryMessage.AddAsync(displayMessage);
+
+            return Ok(displayMessage);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditMessage(int? id, string message)
+        {
+            if (!id.HasValue || string.IsNullOrEmpty(message))
+                return NotFound();
+
+            var messageToEdit = await _repositoryMessage.GetByIdAsync(id.Value);
+            messageToEdit.Message = message;
+            await _repositoryMessage.UpdateAsync(messageToEdit);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeletMessage(int? id)
+        {
+            if (!id.HasValue)
+                return NotFound();
+
+            var messageToDelet = await _repositoryMessage.GetByIdAsync(id.Value);
+            await _repositoryMessage.DeleteAsync(messageToDelet);
 
             return Ok();
         }

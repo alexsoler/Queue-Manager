@@ -43,6 +43,7 @@ function loadListMedia() {
     });
 }
 
+//Hace ordenable la lista de archivos multimedia a mostrar en la pantalla de visualizacion
 function AddSortable() {
     $("#listDisplay").sortable({
         update: function (event, ui) {
@@ -77,3 +78,69 @@ function AddSortable() {
 }
 
 AddSortable();
+
+function NuevoMensaje() {
+    const $message = $("#txtAreaMessage");
+
+    if ($message.val().length < 1) {
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/CustomDisplay/AddNewMessage',
+        data: { message: $message.val() }
+    }).done(function (displayMessage) {
+        loadAlert("Mensaje agregado con exito!", "Exito", "alert-success");
+        $("#listMensajes").append(
+            `<li class="list-group-item list-group-item-action" data-id="${displayMessage.id}">
+                 <p contenteditable="true">${displayMessage.message}</p>
+                 <button type="button" class="btn btn-success btn-sm" onclick="EditarMensaje(${displayMessage.id}, this)">Guardar</button>
+                 <button type="button" class="btn btn-danger btn-sm" onclick="EliminarMensaje(${displayMessage.id}, this)">Eliminar</button>
+             </li>`);
+        $message.val("");
+    }).fail(function () {
+        loadAlert("No se pudo agregar el mensaje", "Error", "alert-danger");
+    });
+}
+
+function EditarMensaje(id, e) {
+    const mensaje = $(e).siblings("p").text();
+
+    $.ajax({
+        type: 'POST',
+        url: '/CustomDisplay/EditMessage',
+        data: { id: id, message: mensaje }
+    }).done(function () {
+        loadAlert("Se edito el mensaje con exito", "Exito", "alert-success");
+    }).fail(function () {
+        loadAlert("No se pudo editar el mensaje", "Error", "alert-danger");
+    });
+}
+
+function EliminarMensaje(id, e) {
+    const li = $(e).parent();
+
+    $.ajax({
+        type: 'POST',
+        url: '/CustomDisplay/DeletMessage',
+        data: { id }
+    }).done(function () {
+        loadAlert("Se elimino el mensaje con exito", "Exito", "alert-success");
+        li.fadeOut("fast", function () {
+            li.remove();
+        });
+    }).fail(function () {
+        loadAlert("No se pudo eliminar el mensaje", "Error", "alert-danger");
+    });
+}
+
+function loadAlert(mensaje, tipoMensaje, nameClass) {
+    $("body").prepend(`<div class="alert ${nameClass} alert-dismissible fade show" role="alert">
+        <strong>${tipoMensaje}!</strong > ${mensaje}<button class="close" type = "button" data-dismiss="alert" aria-label="Close" >
+        <span aria-hidden="true">×</span></button></div>`);
+
+    setTimeout(function () {
+        $(".alert").alert('close');
+    }, 2000);
+}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -15,19 +16,30 @@ namespace Web.Controllers
     {
         private readonly IWritableOptions<DisplayTickets> _options;
         private readonly IDisplayMediaService _displayMediaService;
+        private readonly IAsyncRepository<DisplayMessage> _asyncRepositoryMessages;
         private readonly IMapper _mapper;
 
         public DisplayController(IWritableOptions<DisplayTickets> options,
             IDisplayMediaService displayMediaService,
+            IAsyncRepository<DisplayMessage> asyncRepositoryMessages,
             IMapper mapper)
         {
             _options = options;
             _displayMediaService = displayMediaService;
+            _asyncRepositoryMessages = asyncRepositoryMessages;
             _mapper = mapper;
         }
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> MessagesPV()
+        {
+            var listMessages = await _asyncRepositoryMessages.ListAllAsync();
+            var listMessagesvm = _mapper.Map<IReadOnlyList<DisplayMessageViewModel>>(listMessages);
+
+            return PartialView("_Message", listMessagesvm);
         }
 
         [HttpPost]

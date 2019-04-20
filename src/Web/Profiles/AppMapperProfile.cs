@@ -122,6 +122,8 @@ namespace Web.Profiles
                 .ForMember(dest =>
                     dest.Office,
                     opt => opt.MapFrom(x => x.Office.Name));
+
+            CreateMap<DisplayMessage, DisplayMessageViewModel>();
         }
     }
 }
