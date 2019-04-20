@@ -27,6 +27,7 @@ using Web.Services;
 using Web.Hubs;
 using Web.Extensions;
 using Web.Models;
+using Rotativa.AspNetCore;
 
 namespace Web
 {
@@ -142,6 +143,8 @@ namespace Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            RotativaConfiguration.Setup(env);
         }
     }
 }
