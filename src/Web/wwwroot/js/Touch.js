@@ -1,4 +1,5 @@
 ﻿"use strict";
+
 var tarea, prioridad;
 var ticketParameter = TicketParameter;
 
@@ -19,7 +20,23 @@ connection.on("ReceiveToken", function (ticketParameter) {
 });
 
 connection.start().catch(function (err) {
-    return console.error(err.toString());
+    console.error(err.toString());
+
+    return alert("No se pudo conectar, recargue la pagina.");
+});
+
+async function start() {
+    try {
+        await connection.start();
+        console.log('connected');
+    } catch (err) {
+        console.log(err);
+        setTimeout(() => start(), 5000);
+    }
+}
+
+connection.onclose(async () => {
+    await start();
 });
 
 function openNav(idTarea) {
