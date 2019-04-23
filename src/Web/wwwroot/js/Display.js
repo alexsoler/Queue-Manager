@@ -30,6 +30,12 @@ connection.on("ConnectToOffice", function (message) {
     console.log(message);
 });
 
+connection.on("Reload", function () {
+    setTimeout(function () {
+        window.location.reload();
+    }, 500);
+});
+
 connection.on("CallDisplayTicket", function (ticket) {
     let $Ticket = $("#displayTicket");
     let $Office = $("#displayOffice");
@@ -60,7 +66,7 @@ connection.on("CallDisplayTicket", function (ticket) {
         .fadeTo(100, 0.1)
         .fadeTo(100, 1);
 
-    speak(`Ticket ${ticket.ticket} ${ticket.office}`);
+    speak(`Ticket <silence msec="100" /> ${ticket.ticket}! ${ticket.office}`);
 });
 
 connection.on("CallBackDisplayTicket", function (ticket) {
@@ -73,7 +79,7 @@ connection.on("CallBackDisplayTicket", function (ticket) {
             .fadeTo(100, 1);
     }
 
-    speak(`Ticket ${ticket.ticket} ${ticket.office}`);
+    speak(`Ticket <silence msec="100" /> ${ticket.ticket}! ${ticket.office}`);
 });
 
 
@@ -101,7 +107,7 @@ function playMedia(id, contentType) {
         var img = document.getElementById("img");
         img.src = `/Medias/GetMedia/${id}`;
         $(img).fadeIn("slow", () => {
-            setTimeout(() => $(img).fadeOut("slow", () => nextMediaPlay()), 5000);
+            setTimeout(() => $(img).fadeOut("slow", () => nextMediaPlay()), duracionImagenes);
         });
     }
     else if (contentType.includes("video")) {
@@ -116,7 +122,7 @@ function playMedia(id, contentType) {
         $("#embedVideo").show();
 
         video.load();
-        video.volume = 0.1;
+        video.volume = volumenMultimedia;
     }
     else if (contentType.includes("audio")) {
         var audio = document.getElementsByTagName('audio')[0];
@@ -130,7 +136,7 @@ function playMedia(id, contentType) {
 
         $("#embedAudio").show();
         audio.load();
-        audio.volume = 0.1;
+        audio.volume = volumenMultimedia;
     }
 }
 
@@ -176,7 +182,7 @@ function loadMessages() {
             }
         });
 
-        $carousel.carousel();
+        $carousel.carousel({ interval: duracionMensajes });
     });
 }
 
@@ -195,9 +201,9 @@ window.addEventListener("beforeunload", function (event) {
 function speak(text) {
     var msg = new SpeechSynthesisUtterance();
     msg.text = text;
-    msg.volume = 1;
+    msg.volume = volumenVoz;
     msg.rate = 0.8;
-    msg.pitch = 0.4;
+    msg.pitch = 1;
     msg.lang = "es-MX";
 
     window.speechSynthesis.speak(msg);
