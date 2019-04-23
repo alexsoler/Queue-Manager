@@ -8,6 +8,8 @@ using ApplicationCore.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Rotativa.AspNetCore;
+using Web.Hubs.ParametersObject;
 using Web.ViewModels;
 
 namespace Web.Controllers
@@ -40,6 +42,15 @@ namespace Web.Controllers
             vm.Priorities = _repositoryPriority.ListAll().ToList();
 
             return View(vm);
+        }
+
+        public IActionResult Ticket(TicketParameter ticket)
+        {
+            return new ViewAsPdf(ticket)
+            {
+                PageSize = Rotativa.AspNetCore.Options.Size.B8,
+                PageMargins = new Rotativa.AspNetCore.Options.Margins(5, 5, 5, 5)
+            };
         }
     }
 }
