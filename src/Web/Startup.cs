@@ -25,6 +25,9 @@ using Web.Interfaces;
 using Web.ViewModels;
 using Web.Services;
 using Web.Hubs;
+using Web.Extensions;
+using Web.Models;
+using Rotativa.AspNetCore;
 
 namespace Web
 {
@@ -90,6 +93,7 @@ namespace Web
             services.AddScoped<IMediaService, MediaService>();
             services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<IOperatorService, OperatorService>();
+            services.AddScoped<IDisplayMediaService, DisplayMediaService>();
 
             services.AddScoped<IOfficeViewModel, OfficeViewModelService>();
             services.AddScoped<ITaskIndexViewModel, TaskViewModelService>();
@@ -97,6 +101,9 @@ namespace Web
             services.AddScoped<IAddTasksOperatorsToNewOfficeViewModel, AddTasksOperatorsToNewOfficeViewModelService>();
 
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+
+            services.ConfigureWritable<DisplayTickets>(Configuration.GetSection("DisplayTickets"), "websettings.json");
+            services.ConfigureWritable<DisplayStyle>(Configuration.GetSection("DisplayStyle"), "websettings.json");
 
             services.AddAntiforgery(options => options.HeaderName = "MY-XSRF-TOKEN");
 
@@ -137,6 +144,8 @@ namespace Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            RotativaConfiguration.Setup(env);
         }
     }
 }

@@ -1,0 +1,26 @@
+﻿@model IReadOnlyList<Web.ViewModels.DisplayMessageViewModel>
+
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+    <div id="messagesCarousel" class="carousel-inner">
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            if (i == 0)
+            {
+                <div class="carousel-item active">
+                    <span class="d-block card-text h2">
+                        @Model[i].Message
+                    </span>
+                </div>
+            }
+            else
+            {
+                <div class="carousel-item">
+                    <span class="d-block card-text h2">
+                        @Model[i].Message
+                    </span>
+                </div>
+            }
+
+        }
+            </div>
+          </div>

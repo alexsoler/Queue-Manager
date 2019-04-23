@@ -12,5 +12,8 @@ namespace Web.Hubs
         Task ConnectToOffice(string message);
         Task RemoveTicketCalled(long id);
         Task ToAttendTicket(long id);
+        Task CallDisplayTicket(TicketDisplayParameter ticket);
+        Task CallBackDisplayTicket(TicketDisplayParameter ticket);
+        Task Reload();
     }
 }

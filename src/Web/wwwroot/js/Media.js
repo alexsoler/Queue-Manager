@@ -142,10 +142,16 @@ function EliminarMedia() {
         }
     }).done(function (response) {
         console.log(response);
+        const pageItemActive = document.getElementById("pageItemActive");
 
-        var idCurrentItem = document.getElementById("pageItemActive").dataset.val;
+        if (pageItemActive !== null) {
+            var idCurrentItem = document.getElementById("pageItemActive").dataset.val;
 
-        loadTable(`/Medias/Table?pag=${idCurrentItem}`);
+            loadTable(`/Medias/Table?pag=${idCurrentItem}`);
+        }
+        else {
+            loadTable(`/Medias/Table`);
+        }
 
         loadAlert("El archivo ha sido eliminado con exito", "Exito", "alert-success");
     }).fail(function () {

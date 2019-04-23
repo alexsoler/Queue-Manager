@@ -48,6 +48,15 @@ connection.on("RemoveTicketCalled", function (id) {
 connection.on("ToAttendTicket", function (id) {
     estado = estadosTicket.CALLED;
     actualTicketId = id;
+
+    let actualTicket = $("#NameTicket").text().trim();
+    let actualOffice = $("#SelectOffice").text().trim().toUpperCase();
+
+    $.ajax({
+        type: 'POST',
+        data: { actualTicket, actualOffice },
+        url: "/Display/SaveState"
+    });
 });
 
 //Inicio de conexion signalr
@@ -81,6 +90,23 @@ function loadOffice(id, e) {
     connection.invoke("AddToGroup", id.toString()).catch(function (err) {
         return console.error(err.toString());
     });
+
+    if (estado === estadosTicket.CALLED) {
+        $.ajax({
+            type: 'POST',
+            url: '/Attention/NotAttention',
+            data: { id: actualTicketId }
+        }).done(() => {
+            estado = estadosTicket.NONE;
+
+            document.getElementById("NameTicket").innerHTML = "&nbsp;";
+            document.getElementById("ddServicio").innerText = "";
+            document.getElementById("ddPrioridad").innerText = "";
+            document.getElementById("RepetirLlamado").disabled = true;
+            document.getElementById("IniciarAtencion").disabled = true;
+            document.getElementById("NoSePresento").disabled = true;
+        });
+    }
 
     $("#SelectOffice").text(e.text); //El boton para seleccionar la oficina adquiere el nombre de la oficina seleccionada
 
@@ -143,6 +169,13 @@ function CallNext() {
         return;
 
     $(rowTicket[4].firstElementChild).trigger("click");
+}
+
+//Vuelve a repetir el llamado de un ticket
+function CallBackTicket() {
+    connection.invoke("CallBackClient", actualTicketId, idOffice).catch(function (err) {
+        return console.error(err.toString());
+    });
 }
 
 //Limpia todos los tickets en espera
@@ -210,6 +243,7 @@ function startOrFinalizeAttention(BUTTON) {
                                 Finalizar Atención`;
             BUTTON.dataset.mode = "finalize";
 
+            document.getElementById("SelectOffice").disabled = true;
             document.getElementById("RepetirLlamado").disabled = true;
             document.getElementById("NoSePresento").disabled = true;
             document.getElementById("btnLlamarSiguiente").disabled = true;
@@ -238,6 +272,7 @@ function startOrFinalizeAttention(BUTTON) {
             document.getElementById("ddServicio").innerText = "";
             document.getElementById("ddPrioridad").innerText = "";
             document.getElementById("btnLlamarSiguiente").disabled = false;
+            document.getElementById("SelectOffice").disabled = false;
 
             estado = estadosTicket.FINISHED;
 

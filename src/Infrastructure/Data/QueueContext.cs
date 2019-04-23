@@ -25,11 +25,15 @@ namespace Microsoft.QueueManager.Infrastructure.Data
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<Priority> Priorities { get; set; }
+        public DbSet<DisplayMedia> DisplayMedias { get; set; }
+        public DbSet<DisplayMessage> DisplayMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<OfficeTask>().HasKey(x => new { x.OfficeId, x.TaskId });
             builder.Entity<OfficeOperator>().HasKey(x => new { x.OfficeId, x.ApplicationUserId });
+
+            builder.Entity<DisplayMedia>().HasIndex(x => x.MediaId).IsUnique();
 
             builder.Entity<ApplicationUser>().HasQueryFilter(x => x.Activo == true);
             builder.Entity<OfficeOperator>().HasQueryFilter(x => x.Activo == true);

@@ -41,11 +41,26 @@ namespace Web.Hubs
             var operatorId = Context.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var ticket = await _ticketService.SetTicketInCalled(idTicket, idOffice, operatorId);
+            var ticketDisplay = _mapper.Map<TicketDisplayParameter>(ticket);
 
             var officesGroup = await _ticketService.GetOfficesTask(ticket.TaskEntityId);
 
             await Clients.Caller.ToAttendTicket(idTicket);
-            await Clients.Groups(officesGroup).RemoveTicketCalled(idTicket);   
+            await Clients.Groups(officesGroup).RemoveTicketCalled(idTicket);
+            await Clients.Group("display").CallDisplayTicket(ticketDisplay);
+        }
+
+        public async Task CallBackClient(long idTicket, int idOffice)
+        {
+            var ticket = await _ticketService.GetTicket(idTicket);
+            var ticketDisplay = _mapper.Map<TicketDisplayParameter>(ticket);
+
+            await Clients.Group("display").CallBackDisplayTicket(ticketDisplay);
+        }
+
+        public async Task ReloadPage(string groupname)
+        {
+            await Clients.Group(groupname).Reload();
         }
 
         public async Task AddToGroup(string groupName)

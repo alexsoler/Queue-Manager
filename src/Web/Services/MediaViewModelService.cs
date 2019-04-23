@@ -34,7 +34,7 @@ namespace Web.Services
             var mediasOnPage = _mapper.Map<IEnumerable<Media>, IEnumerable<MediaViewModel>>(
                 _repository.List(filterPaginatedSpecification));
 
-            var totalMedias = _repository.Count(new MediaSpecification());
+            var totalMedias = _repository.Count();
 
             var vm = new MediaIndexViewModel
             {

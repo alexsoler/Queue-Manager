@@ -28,11 +28,13 @@ namespace ApplicationCore.Specifications
             AddInclude(x => x.TaskEntity);
         }
 
-        public TicketSpecification(long idTicket)
+        public TicketSpecification(long idTicket, bool includeOffice = false)
             : base(x => x.Id == idTicket)
         {
             AddInclude(x => x.Priority);
             AddInclude(x => x.TaskEntity);
+            if(includeOffice)
+                AddInclude(x => x.Office);
         }
     }
 }

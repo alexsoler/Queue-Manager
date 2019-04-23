@@ -1,0 +1,110 @@
+﻿/* The sidebar menu */
+.sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 360px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #111; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+}
+
+    /* The navigation menu links */
+    .sidenav a {
+        padding: 6px 8px 6px 16px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+    }
+
+        /* When you mouse over the navigation links, change their color */
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+/* Style page content */
+.main {
+    margin-left: 360px; /* Same as the width of the sidebar */
+    padding: 0px 0px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+        .sidenav a {
+            font-size: 18px;
+        }
+}
+
+
+#displayTicket {
+    font-size: 93pt;
+    line-height: 1;
+    font-weight: bold;
+}
+
+#displayOffice {
+    font-size: 30pt;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 1;
+}
+
+span[id^='officeHistorico'] {
+    text-transform: uppercase;
+}
+
+/* Style clock */
+
+
+.wrap {
+    width: 90%;
+    max-width: 1000px;
+    /*margin:auto;*/
+}
+
+.widget {
+    width: 100%;
+   
+    /*margin:32px; */
+}
+
+    .widget p {
+        display: inline-block;
+        line-height: 1;
+        margin-bottom: 0rem;
+    }
+
+.fecha {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 0.3125rem;
+    /*margin-bottom: 5px;*/
+    background: rgba(0,0,0,.5);
+    padding: 10px;
+    width: 100%;
+}
+
+.reloj {
+    width: 100%;
+    padding: 10px;
+    font-size: 4em;
+    text-align: center;
+    background: rgba(0,0,0,.5);
+}
+
+    .reloj .caja-segundos {
+        display: inline-block;
+    }
+
+    .reloj .segundos,
+    .reloj .ampm {
+        font-size: 2rem;
+        display: block;
+    }

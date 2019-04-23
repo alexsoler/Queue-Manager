@@ -41,13 +41,14 @@
       ]
     },
     {
+      "provider": "cdnjs",
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/lib/jqueryui/"
+    },
+    {
       "provider": "unpkg",
       "library": "@aspnet/signalr@1.1.2",
-      "destination": "wwwroot/lib/signalr/",
-      "files": [
-        "dist/browser/signalr.js",
-        "dist/browser/signalr.min.js"
-      ]
+      "destination": "wwwroot/lib/@aspnet/signalr/"
     }
   ]
 }

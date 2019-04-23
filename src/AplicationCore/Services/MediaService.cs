@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
+using ApplicationCore.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -56,6 +57,11 @@ namespace ApplicationCore.Services
             return await _mediaRepository.ListAllAsync();
         }
 
+        public async Task<IEnumerable<Media>> GetAllMediaNotUsedAsync()
+        {
+            return await _mediaRepository.ListAsync(new MediaSpecification());
+        }
+
         public async Task<Media> GetMediaAsync(int id)
         {
             return await _mediaRepository.GetByIdAsync(id);
@@ -78,9 +84,32 @@ namespace ApplicationCore.Services
             {
                 _logger.LogInformation($"No se pudo eliminar el archivo multimedia de id: {id}." +
                     $"Excepcion: {ex.Message}");
+                operationResult.Succeeded = false;
             }
 
             return operationResult;
+        }
+
+        public async Task<OperationResult> SetAsNotUsed(int id)
+        {
+            _logger.LogInformation($"Se va a establecer en no usado el archivo multimedia de id {id}");
+            var media = await _mediaRepository.GetByIdAsync(id);
+            media.Used = false;
+
+            await _mediaRepository.UpdateAsync(media);
+            _logger.LogInformation($"Se establecio en no usado el archivo multimedia de id {id}");
+            return new OperationResult { Succeeded = true };
+        }
+
+        public async Task<OperationResult> SetAsUsed(int id)
+        {
+            _logger.LogInformation($"Se va a establecer en usado el archivo multimedia de id {id}");
+            var media = await _mediaRepository.GetByIdAsync(id);
+            media.Used = true;
+
+            await _mediaRepository.UpdateAsync(media);
+            _logger.LogInformation($"Se establecio en usado el archivo multimedia de id {id}");
+            return new OperationResult { Succeeded = true };
         }
     }
 }

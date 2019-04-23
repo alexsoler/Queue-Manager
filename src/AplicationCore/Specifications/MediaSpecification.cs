@@ -8,7 +8,7 @@ namespace ApplicationCore.Specifications
     public class MediaSpecification : BaseSpecification<Media>
     {
         public MediaSpecification()
-            : base(null)
+            : base(x => !x.Used)
         {
 
         }
