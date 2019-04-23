@@ -82,7 +82,6 @@ span[id^='officeHistorico'] {
     }
 
 .fecha {
-    font-family: Oswald, Arial;
     text-align: center;
     font-size: 1.5em;
     margin-bottom: 0.3125rem;
@@ -93,7 +92,6 @@ span[id^='officeHistorico'] {
 }
 
 .reloj {
-    font-family: Oswald, Arial;
     width: 100%;
     padding: 10px;
     font-size: 4em;

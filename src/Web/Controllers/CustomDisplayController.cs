@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Web.Interfaces;
+using Web.Models;
 using Web.ViewModels;
 
 namespace Web.Controllers
@@ -136,6 +139,26 @@ namespace Web.Controllers
 
             var messageToDelet = await _repositoryMessage.GetByIdAsync(id.Value);
             await _repositoryMessage.DeleteAsync(messageToDelet);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveDisplayStyle([FromServices]IWritableOptions<DisplayStyle> _options, 
+            DisplayStyle displayStyle)
+        {
+            _options.Update(opt => {
+                opt.ColorFuentePrimario = displayStyle.ColorFuentePrimario;
+                opt.ColorFuenteSecundario = displayStyle.ColorFuenteSecundario;
+                opt.ColorPrimario = displayStyle.ColorPrimario;
+                opt.ColorSecundario = displayStyle.ColorSecundario;
+                opt.FontFamily = displayStyle.FontFamily;
+                opt.DuracionMensajes = displayStyle.DuracionMensajes;
+                opt.DuracionImagen = displayStyle.DuracionImagen;
+                opt.VolumenMultimedia = displayStyle.VolumenMultimedia;
+                opt.VolumenVoz = displayStyle.VolumenVoz;
+            });
 
             return Ok();
         }

@@ -1,8 +1,23 @@
 {
   "DisplayTickets": {
-    "Actual": "X000",
-    "Historico1": "X000",
-    "Historico2": "X000",
-    "Historico3": "X000"
+    "ActualTicket": "P002",
+    "ActualOffice": "VENTANILLA 1",
+    "TicketH1": "M001",
+    "OfficeH1": "VENTANILLA 1",
+    "TicketH2": "E013",
+    "OfficeH2": "VENTANILLA 1",
+    "TicketH3": "M012",
+    "OfficeH3": "VENTANILLA 1"
+  },
+  "DisplayStyle": {
+    "ColorPrimario": "#002200",
+    "ColorSecundario": "#9abd51",
+    "ColorFuentePrimario": "#9abd51",
+    "ColorFuenteSecundario": "#002200",
+    "FontFamily": "Segoe+UI",
+    "VolumenMultimedia": 0.0,
+    "VolumenVoz": 1.0,
+    "DuracionMensajes": 10000,
+    "DuracionImagen": 10000
   }
 }

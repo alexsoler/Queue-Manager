@@ -1,10 +1,18 @@
-﻿@using Web.Interfaces
+﻿@using Microsoft.Extensions.Options
 @using Web.Models
+@using System.Text.RegularExpressions;
 @{
     Layout = null;
+
+    string colorPrimario = _optionsStyle.CurrentValue.ColorPrimario;
+    string colorSecundario = _optionsStyle.CurrentValue.ColorSecundario;
+    string colorFuentePrimario = _optionsStyle.CurrentValue.ColorFuentePrimario;
+    string colorFuenteSecundario = _optionsStyle.CurrentValue.ColorFuenteSecundario;
+    string FontFamily = _optionsStyle.CurrentValue.FontFamily;
 }
 
-@inject IWritableOptions<DisplayTickets> _options
+@inject IOptionsMonitor<DisplayTickets> _options
+@inject IOptionsMonitor<DisplayStyle> _optionsStyle
 
 <!DOCTYPE html>
 
@@ -12,37 +20,56 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Pantalla de visualización</title>
-
-    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    
     <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="~/css/DisplayStyle.css" />
+    <style>
+        body {
+            font-family: "@Regex.Replace(FontFamily, "[+]", " ")";
+        }
+
+        .sidenav {
+            background-color: @colorPrimario;
+            color: @colorFuentePrimario;
+        }
+
+        .card {
+            background-color: @colorSecundario;
+            color: @colorFuenteSecundario;
+        }
+
+        .card-header {
+            background-color: @colorSecundario;
+        }
+
+    </style>
 </head>
 <body>
     <!-- Side navigation -->
-    <div class="sidenav bg-primary">
+    <div class="sidenav">
         <div class="container-fluid">
             <div class="row">
                 <div class="col text-center">
                     <div id="displayTicket">
-                        @_options.Value.ActualTicket
+                        @_options.CurrentValue.ActualTicket
                     </div>
                     <div id="displayOffice">
-                        @_options.Value.ActualOffice
+                        @_options.CurrentValue.ActualOffice
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="card text-white bg-dark w-100 mx-3 mt-2">
+                <div class="card border-dark w-100 mx-3 mt-2">
                     <div class="card-header text-center p-2"><span class="h4">HISTÓRICO</span></div>
                     <div class="card-body text-center p-1">
-                        <span id="ticketHistorico1" class="h1">@_options.Value.TicketH1</span><br />
-                        <span id="officeHistorico1" class="h4">@_options.Value.OfficeH1</span>
+                        <span id="ticketHistorico1" class="h1">@_options.CurrentValue.TicketH1</span><br />
+                        <span id="officeHistorico1" class="h4">@_options.CurrentValue.OfficeH1</span>
                         <hr class="m-2" />
-                        <span id="ticketHistorico2" class="h1">@_options.Value.TicketH2</span><br />
-                        <span id="officeHistorico2" class="h4">@_options.Value.OfficeH2</span>
+                        <span id="ticketHistorico2" class="h1">@_options.CurrentValue.TicketH2</span><br />
+                        <span id="officeHistorico2" class="h4">@_options.CurrentValue.OfficeH2</span>
                         <hr class="m-2" />
-                        <span id="ticketHistorico3" class="h1">@_options.Value.TicketH3</span><br />
-                        <span id="officeHistorico3" class="h4">@_options.Value.OfficeH3</span>
+                        <span id="ticketHistorico3" class="h1">@_options.CurrentValue.TicketH3</span><br />
+                        <span id="officeHistorico3" class="h4">@_options.CurrentValue.OfficeH3</span>
                     </div>
                 </div>
             </div>
@@ -95,7 +122,7 @@
         </div>
 
         <div class="position-fixed" style="bottom: 0px; right: 0px; left: 360px;">
-            <div class="card text-white bg-dark mt-4 mx-3" style="height: 150px;">
+            <div class="card mt-4 mx-3" style="height: 150px;">
                 <div id="messagesCard" class="card-body text-center">
                     <!--Messages-->
                 </div>
@@ -111,6 +138,14 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/lib/@@aspnet/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/Clock.js"></script>
+
+    <script>
+        var volumenMultimedia = JSON.parse(@Json.Serialize(_optionsStyle.CurrentValue.VolumenMultimedia));
+        var volumenVoz = JSON.parse(@Json.Serialize(_optionsStyle.CurrentValue.VolumenVoz));
+        var duracionMensajes = JSON.parse(@Json.Serialize(_optionsStyle.CurrentValue.DuracionMensajes));
+        var duracionImagenes = JSON.parse(@Json.Serialize(_optionsStyle.CurrentValue.DuracionImagen));
+    </script>
     <script src="~/js/Display.js" asp-append-version="true"></script>
+    <link type="text/css" href="https://fonts.googleapis.com/css?family=@FontFamily" rel="stylesheet">
 </body>
 </html>
