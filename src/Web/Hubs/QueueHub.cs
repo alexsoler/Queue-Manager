@@ -58,6 +58,11 @@ namespace Web.Hubs
             await Clients.Group("display").CallBackDisplayTicket(ticketDisplay);
         }
 
+        public async Task ReloadPage(string groupname)
+        {
+            await Clients.Group(groupname).Reload();
+        }
+
         public async Task AddToGroup(string groupName)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);

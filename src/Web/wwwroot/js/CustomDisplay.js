@@ -1,4 +1,26 @@
-﻿function AddMediaToDisplay(id, e) {
+﻿var connection = new signalR.HubConnectionBuilder().withUrl("/queueHub").build();
+
+connection.start().catch(function (err) {
+    console.error(err.toString());
+
+    return alert("No se pudo conectar, recargue la pagina.");
+});
+
+async function start() {
+    try {
+        await connection.start();
+        console.log('connected');
+    } catch (err) {
+        console.log(err);
+        setTimeout(() => start(), 5000);
+    }
+}
+
+connection.onclose(async () => {
+    await start();
+});
+
+function AddMediaToDisplay(id, e) {
     const $LisDisplay = $("#listDisplay li");
     let order = 100;
     if ($LisDisplay.length > 0) {
@@ -132,6 +154,24 @@ function EliminarMensaje(id, e) {
         });
     }).fail(function () {
         loadAlert("No se pudo eliminar el mensaje", "Error", "alert-danger");
+    });
+}
+
+//Se ejecuta cuando se lanza el eveno submit del form de id FormEditDisplay
+function EditDisplayStyle(event) {
+    event.preventDefault();
+
+    $.ajax({
+        type: 'POST',
+        url: '/CustomDisplay/SaveDisplayStyle',
+        data: $("#FormEditDisplay").serialize()
+    }).done(function () {
+        loadAlert("Se guardaron los cambios con exito", "Exito", "alert-success");
+        connection.invoke("ReloadPage", "display").catch(function (err) {
+            return console.error(err.toString());
+        });
+    }).fail(function () {
+        loadAlert("No se pudo guardar los cambios", "Error", "alert-danger");
     });
 }
 

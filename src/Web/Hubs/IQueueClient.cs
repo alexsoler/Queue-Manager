@@ -14,5 +14,6 @@ namespace Web.Hubs
         Task ToAttendTicket(long id);
         Task CallDisplayTicket(TicketDisplayParameter ticket);
         Task CallBackDisplayTicket(TicketDisplayParameter ticket);
+        Task Reload();
     }
 }
