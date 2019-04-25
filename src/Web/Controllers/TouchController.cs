@@ -48,7 +48,8 @@ namespace Web.Controllers
         {
             return new ViewAsPdf(ticket)
             {
-                PageSize = Rotativa.AspNetCore.Options.Size.B8,
+                PageWidth = 58,
+                PageHeight = 58,
                 PageMargins = new Rotativa.AspNetCore.Options.Margins(5, 5, 5, 5)
             };
         }
