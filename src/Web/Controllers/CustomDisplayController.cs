@@ -145,8 +145,8 @@ namespace Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SaveDisplayStyle([FromServices]IWritableOptions<DisplayStyle> _options, 
-            DisplayStyle displayStyle)
+        public IActionResult SaveDisplayStyle([FromServices]IWritableOptions<DisplayCustom> _options, 
+            DisplayCustom displayStyle)
         {
             _options.Update(opt => {
                 opt.ColorFuentePrimario = displayStyle.ColorFuentePrimario;

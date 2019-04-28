@@ -9,7 +9,7 @@
     "TicketH3": "M012",
     "OfficeH3": "VENTANILLA 1"
   },
-  "DisplayStyle": {
+  "DisplayCustom": {
     "ColorPrimario": "#002200",
     "ColorSecundario": "#9abd51",
     "ColorFuentePrimario": "#9abd51",

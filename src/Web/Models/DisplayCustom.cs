@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Web.Models
 {
-    public class DisplayStyle
+    public class DisplayCustom
     {
         [Display(Name = "Color primario")]
         public string ColorPrimario { get; set; }
