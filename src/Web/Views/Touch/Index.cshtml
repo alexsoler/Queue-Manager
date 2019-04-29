@@ -54,7 +54,14 @@
             {
                 <div class="row">
                     <div class="col-12 text-center text-white">
-                        <img src="/Medias/GetMedia?id=@optionsTouch.CurrentValue.PathImageLogo" height="100" />
+                        @if (optionsTouch.CurrentValue.PathImageLogo == "queue")
+                        {
+                            <img src="~/img/brand/queue.svg" height="100" />
+                        }
+                        else
+                        {
+                            <img src="/Medias/GetMedia?id=@optionsTouch.CurrentValue.PathImageLogo" height="100" />
+                        }                        
                     </div>
                 </div>
             }

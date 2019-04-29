@@ -21,13 +21,13 @@
     "DuracionImagen": 10000
   },
   "TouchCustom": {
-    "ShowLogo": true,
-    "PathImageLogo": "6",
-    "ShowTitle": false,
+    "ShowLogo": false,
+    "PathImageLogo": "queue",
+    "ShowTitle": true,
     "Title": "Queue Manager",
-    "ShowBackgroundColor": false,
+    "ShowBackgroundColor": true,
     "BackgroundColor": "#776f2f",
-    "BackgroundImage": "3",
+    "BackgroundImage": null,
     "ColorButtonTask": "btn-dark",
     "ColorButtonPriority": "btn-danger",
     "FontFamily": "Tahoma",
