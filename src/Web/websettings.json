@@ -9,7 +9,7 @@
     "TicketH3": "M012",
     "OfficeH3": "VENTANILLA 1"
   },
-  "DisplayStyle": {
+  "DisplayCustom": {
     "ColorPrimario": "#002200",
     "ColorSecundario": "#9abd51",
     "ColorFuentePrimario": "#9abd51",
@@ -19,5 +19,18 @@
     "VolumenVoz": 1.0,
     "DuracionMensajes": 10000,
     "DuracionImagen": 10000
+  },
+  "TouchCustom": {
+    "ShowLogo": true,
+    "PathImageLogo": "queue",
+    "ShowTitle": false,
+    "Title": "Queue Manager",
+    "ShowBackgroundColor": true,
+    "BackgroundColor": "#776f2f",
+    "BackgroundImage": null,
+    "ColorButtonTask": "btn-dark",
+    "ColorButtonPriority": "btn-danger",
+    "FontFamily": "Tahoma",
+    "MensajeNotificacion": "Por favor espere su turno"
   }
 }

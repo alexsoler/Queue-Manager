@@ -7,7 +7,7 @@
     var displayStyle = _optionsStyle.CurrentValue;
 }
 
-@inject IOptionsMonitor<DisplayStyle> _optionsStyle
+@inject IOptionsMonitor<DisplayCustom> _optionsStyle
 
 @section Styles{
     <link rel="stylesheet" href="~/lib/fontselect-jquery/styles/fontselect-alternate.css" />
@@ -130,11 +130,11 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="@displayStyle.VolumenMultimedia"></label>
-                            <input asp-for="@displayStyle.VolumenMultimedia" type="range" class="form-control-range" step="0.1" min="0" max="1">
+                            <input asp-for="@displayStyle.VolumenMultimedia" type="range" class="custom-range" step="0.1" min="0" max="1">
                         </div>
                         <div class="form-group">
                             <label asp-for="@displayStyle.VolumenVoz"></label>
-                            <input asp-for="@displayStyle.VolumenVoz" type="range" class="form-control-range" step="0.1" min="0" max="1">
+                            <input asp-for="@displayStyle.VolumenVoz" type="range" class="custom-range" step="0.1" min="0" max="1">
                         </div>
                         <div class="form-group">
                             <label asp-for="@displayStyle.DuracionImagen"></label>

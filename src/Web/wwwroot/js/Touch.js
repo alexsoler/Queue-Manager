@@ -21,7 +21,17 @@ connection.on("ReceiveToken", function (ticketParameter) {
     console.log(ticketParameter);
 });
 
-connection.start().catch(function (err) {
+connection.on("Reload", function () {
+    setTimeout(function () {
+        window.location.reload();
+    }, 500);
+});
+
+connection.start().then(function () {
+    connection.invoke("AddToGroup", "touch").catch(function (err) {
+        return console.error(err.toString());
+    });
+}).catch(function (err) {
     console.error(err.toString());
 
     return alert("No se pudo conectar, recargue la pagina.");
@@ -62,3 +72,14 @@ function crearToken(idPrioridad) {
     event.preventDefault();
 }
 
+//Remueve la pantalla touch del grupo signalR 
+window.addEventListener("beforeunload", function (event) {
+    connection.invoke("RemoveFromGroup", "touch").catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    var confirmationMessage = "\o/";
+
+    (e || this.window.event).returnValue = confirmationMessage;
+    return confirmationMessage;
+});

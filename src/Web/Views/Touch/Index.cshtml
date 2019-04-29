@@ -1,7 +1,13 @@
-﻿@model Web.ViewModels.TouchViewModel
+﻿@using Microsoft.Extensions.Options;
+@using System.Text.RegularExpressions;
+
+@model Web.ViewModels.TouchViewModel
+
 @{
     Layout = null;
 }
+
+@inject IOptionsMonitor<TouchCustom> optionsTouch
 
 <!DOCTYPE html>
 
@@ -11,30 +17,82 @@
     <title>Seleccionar Boleto</title>
 
     <link rel="stylesheet" href="~/css/style.css" />
-    <link rel=" stylesheet" href="~/css/TouchStyle.css" asp-append-version="true"/>
+    <link rel=" stylesheet" href="~/css/TouchStyle.css" asp-append-version="true" />
+    <link href="~/lib/@@coreui/icons/css/coreui-icons.min.css" rel="stylesheet" />
 
+    <style>
+        .fontApple {
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+            font-size: 35px;
+            margin: 0px 0px 8px;
+            font-weight: 300;
+        }
+
+        .btn {
+            font-family: "@Regex.Replace(optionsTouch.CurrentValue.FontFamily, "[+]", " ")";
+        }
+
+        body {
+            @if(optionsTouch.CurrentValue.ShowBackgroundColor)
+            {
+                @:background-color: @optionsTouch.CurrentValue.BackgroundColor;
+            }
+            else
+            {
+                @:background-image: url("/Medias/GetMedia?id=@optionsTouch.CurrentValue.BackgroundImage");
+                @:background-attachment: fixed;
+                @:background-size: 100%;
+            }
+        }
+
+    </style>
 </head>
-<body class="bg-dark">
+<body>
     <main>
-        <div class="container">
+        <div class="container mt-2">
+            @if (optionsTouch.CurrentValue.ShowLogo)
+            {
+                <div class="row">
+                    <div class="col-12 text-center text-white">
+                        @if (optionsTouch.CurrentValue.PathImageLogo == "queue")
+                        {
+                            <img src="~/img/brand/queue.svg" height="100" />
+                        }
+                        else
+                        {
+                            <img src="/Medias/GetMedia?id=@optionsTouch.CurrentValue.PathImageLogo" height="100" />
+                        }                        
+                    </div>
+                </div>
+            }
+
+            @if (optionsTouch.CurrentValue.ShowTitle)
+            {
+                <div class="row">
+                    <div class="col-12 text-center text-white mt-1">
+                        <span class="display-4 rounded px-3" style="background-color: rgba(0, 0, 0, 0.44);">@optionsTouch.CurrentValue.Title</span>
+                    </div>
+                </div>
+            }
+
             <div class="row">
-                <div class="col-12 text-center">
-                    <h1 class="display-4">Seleccione un servicio:</h1>
+                <div class="col-12 text-center text-white mt-1">
+                    <span class="fontApple rounded px-2" style="background-color: rgba(0, 0, 0, 0.44);">Seleccione un servicio:</span>
                 </div>
             </div>
             @for (int i = 0; i < Model.Tasks.Count(); i += 2)
             {
                 <div class="row">
                     <div class="col-md-6 mb-4">
-                        <button class="btn btn-lg btn-primary btn-block" style="height: 100px" type="button" onclick="openNav(@Model.Tasks[i].Id)">
-                            <h3>@Model.Tasks[i].Name</h3>
+                        <button class="btn btn-lg @optionsTouch.CurrentValue.ColorButtonTask btn-block" style="height: 100px" type="button" onclick="openNav(@Model.Tasks[i].Id)">
+                            <span class="h3">@Model.Tasks[i].Name</span> <i class="icons cui-chevron-right"></i>
                         </button>
                     </div>
                     <div class="col-md-6 mb-4">
                         @if ((i + 1) < Model.Tasks.Count)
                         {
-                            <button class="btn btn-lg btn-primary btn-block" style="height: 100px" type="button" onclick="openNav(@Model.Tasks[i + 1].Id)">
-                                <h3>@Model.Tasks[i + 1].Name</h3>
+                            <button class="btn btn-lg @optionsTouch.CurrentValue.ColorButtonTask btn-block" style="height: 100px" type="button" onclick="openNav(@Model.Tasks[i + 1].Id)">
+                                <span class="h3">@Model.Tasks[i + 1].Name</span> <i class="icons cui-chevron-right"></i>
                             </button>
                         }
                     </div>
@@ -53,26 +111,26 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <h1 class="display-4">Prioridad:</h1>
+                    <h1 class="display-4 text-white">Prioridad:</h1>
                 </div>
             </div>
             @for (int i = 0; i < Model.Priorities.Count; i += 2)
             {
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <button class="btn btn-lg btn-success mb-3 btn-block" type="button" onclick="crearToken(@Model.Priorities[i].Id)">
-                        <h3>@Model.Priorities[i].Name</h3>
-                    </button>
-                </div>
-                <div class="col-md-4">
-                    @if ((i + 1) < Model.Priorities.Count)
-                    {
-                        <button class="btn btn-lg btn-success mb-3 btn-block" type="button" onclick="crearToken(@Model.Priorities[i + 1].Id)">
-                            <h3>@Model.Priorities[i + 1].Name</h3>
+                <div class="row justify-content-center">
+                    <div class="col-md-4">
+                        <button class="btn btn-lg @optionsTouch.CurrentValue.ColorButtonPriority mb-3 btn-block" type="button" onclick="crearToken(@Model.Priorities[i].Id)">
+                            <h3>@Model.Priorities[i].Name</h3>
                         </button>
-                    }
+                    </div>
+                    <div class="col-md-4">
+                        @if ((i + 1) < Model.Priorities.Count)
+                        {
+                            <button class="btn btn-lg @optionsTouch.CurrentValue.ColorButtonPriority mb-3 btn-block" type="button" onclick="crearToken(@Model.Priorities[i + 1].Id)">
+                                <h3>@Model.Priorities[i + 1].Name</h3>
+                            </button>
+                        }
+                    </div>
                 </div>
-            </div>
             }
         </div>
     </div>

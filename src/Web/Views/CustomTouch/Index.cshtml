@@ -1,0 +1,419 @@
+﻿@model Web.Models.TouchCustom
+
+@{
+    ViewData["Title"] = "Personalización Touch";
+    var listImages = (SelectList)ViewData["listImages"];
+}
+
+@section Styles{ 
+    <link rel="stylesheet" href="~/lib/fontselect-jquery/styles/fontselect-alternate.css" />
+
+    <style>
+        .alert {
+            position: fixed;
+            min-width: 367px;
+            margin-left: -183.5px;
+            z-index: 100;
+            left: 50%;
+            top: 70px;
+        }
+    </style>
+}
+
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i> Personalizar
+                    </div>
+                    <div id="cardPrincipalBody" class="card-body">
+                        <form id="FormEditTouch" method="post" onsubmit="EditTouchCustom(event)">
+                            <div class="form-row">
+                                <div class="form-group col-md-2 text-center">
+                                    <label asp-for="ShowLogo"></label><br />
+                                    <label class="switch switch-label switch-pill switch-success">
+                                        <input asp-for="ShowLogo" class="switch-input" type="checkbox">
+                                        <span class="switch-slider" data-checked="&#x2713;" data-unchecked="&#x2715;"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label asp-for="PathImageLogo"></label>
+                                    <select asp-for="PathImageLogo" asp-items="listImages" class="form-control">
+                                        <option value="">--Vacio--</option>
+                                        <option value="queue">Queue</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2 text-center">
+                                    <label asp-for="ShowTitle"></label><br />
+                                    <label class="switch switch-label switch-pill switch-success">
+                                        <input asp-for="ShowTitle" class="switch-input" type="checkbox">
+                                        <span class="switch-slider" data-checked="&#x2713;" data-unchecked="&#x2715;"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label asp-for="Title"></label>
+                                    <input asp-for="Title" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-2 text-center">
+                                    <label asp-for="ShowBackgroundColor"></label><br />
+                                    <label class="switch switch-label switch-pill switch-success">
+                                        <input asp-for="ShowBackgroundColor" class="switch-input" type="checkbox">
+                                        <span class="switch-slider" data-checked="&#x2713;" data-unchecked="&#x2715;"></span>
+                                    </label>
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <label asp-for="BackgroundColor"></label>
+                                    <input asp-for="BackgroundColor" type="color" class="form-control" />
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <label asp-for="BackgroundImage"></label>
+                                    <select asp-for="BackgroundImage" asp-items="listImages" class="form-control">
+                                        <option value="">--Vacio--</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label asp-for="ColorButtonTask"></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button id="colorTask" class="btn @Model.ColorButtonTask" type="button"><i class="fa fa-paint-brush"></i></button>
+                                        </div>
+                                        <select asp-for="ColorButtonTask" class="form-control" onchange="changeColorSelect(this, 'colorTask')">
+                                            <option class="text-primary" value="btn-primary">Primary</option>
+                                            <option class="text-secondary" value="btn-secondary">Secondary</option>
+                                            <option class="text-success" value="btn-success">Success</option>
+                                            <option class="text-danger" value="btn-danger">Danger</option>
+                                            <option class="text-warning" value="btn-warning">Warning</option>
+                                            <option class="text-info" value="btn-info">Info</option>
+                                            <option class="text-light" value="btn-light">Light</option>
+                                            <option class="text-dark" value="btn-dark">Dark</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label asp-for="ColorButtonPriority"></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button id="colorPriority" class="btn @Model.ColorButtonPriority" type="button"><i class="fa fa-paint-brush"></i></button>
+                                        </div>
+                                        <select asp-for="ColorButtonPriority" class="form-control" onchange="changeColorSelect(this, 'colorPriority')">
+                                            <option class="text-primary" value="btn-primary">Primary</option>
+                                            <option class="text-secondary" value="btn-secondary">Secondary</option>
+                                            <option class="text-success" value="btn-success">Success</option>
+                                            <option class="text-danger" value="btn-danger">Danger</option>
+                                            <option class="text-warning" value="btn-warning">Warning</option>
+                                            <option class="text-info" value="btn-info">Info</option>
+                                            <option class="text-light" value="btn-light">Light</option>
+                                            <option class="text-dark" value="btn-dark">Dark</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label asp-for="FontFamily"></label>
+                                    <input asp-for="FontFamily" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="MensajeNotificacion"></label>
+                                <input asp-for="MensajeNotificacion" class="form-control" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section Scripts{
+    <script src="~/lib/fontselect-jquery/jquery.fontselect.js"></script> 
+    <script>
+
+
+         $("#FontFamily").fontselect({
+             fonts: [
+            "-apple-system",
+            "Agency FB",
+            "Aharoni",
+            "Andalus",
+            "AngsanaUPC",
+            "Angsana New",
+            "Aparajita",
+            "Arabic+Typesetting",
+            "Batang+&+BatangChe",
+            "BrowalliaUPC",
+            "Browallia New",
+            "Calibri",
+            "Cambria",
+            "Cambria Math",
+            "Candara",
+            "Comic+Sans+MS",
+            "Consolas",
+            "Constantia",
+            "Corbel",
+            "CordiaUPC",
+            "Cordia New",
+            "Courier New",
+            "DaunPenh",
+            "David",
+            "DFKai-SB",
+            "DilleniaUPC",
+            "DokChampa",
+            "Ebrima",
+            "Dotum+&+DotumChe",
+            "Estrangelo+Edessa",
+            "Franklin Gothic",
+            "FrankRuehl",
+            "FreesiaUPC",
+            "Gabriola",
+            "Gautami",
+            "Georgia",
+            "Gisha",
+            "Impact",
+            "KaiTi",
+            "Kalinga",
+            "Kartika",
+            "Kokila",
+            "Malgun+Gothic",
+            "Mangal",
+            "Marlett",
+            "MoolBoran",
+            "MS+Gothic",
+            "Segoe+Print",
+            "Segoe+Script",
+            "Segoe+UI",
+            "Tahoma",
+            "Times+New+Roman",
+            "Verdana",
+            "Segoe+UI",
+            "Nyala",
+            "Antiqua",
+            "Aclonica",
+            "Allan",
+            "Arial",
+            "Arial+Black",
+            "Annie+Use+Your+Telescope",
+            "Anonymous+Pro",
+            "Allerta+Stencil",
+            "Allerta",
+            "Amaranth",
+            "Anton",
+            "Architects+Daughter",
+            "Arimo",
+            "Artifika",
+            "Arvo",
+            "Asset",
+            "Astloch",
+            "Bangers",
+            "Bentham",
+            "Bevan",
+            "Bigshot+One",
+            "Bowlby+One",
+            "Bowlby+One+SC",
+            "Brawler",
+            "Buda:300",
+            "Cabin",
+            "Calligraffitti",
+            "Candal",
+            "Cantarell",
+            "Cardo",
+            "Carter One",
+            "Caudex",
+            "Cedarville+Cursive",
+            "Cherry+Cream+Soda",
+            "Chewy",
+            "Coda",
+            "Coming+Soon",
+            "Copse",
+            "Corben:700",
+            "Cousine",
+            "Covered+By+Your+Grace",
+            "Crafty+Girls",
+            "Crimson+Text",
+            "Crushed",
+            "Cuprum",
+            "Damion",
+            "Dancing+Script",
+            "Dawning+of+a+New+Day",
+            "Didact+Gothic",
+            "Droid+Sans",
+            "Droid+Sans+Mono",
+            "Droid+Serif",
+            "EB+Garamond",
+            "Expletus+Sans",
+            "Fontdiner+Swanky",
+            "Forum",
+            "Francois+One",
+            "Geo",
+            "Give+You+Glory",
+            "Goblin+One",
+            "Goudy+Bookletter+1911",
+            "Gravitas+One",
+            "Gruppo",
+            "Hammersmith+One",
+            "Holtwood+One+SC",
+            "Homemade+Apple",
+            "Inconsolata",
+            "Indie+Flower",
+            "IM+Fell+DW+Pica",
+            "IM+Fell+DW+Pica+SC",
+            "IM+Fell+Double+Pica",
+            "IM+Fell+Double+Pica+SC",
+            "IM+Fell+English",
+            "IM+Fell+English+SC",
+            "IM+Fell+French+Canon",
+            "IM+Fell+French+Canon+SC",
+            "IM+Fell+Great+Primer",
+            "IM+Fell+Great+Primer+SC",
+            "Irish+Grover",
+            "Irish+Growler",
+            "Istok+Web",
+            "Josefin+Sans",
+            "Josefin+Slab",
+            "Judson",
+            "Jura",
+            "Jura:500",
+            "Jura:600",
+            "Just+Another+Hand",
+            "Just+Me+Again+Down+Here",
+            "Kameron",
+            "Kenia",
+            "Kranky",
+            "Kreon",
+            "Kristi",
+            "La+Belle+Aurore",
+            "Lato:100",
+            "Lato:100italic",
+            "Lato:300",
+            "Lato",
+            "Lato:bold",
+            "Lato:900",
+            "League+Script",
+            "Lekton",
+            "Limelight",
+            "Lobster",
+            "Lobster Two",
+            "Lora",
+            "Love+Ya+Like+A+Sister",
+            "Loved+by+the+King",
+            "Luckiest+Guy",
+            "Maiden+Orange",
+            "Mako",
+            "Maven+Pro",
+            "Maven+Pro:500",
+            "Maven+Pro:700",
+            "Maven+Pro:900",
+            "Meddon",
+            "MedievalSharp",
+            "Megrim",
+            "Merriweather",
+            "Metrophobic",
+            "Michroma",
+            "Miltonian Tattoo",
+            "Miltonian",
+            "Modern Antiqua",
+            "Monofett",
+            "Molengo",
+            "Mountains of Christmas",
+            "Muli:300",
+            "Muli",
+            "Neucha",
+            "Neuton",
+            "News+Cycle",
+            "Nixie+One",
+            "Nobile",
+            "Nova+Cut",
+            "Nova+Flat",
+            "Nova+Mono",
+            "Nova+Oval",
+            "Nova+Round",
+            "Nova+Script",
+            "Nova+Slim",
+            "Nova+Square",
+            "Nunito:light",
+            "Nunito",
+            "OFL+Sorts+Mill+Goudy+TT",
+            "Old+Standard+TT",
+            "Open+Sans:300",
+            "Open+Sans",
+            "Open+Sans:600",
+            "Open+Sans:800",
+            "Open+Sans+Condensed:300",
+            "Orbitron",
+            "Orbitron:500",
+            "Orbitron:700",
+            "Orbitron:900",
+            "Oswald",
+            "Over+the+Rainbow",
+            "Reenie+Beanie",
+            "Pacifico",
+            "Patrick+Hand",
+            "Paytone+One",
+            "Permanent+Marker",
+            "Philosopher",
+            "Play",
+            "Playfair+Display",
+            "Podkova",
+            "PT+Sans",
+            "PT+Sans+Narrow",
+            "PT+Sans+Narrow:regular,bold",
+            "PT+Serif",
+            "PT+Serif Caption",
+            "Puritan",
+            "Quattrocento",
+            "Quattrocento+Sans",
+            "Radley",
+            "Raleway:100",
+            "Redressed",
+            "Rock+Salt",
+            "Rokkitt",
+            "Ruslan+Display",
+            "Schoolbell",
+            "Shadows+Into+Light",
+            "Shanti",
+            "Sigmar+One",
+            "Six+Caps",
+            "Slackey",
+            "Smythe",
+            "Sniglet:800",
+            "Special+Elite",
+            "Stardos+Stencil",
+            "Sue+Ellen+Francisco",
+            "Sunshiney",
+            "Swanky+and+Moo+Moo",
+            "Syncopate",
+            "Tangerine",
+            "Tenor+Sans",
+            "Terminal+Dosis+Light",
+            "The+Girl+Next+Door",
+            "Tinos",
+            "Ubuntu",
+            "Ultra",
+            "Unkempt",
+            "UnifrakturCook:bold",
+            "UnifrakturMaguntia",
+            "Varela",
+            "Varela Round",
+            "Vibur",
+            "Vollkorn",
+            "VT323",
+            "Waiting+for+the+Sunrise",
+            "Wallpoet",
+            "Walter+Turncoat",
+            "Wire+One",
+            "Yanone+Kaffeesatz",
+            "Yanone+Kaffeesatz:300",
+            "Yanone+Kaffeesatz:400",
+            "Yanone+Kaffeesatz:700",
+            "Yeseva+One",
+            "Zeyada"
+        ]
+    });
+    </script>
+    <script src="~/lib/@@aspnet/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/CustomTouch.js" asp-append-version="true"></script>
+}

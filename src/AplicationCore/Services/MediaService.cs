@@ -62,6 +62,11 @@ namespace ApplicationCore.Services
             return await _mediaRepository.ListAsync(new MediaSpecification());
         }
 
+        public async Task<IEnumerable<Media>> GetImages()
+        {
+            return await _mediaRepository.ListAsync(new MediaSpecification(Enums.TypeFiles.Image));
+        }
+
         public async Task<Media> GetMediaAsync(int id)
         {
             return await _mediaRepository.GetByIdAsync(id);
