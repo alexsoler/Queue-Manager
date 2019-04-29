@@ -21,9 +21,9 @@
     "DuracionImagen": 10000
   },
   "TouchCustom": {
-    "ShowLogo": false,
+    "ShowLogo": true,
     "PathImageLogo": "queue",
-    "ShowTitle": true,
+    "ShowTitle": false,
     "Title": "Queue Manager",
     "ShowBackgroundColor": true,
     "BackgroundColor": "#776f2f",
