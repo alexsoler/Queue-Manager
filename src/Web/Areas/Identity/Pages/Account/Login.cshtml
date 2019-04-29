@@ -21,11 +21,15 @@
                                 </div>
                                 <input asp-for="Input.UserName" class="form-control" placeholder="Username">
                             </div>
-                            <div class="input-group mb-4">
+                            <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="icon-lock"></i></span>
                                 </div>
                                 <input asp-for="Input.Password" class="form-control" placeholder="Password">
+                            </div>
+                            <div class="form-group mb-4 form-check">
+                                <input asp-for="Input.RememberMe" type="checkbox" class="form-check-input">
+                                <label class="form-check-label" for="exampleCheck1">Recuerdame</label>
                             </div>
                             <div class="row">
                                 <div class="col-6">
