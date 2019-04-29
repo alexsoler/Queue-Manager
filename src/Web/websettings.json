@@ -19,5 +19,18 @@
     "VolumenVoz": 1.0,
     "DuracionMensajes": 10000,
     "DuracionImagen": 10000
+  },
+  "TouchCustom": {
+    "ShowLogo": true,
+    "PathImageLogo": "6",
+    "ShowTitle": false,
+    "Title": "Queue Manager",
+    "ShowBackgroundColor": false,
+    "BackgroundColor": "#776f2f",
+    "BackgroundImage": "3",
+    "ColorButtonTask": "btn-dark",
+    "ColorButtonPriority": "btn-danger",
+    "FontFamily": "Tahoma",
+    "MensajeNotificacion": "Por favor espere su turno"
   }
 }
