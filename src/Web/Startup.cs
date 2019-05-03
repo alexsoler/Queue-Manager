@@ -105,6 +105,7 @@ namespace Web
             services.ConfigureWritable<DisplayTickets>(Configuration.GetSection("DisplayTickets"), "websettings.json");
             services.ConfigureWritable<DisplayCustom>(Configuration.GetSection("DisplayCustom"), "websettings.json");
             services.ConfigureWritable<TouchCustom>(Configuration.GetSection("TouchCustom"), "websettings.json");
+            services.ConfigureWritable<TicketCustom>(Configuration.GetSection("TicketCustom"), "websettings.json");
 
             services.AddAntiforgery(options => options.HeaderName = "MY-XSRF-TOKEN");
 
