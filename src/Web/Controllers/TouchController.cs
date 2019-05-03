@@ -8,8 +8,10 @@ using ApplicationCore.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Rotativa.AspNetCore;
 using Web.Hubs.ParametersObject;
+using Web.Models;
 using Web.ViewModels;
 
 namespace Web.Controllers
@@ -44,13 +46,24 @@ namespace Web.Controllers
             return View(vm);
         }
 
-        public IActionResult Ticket(TicketParameter ticket)
+        public IActionResult Ticket([FromServices]IOptionsMonitor<TicketCustom> options, TicketParameter ticketParameter, TicketCustom ticketCustom)
         {
-            return new ViewAsPdf(ticket)
+            if (ticketCustom.PageWidth == default)
+                ticketCustom = options.CurrentValue;
+
+            var ticketvm = new TicketViewModel()
             {
-                PageWidth = 58,
-                PageHeight = 58,
-                PageMargins = new Rotativa.AspNetCore.Options.Margins(5, 5, 5, 5)
+                Ticket = ticketParameter,
+                Custom = ticketCustom
+            };
+
+            return new ViewAsPdf(ticketvm)
+            {
+                PageWidth = ticketCustom.PageWidth,
+                PageHeight = ticketCustom.PageHeight,
+                PageMargins = new Rotativa.AspNetCore.Options.Margins(5, 5, 5, 5),
+                IsGrayScale = true,
+                Cookies = Request.Cookies.ToDictionary(x => x.Key, x => x.Value)
             };
         }
     }
