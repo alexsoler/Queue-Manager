@@ -98,6 +98,13 @@
                         </a>
                     </li>
                 </ul>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="CustomTicket" asp-action="Index">
+                            <i class="nav-icon icon-star"></i> Tickets
+                        </a>
+                    </li>
+                </ul>
             </li>
         }
         @if (User.IsInRole("Agente de Atención"))
