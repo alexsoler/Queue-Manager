@@ -72,6 +72,28 @@ function crearToken(idPrioridad) {
     event.preventDefault();
 }
 
+function SendComment(event) {
+    event.preventDefault();
+
+    $.ajax({
+        type: 'POST',
+        url: '/Comments/SaveComment',
+        data: $("#FormComment").serialize()
+    }).done(function () {
+        loadAlert("Se envio su comentario", "Exito", "alert-success");
+
+    }).fail(function () {
+        loadAlert("No se pudo enviar el comentario", "Error", "alert-danger");
+    });
+
+    $("#commentsModal").modal('hide');
+}
+
+$('#commentsModal').on('hidden.bs.modal', function (e) {
+    // do something...
+    document.getElementById("FormComment").reset();
+});
+
 //Remueve la pantalla touch del grupo signalR 
 window.addEventListener("beforeunload", function (event) {
     connection.invoke("RemoveFromGroup", "touch").catch(function (err) {
@@ -83,3 +105,13 @@ window.addEventListener("beforeunload", function (event) {
     (e || this.window.event).returnValue = confirmationMessage;
     return confirmationMessage;
 });
+
+function loadAlert(mensaje, tipoMensaje, nameClass) {
+    $("body").prepend(`<div class="alert ${nameClass} alert-dismissible fade show" role="alert">
+        <strong>${tipoMensaje}!</strong > ${mensaje}<button class="close" type = "button" data-dismiss="alert" aria-label="Close" >
+        <span aria-hidden="true">×</span></button></div>`);
+
+    setTimeout(function () {
+        $(".alert").alert('close');
+    }, 2000);
+}

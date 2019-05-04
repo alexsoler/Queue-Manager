@@ -124,6 +124,8 @@ namespace Web.Profiles
                     opt => opt.MapFrom(x => x.Office.Name));
 
             CreateMap<DisplayMessage, DisplayMessageViewModel>();
+            CreateMap<Comment, CommentViewModel>();
+            CreateMap<CommentViewModel, Comment>();
         }
     }
 }

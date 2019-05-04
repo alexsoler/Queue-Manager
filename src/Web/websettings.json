@@ -22,7 +22,7 @@
   },
   "TouchCustom": {
     "ShowLogo": true,
-    "PathImageLogo": "1",
+    "PathImageLogo": "queue",
     "ShowTitle": false,
     "Title": "Queue Manager",
     "ShowBackgroundColor": true,
