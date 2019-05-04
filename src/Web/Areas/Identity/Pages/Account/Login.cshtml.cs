@@ -38,7 +38,7 @@ namespace Web.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required(ErrorMessage = "Usuario es un campo requerido")]
-            public string UserName { get; set; }
+            public string UserName { get; set; } 
 
             [Required]
             [DataType(DataType.Password)]
