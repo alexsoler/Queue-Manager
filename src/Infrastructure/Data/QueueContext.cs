@@ -27,6 +27,7 @@ namespace Microsoft.QueueManager.Infrastructure.Data
         public DbSet<Priority> Priorities { get; set; }
         public DbSet<DisplayMedia> DisplayMedias { get; set; }
         public DbSet<DisplayMessage> DisplayMessages { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

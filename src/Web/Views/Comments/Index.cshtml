@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "Comentarios";
+}
+
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i> Comentarios
+                    </div>
+                    <div id="cardPrincipalBody" class="card-body">
+                        <form>
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="checkCommentsView" onchange="changeCheckboxView(this)">
+                                <label class="form-check-label" for="exampleCheck1">Ver comentarios ya leidos</label>
+                            </div>
+                        </form>
+                        <div id="divTabla" class="mt-4">
+                            <!--Tabla de archivos multimedia-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section Scripts{ 
+    <script src="~/js/Comment.js" asp-append-version="true"></script>
+}
+

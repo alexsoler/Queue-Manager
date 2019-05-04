@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="~/css/style.css" />
     <link rel=" stylesheet" href="~/css/TouchStyle.css" asp-append-version="true" />
     <link href="~/lib/@@coreui/icons/css/coreui-icons.min.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
 
     <style>
         .fontApple {
@@ -45,6 +46,14 @@
             }
         }
 
+        .alert {
+            position: fixed;
+            min-width: 367px;
+            margin-left: -183.5px;
+            z-index: 100;
+            left: 50%;
+            top: 70px;
+        }
     </style>
 </head>
 <body>
@@ -135,7 +144,37 @@
         </div>
     </div>
 
+    <button id="btnComments" type="button" class="btn btn-light btn-lg" data-toggle="modal" data-target="#commentsModal"><i class="fa fa-comments fa-lg"></i></button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="commentsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Enviar comentario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="FormComment" onsubmit="SendComment(event)">
+                        <div class="form-group">
+                            <label for="message">Comentario:</label>
+                            <textarea class="form-control" maxlength="500" id="Message" required name="Message" rows="3"></textarea>
+                        </div>
+                        @Html.AntiForgeryToken()
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" form="FormComment" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" form="FormComment" class="btn btn-primary">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="~/lib/popper.js/popper.js"></script>
     <script src="~/lib/@@coreui/coreui/js/coreui.min.js"></script>
     <script src="~/lib/@@aspnet/signalr/dist/browser/signalr.js"></script>
