@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using ApplicationCore.Entities;
 using ApplicationCore.Enums;
 using ApplicationCore;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Microsoft.QueueManager.Infrastructure.Data
 {
@@ -14,86 +15,91 @@ namespace Microsoft.QueueManager.Infrastructure.Data
     {
         public static async Task SeedAsync(IServiceProvider serviceProvider)
         {
+            var env = serviceProvider.GetRequiredService<IHostingEnvironment>();
+
             using (var context = new QueueContext(
                 serviceProvider.GetRequiredService<DbContextOptions<QueueContext>>()))
             {
-                if (!await context.Tasks.AnyAsync())
+                if (env.IsDevelopment())
                 {
-                    await context.Tasks.AddRangeAsync(
-                        new TaskEntity
-                        {
-                            Name = "Matricula",
-                            Prefix = "M",
-                            CreationDate = DateTime.Now,
-                            Activo = true
-                        },
-                        new TaskEntity
-                        {
-                            Name = "Pago de mensualidad",
-                            Prefix = "P",
-                            CreationDate = DateTime.Now,
-                            Activo = true
-                        },
-                        new TaskEntity
-                        {
-                            Name = "Pago de equivalencias",
-                            Prefix = "E",
-                            CreationDate = DateTime.Now,
-                            Activo = true
-                        }
-                    );
+                    if (!await context.Tasks.AnyAsync())
+                    {
+                        await context.Tasks.AddRangeAsync(
+                            new TaskEntity
+                            {
+                                Name = "Matricula",
+                                Prefix = "M",
+                                CreationDate = DateTime.Now,
+                                Activo = true
+                            },
+                            new TaskEntity
+                            {
+                                Name = "Pago de mensualidad",
+                                Prefix = "P",
+                                CreationDate = DateTime.Now,
+                                Activo = true
+                            },
+                            new TaskEntity
+                            {
+                                Name = "Pago de equivalencias",
+                                Prefix = "E",
+                                CreationDate = DateTime.Now,
+                                Activo = true
+                            }
+                        );
 
-                    await context.SaveChangesAsync();
-                }
+                        await context.SaveChangesAsync();
+                    }
 
-                if (!await context.Offices.AnyAsync())
-                {
-                    await context.Offices.AddRangeAsync(
-                        new Office
-                        {
-                            Name = "Ventanilla 1",
-                            Description = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore, aspernatur.",
-                            CreationDate = DateTime.Now,
-                            Activo = true
-                        },
-                        new Office
-                        {
-                            Name = "Ventanilla 2",
-                            Description = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, eos!",
-                            CreationDate = DateTime.Now,
-                            Activo = true
-                        },
-                        new Office
-                        {
-                            Name = "Ventanilla 3",
-                            Description = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore, aspernatur.",
-                            CreationDate = DateTime.Now,
-                            Activo = true
-                        },
-                        new Office
-                        {
-                            Name = "Ventanilla 4",
-                            Description = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, eos!",
-                            CreationDate = DateTime.Now,
-                            Activo = true
-                        },
-                        new Office
-                        {
-                            Name = "Ventanilla 5",
-                            Description = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, eos!",
-                            CreationDate = DateTime.Now,
-                            Activo = true
-                        },
-                        new Office
-                        {
-                            Name = "Ventanilla 6",
-                            Description = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, eos!",
-                            CreationDate = DateTime.Now,
-                            Activo = true
-                        }
-                    );
+                    if (!await context.Offices.AnyAsync())
+                    {
+                        await context.Offices.AddRangeAsync(
+                            new Office
+                            {
+                                Name = "Ventanilla 1",
+                                Description = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore, aspernatur.",
+                                CreationDate = DateTime.Now,
+                                Activo = true
+                            },
+                            new Office
+                            {
+                                Name = "Ventanilla 2",
+                                Description = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, eos!",
+                                CreationDate = DateTime.Now,
+                                Activo = true
+                            },
+                            new Office
+                            {
+                                Name = "Ventanilla 3",
+                                Description = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore, aspernatur.",
+                                CreationDate = DateTime.Now,
+                                Activo = true
+                            },
+                            new Office
+                            {
+                                Name = "Ventanilla 4",
+                                Description = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, eos!",
+                                CreationDate = DateTime.Now,
+                                Activo = true
+                            },
+                            new Office
+                            {
+                                Name = "Ventanilla 5",
+                                Description = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, eos!",
+                                CreationDate = DateTime.Now,
+                                Activo = true
+                            },
+                            new Office
+                            {
+                                Name = "Ventanilla 6",
+                                Description = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, eos!",
+                                CreationDate = DateTime.Now,
+                                Activo = true
+                            }
+                        );
 
-                    await context.SaveChangesAsync();
+                        await context.SaveChangesAsync();
+                    }
                 }
 
                 if(!await context.Priorities.AnyAsync())
