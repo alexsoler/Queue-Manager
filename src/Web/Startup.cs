@@ -133,6 +133,10 @@ namespace Web
             }
 
             Directory.SetCurrentDirectory(env.ContentRootPath);
+            var directoryResources = Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "Resources"));
+            directoryResources.CreateSubdirectory("Images");
+            directoryResources.CreateSubdirectory("Videos");
+            directoryResources.CreateSubdirectory("Audios");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
