@@ -14,9 +14,9 @@ namespace Web.ViewModels
         public bool Used { get; set; }
         [Display(Name = "Nombre del archivo")]
         public string Name { get; set; }
-        public byte[] File { get; set; }
         [Display(Name = "Fecha de Creación")]
         public DateTime CreationDate { get; set; }
         public string ContentType { get; set; }
+        public string Url { get; set; }
     }
 }

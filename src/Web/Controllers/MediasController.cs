@@ -57,7 +57,7 @@ namespace Web.Controllers
 
             var file = await _mediaService.GetMediaAsync(id.Value);
 
-            return File(file.File, file.ContentType);
+            return Content(file.Url);
         }
 
         // GET: Medias/Delete/5
@@ -115,6 +115,22 @@ namespace Web.Controllers
                 if (formFile.Length > 0)
                 {
                     var media = _mapper.Map<Media>(formFile);
+
+                    string folder = "Images";
+
+                    if (media.Video) { folder = "Videos"; }
+                    else if (media.Audio) { folder = "Audios"; }
+
+                    string dirCurrent = Path.Combine("Resources", folder, media.Name);
+
+                    var fullPath = Path.Combine(Directory.GetCurrentDirectory(), dirCurrent);
+
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+
+                    media.Url = $"/Resources/{folder}/{media.Name}";
 
                     await _mediaService.AddMediaAsync(media);
                 }

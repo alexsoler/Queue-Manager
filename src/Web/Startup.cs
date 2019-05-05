@@ -28,6 +28,8 @@ using Web.Hubs;
 using Web.Extensions;
 using Web.Models;
 using Rotativa.AspNetCore;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace Web
 {
@@ -130,8 +132,15 @@ namespace Web
                 app.UseHsts();
             }
 
+            Directory.SetCurrentDirectory(env.ContentRootPath);
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
             app.UseCookiePolicy();
 
             app.UseAuthentication();

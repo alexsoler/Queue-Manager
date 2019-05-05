@@ -46,10 +46,7 @@ namespace Web.Profiles
                         else if (media.Audio)
                             return "Audio";
                         return string.Empty;
-                    }))
-                .ForMember(dest =>
-                    dest.File,
-                    opt => opt.MapFrom(x => default(byte[])));
+                    }));
 
             CreateMap<DisplayMedia, DisplayMediaViewModel>()
                 .ForMember(dest =>
@@ -84,16 +81,6 @@ namespace Web.Profiles
                 .ForMember(dest =>
                     dest.CreationDate,
                     opt => opt.MapFrom(src => DateTime.Now))
-                .ForMember(dest =>
-                    dest.File,
-                    opt => opt.MapFrom((formFile, media) =>
-                    {
-                        using (var binaryFile = new BinaryReader(formFile.OpenReadStream()))
-                        {
-                            return binaryFile.ReadBytes((int)formFile.Length);
-                        }
-
-                    }))
                 .ForMember(dest =>
                     dest.Img,
                     opt => opt.MapFrom(src => src.ContentType.Contains("image")))

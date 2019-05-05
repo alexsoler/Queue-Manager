@@ -32,7 +32,7 @@ namespace Web.Controllers
         {
             ViewData["listImages"] = new SelectList(
                 _mapper.Map<IEnumerable<MediaViewModel>>(await _mediaService.GetImages()),
-                "Id", "Name");
+                "Url", "Name");
             return View(_optionsTouch.Value);
         }
 

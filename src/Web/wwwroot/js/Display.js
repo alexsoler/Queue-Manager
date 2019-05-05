@@ -103,9 +103,14 @@ function getMediaList() {
 }
 
 function playMedia(id, contentType) {
+
+    let url = null;
+    $.get(`/Medias/GetMedia/${id}`, function (resp) {
+        url = resp;
+
     if (contentType.includes("image")) {
         var img = document.getElementById("img");
-        img.src = `/Medias/GetMedia/${id}`;
+        img.src = url;
         $(img).fadeIn("slow", () => {
             setTimeout(() => $(img).fadeOut("slow", () => nextMediaPlay()), duracionImagenes);
         });
@@ -117,7 +122,7 @@ function playMedia(id, contentType) {
             return;
 
         var source = document.getElementById("vid");
-        source.src = `/Medias/GetMedia/${id}`;
+        source.src = url;
         source.type = contentType;
         $("#embedVideo").show();
 
@@ -131,13 +136,14 @@ function playMedia(id, contentType) {
             return;
 
         var sourceAud = document.getElementById("aud");
-        sourceAud.src = `/Medias/GetMedia/${id}`;
+        sourceAud.src = url;
         sourceAud.type = contentType;
 
         $("#embedAudio").show();
         audio.load();
         audio.volume = volumenMultimedia;
-    }
+        }
+    });
 }
 
 function nextMediaPlay() {
