@@ -41,6 +41,7 @@ namespace Microsoft.QueueManager.Infrastructure.Data
             builder.Entity<OfficeTask>().HasQueryFilter(x => x.Activo == true);
             builder.Entity<TaskEntity>().HasQueryFilter(x => x.Activo == true);
             builder.Entity<Office>().HasQueryFilter(x => x.Activo == true);
+            builder.Entity<Status>().Property(x => x.Id).ValueGeneratedNever();
 
             base.OnModelCreating(builder);
         }
