@@ -19,7 +19,7 @@ function EditTicketCustom(event) {
 
 function RefreshViewPreviewTicket() {
     const custom = $('#FormEditTicket').serialize();
-    document.getElementById("frameTicket").src = `/Touch/Ticket?displayTokenName=C023&NamePriority=Normal&NameTask=Matricula&${custom}`;
+    document.getElementById("frameTicket").src = `/Touch/Ticket?displayTokenName=C012&NamePriority=Prioridad&NameTask=Tarea&${custom}`;
 }
 
 function loadAlert(mensaje, tipoMensaje, nameClass) {
