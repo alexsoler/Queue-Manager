@@ -43,7 +43,7 @@ namespace Web.Hubs
             var ticket = await _ticketService.SetTicketInCalled(idTicket, idOffice, operatorId);
             var ticketDisplay = _mapper.Map<TicketDisplayParameter>(ticket);
 
-            var officesGroup = await _ticketService.GetOfficesTask(ticket.TaskEntityId);
+            var officesGroup = await _ticketService.GetOfficesTask(ticket.TaskEntityId.Value);
 
             await Clients.Caller.ToAttendTicket(idTicket);
             await Clients.Groups(officesGroup).RemoveTicketCalled(idTicket);
