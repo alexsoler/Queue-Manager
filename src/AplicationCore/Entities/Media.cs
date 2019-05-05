@@ -14,6 +14,7 @@ namespace ApplicationCore.Entities
         public string Name { get; set; }
         public string ContentType { get; set; }
         public string Url { get; set; }
+        public string FullPath { get; set; }
         public DisplayMedia DisplayMedia { get; set; }
     }
 }
