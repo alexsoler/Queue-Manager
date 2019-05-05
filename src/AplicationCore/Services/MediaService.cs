@@ -79,10 +79,8 @@ namespace ApplicationCore.Services
 
             try
             {
-                await _mediaRepository.GetByIdAsync(id).ContinueWith(media =>
-                {
-                    _mediaRepository.DeleteAsync(media.Result);
-                });
+                var media = await _mediaRepository.GetByIdAsync(id);
+                await _mediaRepository.DeleteAsync(media);
                 _logger.LogInformation($"Se elimino el archivo multimedia de id: {id}");
             }
             catch (Exception ex)
