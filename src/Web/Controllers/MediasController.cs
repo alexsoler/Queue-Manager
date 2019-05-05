@@ -86,10 +86,30 @@ namespace Web.Controllers
             if (!id.HasValue)
                 return Conflict("No se recibio el id");
 
+            var media = await _mediaService.GetMediaAsync(id.Value);
+
+            if (media is null) return NotFound();
+
             try
             {
                 // TODO: Add delete logic here
                 var result = await _mediaService.RemoveAsync(id.Value);
+
+                try
+                {
+                    if(System.IO.File.Exists(media.FullPath))
+                    {
+                        System.IO.File.Delete(media.FullPath);
+                    }
+                    else
+                    {
+                        _logger.LogInformation("File not found");
+                    }
+                }
+                catch (IOException ioExp)
+                {
+                    _logger.LogWarning(ioExp.Message);
+                }
 
                 _logger.LogInformation($"Se elimino un archivo de id {id.Value}");
                 return Ok(result);
@@ -125,14 +145,18 @@ namespace Web.Controllers
 
                     var fullPath = Path.Combine(Directory.GetCurrentDirectory(), dirCurrent);
 
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    if (!System.IO.File.Exists(fullPath))
                     {
-                        await formFile.CopyToAsync(stream);
+                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        {
+                            await formFile.CopyToAsync(stream);
+                        }
+
+                        media.Url = $"/Resources/{folder}/{media.Name}";
+                        media.FullPath = fullPath;
+
+                        await _mediaService.AddMediaAsync(media);
                     }
-
-                    media.Url = $"/Resources/{folder}/{media.Name}";
-
-                    await _mediaService.AddMediaAsync(media);
                 }
             }
 
