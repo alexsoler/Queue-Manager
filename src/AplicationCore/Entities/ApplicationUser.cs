@@ -9,6 +9,7 @@ namespace ApplicationCore.Entities
     {
         public string Name { get; set; }
         public bool Activo { get; set; }
+        public DateTime CreationDate { get; set; }
         public List<OfficeOperator> VentanillasOperadores { get; set; }
     }
 }
