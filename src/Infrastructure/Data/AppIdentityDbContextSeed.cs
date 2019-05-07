@@ -16,7 +16,8 @@ namespace Microsoft.QueueManager.Infrastructure.Data
                 UserName = "demouser",
                 PhoneNumber = "55555555",
                 Email = "demouser@queue.com",
-                Activo = true
+                Activo = true,
+                CreationDate = DateTime.Now
             };
 
             await userManager.CreateAsync(defaultUser, "Pass@word1");
