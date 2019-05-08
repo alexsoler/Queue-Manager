@@ -41,7 +41,6 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveComment(CommentViewModel commentViewModel)
         {
             var comment = _mapper.Map<Comment>(commentViewModel);
