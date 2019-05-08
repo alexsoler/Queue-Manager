@@ -102,6 +102,7 @@ namespace Web
             services.AddScoped<IMediaViewModel, MediaViewModelService>();
             services.AddScoped<ICommentViewModel, CommentViewModelService>();
             services.AddScoped<IAddTasksOperatorsToNewOfficeViewModel, AddTasksOperatorsToNewOfficeViewModelService>();
+            services.AddScoped<IIndexViewModel, IndexViewModel>();
 
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 

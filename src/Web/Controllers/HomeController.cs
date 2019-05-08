@@ -5,16 +5,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Web.Interfaces;
 using Web.Models;
+using Web.ViewModels;
 
 namespace Web.Controllers
 {
     public class HomeController : Controller
     {
-        [Authorize]
-        public IActionResult Index()
+        private readonly IIndexViewModel _indexViewModel;
+
+        public HomeController(IIndexViewModel indexViewModel)
         {
-            return View();
+            _indexViewModel = indexViewModel;
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Index()
+        {
+            await _indexViewModel.Loaded();
+
+            return View(_indexViewModel.GetViewModel());
         }
 
         public IActionResult Privacy()

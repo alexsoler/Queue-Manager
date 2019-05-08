@@ -36,5 +36,18 @@ namespace ApplicationCore.Specifications
             if(includeOffice)
                 AddInclude(x => x.Office);
         }
+
+        public TicketSpecification(int month, int year, StatusTicket status)
+            : base(x => x.CreationDate.Month.Equals(month) && x.CreationDate.Year.Equals(year)
+                    && x.StatusId.Equals((int)status))
+        {
+
+        }
+
+        public TicketSpecification(StatusTicket status)
+            : base(x => x.StatusId.Equals((int)status))
+        {
+
+        }
     }
 }

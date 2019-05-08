@@ -1,9 +1,179 @@
-﻿@{
+﻿@model Web.ViewModels.IndexViewModel
+
+@{
     ViewData["Title"] = "Home Page";
-    ViewData["Name"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body pb-0">
+                    @if(User.IsInRole("Administrador"))
+                    {
+                    <div class="btn-group float-right">
+                        <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="icon-settings"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Crear</a>
+                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Index">Ver</a>
+                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/EditarUsuario">Editar</a>
+                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/EliminarUsuario">Eliminar</a>
+                        </div>
+                    </div>
+                    }
+                    <div class="text-value">@Model.CantUsuarios</div>
+                    <div>Usuarios</div>
+                </div>
+                <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                    <canvas class="chart" id="chartUsers" height="70"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-->
+        <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-info">
+                <div class="card-body pb-0">
+                    @if(User.IsInRole("Administrador"))
+                    {
+                    <div class="btn-group float-right">
+                        <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="icon-settings"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" asp-controller="Offices" asp-action="Create">Crear</a>
+                            <a class="dropdown-item" asp-controller="Offices" asp-action="Index">Ver</a>
+                            <a class="dropdown-item" asp-controller="Offices" asp-action="EditarOficina">Editar</a>
+                            <a class="dropdown-item" asp-controller="Offices" asp-action="EliminarOficina">Eliminar</a>
+                        </div>
+                    </div>
+                    } 
+                    <div class="text-value">@Model.CantOficinas</div>
+                    <div>Oficinas</div>
+                </div>
+                <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                    <canvas class="chart" id="chartOffices" height="70"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-->
+        <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body pb-0">
+                    @if(User.IsInRole("Administrador"))
+                    {
+                    <div class="btn-group float-right">
+                        <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="icon-settings"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" asp-controller="Medias" asp-action="Index">Lista</a>
+                        </div>
+                    </div>
+                    }
+                    <div class="text-value">@Model.CantMultimedia</div>
+                    <div>Multimedia</div>
+                </div>
+                <div class="chart-wrapper mt-3" style="height:70px;">
+                    <canvas class="chart" id="chartMedias" height="70"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-->
+        <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-danger">
+                <div class="card-body pb-0">
+                    @if(User.IsInRole("Administrador"))
+                    {
+                    <div class="btn-group float-right">
+                        <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="icon-settings"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" asp-controller="Comments" asp-action="Index">Lista</a>
+                        </div>
+                    </div>
+                    }                   
+                    <div class="text-value">@Model.CantComentarios</div>
+                    <div>Comentarios sin leer</div>
+                </div>
+                <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                    <canvas class="chart" id="chartComments" height="70"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-->
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Atención al cliente
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6 col-sm-3">
+                            <div class="callout callout-info">
+                                <small class="text-muted">Clientes en espera</small>
+                                <br>
+                                <strong class="h4">@Model.CantTicketsEspera</strong>
+                                <div class="chart-wrapper">
+                                    <canvas id="sparkline-chart-1" width="100" height="30"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-3">
+                            <div class="callout callout-danger">
+                                <small class="text-muted">Clientes llamados</small>
+                                <br>
+                                <strong class="h4">@Model.CantTicketsLlamados</strong>
+                                <div class="chart-wrapper">
+                                    <canvas id="sparkline-chart-2" width="100" height="30"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-3">
+                            <div class="callout callout-warning">
+                                <small class="text-muted">Clientes en asistencia</small>
+                                <br>
+                                <strong class="h4">@Model.CantTicketsAsistencia</strong>
+                                <div class="chart-wrapper">
+                                    <canvas id="sparkline-chart-3" width="100" height="30"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-3">
+                            <div class="callout callout-success">
+                                <small class="text-muted">Tickets emitidos</small>
+                                <br>
+                                <strong class="h4">@Model.CantTickets</strong>
+                                <div class="chart-wrapper">
+                                    <canvas id="sparkline-chart-4" width="100" height="30"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                        <canvas id="chartTickets" width="493" height="246" class="chartjs-render-monitor" style="display: block; width: 493px; height: 246px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts{ 
+    <script>
+        var months = @Html.Raw(Json.Serialize(Model.Months));
+        var dataChartUsers = @Html.Raw(Json.Serialize(Model.UsuariosMeses));
+        var dataChartOffices = @Html.Raw(Json.Serialize(Model.OficinasMeses));
+        var dataChartMedias = @Html.Raw(Json.Serialize(Model.MultimediaMeses));
+        var dataChartComments = @Html.Raw(Json.Serialize(Model.ComentariosMeses));
+        var dataTicketsProcesed = @Html.Raw(Json.Serialize(Model.TicketsProcesadosMeses));
+        var dataTicketsNotProcesed = @Html.Raw(Json.Serialize(Model.TicketsNoProcesadosMeses));
+    </script>
+
+    <script src="~/js/Dashboard.js" asp-append-version="true"></script>
+}
