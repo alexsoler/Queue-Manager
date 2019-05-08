@@ -13,7 +13,8 @@ namespace ApplicationCore.Entities
         public bool Used { get; set; }
         public string Name { get; set; }
         public string ContentType { get; set; }
-        public byte[] File { get; set; }
+        public string Url { get; set; }
+        public string FullPath { get; set; }
         public DisplayMedia DisplayMedia { get; set; }
     }
 }

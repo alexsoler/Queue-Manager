@@ -57,7 +57,7 @@ namespace Web.Controllers
 
             var file = await _mediaService.GetMediaAsync(id.Value);
 
-            return File(file.File, file.ContentType);
+            return Content(file.Url);
         }
 
         // GET: Medias/Delete/5
@@ -86,10 +86,30 @@ namespace Web.Controllers
             if (!id.HasValue)
                 return Conflict("No se recibio el id");
 
+            var media = await _mediaService.GetMediaAsync(id.Value);
+
+            if (media is null) return NotFound();
+
             try
             {
                 // TODO: Add delete logic here
                 var result = await _mediaService.RemoveAsync(id.Value);
+
+                try
+                {
+                    if(System.IO.File.Exists(media.FullPath))
+                    {
+                        System.IO.File.Delete(media.FullPath);
+                    }
+                    else
+                    {
+                        _logger.LogInformation("File not found");
+                    }
+                }
+                catch (IOException ioExp)
+                {
+                    _logger.LogWarning(ioExp.Message);
+                }
 
                 _logger.LogInformation($"Se elimino un archivo de id {id.Value}");
                 return Ok(result);
@@ -116,7 +136,27 @@ namespace Web.Controllers
                 {
                     var media = _mapper.Map<Media>(formFile);
 
-                    await _mediaService.AddMediaAsync(media);
+                    string folder = "Images";
+
+                    if (media.Video) { folder = "Videos"; }
+                    else if (media.Audio) { folder = "Audios"; }
+
+                    string dirCurrent = Path.Combine("Resources", folder, media.Name);
+
+                    var fullPath = Path.Combine(Directory.GetCurrentDirectory(), dirCurrent);
+
+                    if (!System.IO.File.Exists(fullPath))
+                    {
+                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        {
+                            await formFile.CopyToAsync(stream);
+                        }
+
+                        media.Url = $"/Resources/{folder}/{media.Name}";
+                        media.FullPath = fullPath;
+
+                        await _mediaService.AddMediaAsync(media);
+                    }
                 }
             }
 

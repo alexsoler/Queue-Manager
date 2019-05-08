@@ -28,6 +28,8 @@ using Web.Hubs;
 using Web.Extensions;
 using Web.Models;
 using Rotativa.AspNetCore;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace Web
 {
@@ -100,6 +102,7 @@ namespace Web
             services.AddScoped<IMediaViewModel, MediaViewModelService>();
             services.AddScoped<ICommentViewModel, CommentViewModelService>();
             services.AddScoped<IAddTasksOperatorsToNewOfficeViewModel, AddTasksOperatorsToNewOfficeViewModelService>();
+            services.AddScoped<IIndexViewModel, IndexViewModel>();
 
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 
@@ -130,8 +133,19 @@ namespace Web
                 app.UseHsts();
             }
 
+            Directory.SetCurrentDirectory(env.ContentRootPath);
+            var directoryResources = Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "Resources"));
+            directoryResources.CreateSubdirectory("Images");
+            directoryResources.CreateSubdirectory("Videos");
+            directoryResources.CreateSubdirectory("Audios");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
             app.UseCookiePolicy();
 
             app.UseAuthentication();

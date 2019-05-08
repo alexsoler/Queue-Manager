@@ -46,5 +46,11 @@ namespace ApplicationCore.Specifications
             AddInclude(x => x.OfficeTasks);
             AddInclude(X => X.OfficeOperators);
         }
+
+        public OfficeSpecification(int month, int year)
+            : base(x => x.CreationDate.Month.Equals(month) && x.CreationDate.Year.Equals(year))
+        {
+
+        }
     }
 }

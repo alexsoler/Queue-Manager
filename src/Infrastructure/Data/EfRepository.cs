@@ -61,6 +61,11 @@ namespace Microsoft.QueueManager.Infrastructure.Data
             return await ApplySpecification(spec).CountAsync();
         }
 
+        public async Task<int> CountAsync()
+        {
+            return await _dbContext.Set<T>().CountAsync();
+        }
+
         public void Delete(T entity)
         {
             _dbContext.Set<T>().Remove(entity);

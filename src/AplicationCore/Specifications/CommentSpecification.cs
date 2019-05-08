@@ -12,5 +12,11 @@ namespace ApplicationCore.Specifications
         {
 
         }
+
+        public CommentSpecification(int month, int year)
+            : base(x => x.CreationDate.Month.Equals(month) && x.CreationDate.Year.Equals(year))
+        {
+
+        }
     }
 }

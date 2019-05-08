@@ -104,7 +104,7 @@ namespace Web.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, PhoneNumber = Input.PhoneNumber, Name = Input.Name, Activo = true };
+                var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, PhoneNumber = Input.PhoneNumber, Name = Input.Name, Activo = true, CreationDate = DateTime.Now };
 
                 var userDisableExist = await _context.Users
                     .IgnoreQueryFilters()

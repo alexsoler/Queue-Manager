@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ApplicationCore.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Microsoft.QueueManager.Infrastructure.Data
 {
@@ -31,16 +32,18 @@ namespace Microsoft.QueueManager.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<OfficeTask>().HasKey(x => new { x.OfficeId, x.TaskId });
-            builder.Entity<OfficeOperator>().HasKey(x => new { x.OfficeId, x.ApplicationUserId });
-
-            builder.Entity<DisplayMedia>().HasIndex(x => x.MediaId).IsUnique();
-
-            builder.Entity<ApplicationUser>().HasQueryFilter(x => x.Activo == true);
-            builder.Entity<OfficeOperator>().HasQueryFilter(x => x.Activo == true);
-            builder.Entity<OfficeTask>().HasQueryFilter(x => x.Activo == true);
-            builder.Entity<TaskEntity>().HasQueryFilter(x => x.Activo == true);
-            builder.Entity<Office>().HasQueryFilter(x => x.Activo == true);
+            builder.Entity<Office>(ConfigureOffice);
+            builder.Entity<TaskEntity>(ConfigureTask);
+            builder.Entity<OfficeTask>(ConfigureOfficeTask);
+            builder.Entity<OfficeOperator>(ConfigureOfficeOperator);
+            builder.Entity<Media>(ConfigureMedia);
+            builder.Entity<Priority>(ConfigurePriority);
+            builder.Entity<Status>(ConfigureStatus);
+            builder.Entity<Ticket>(ConfigureTicket);
+            builder.Entity<DisplayMedia>(ConfigureDisplayMedia);
+            builder.Entity<DisplayMessage>(ConfigureDisplayMessages);
+            builder.Entity<Comment>(ConfigureComments);
+            builder.Entity<ApplicationUser>(ConfigureApplicationUser);
 
             base.OnModelCreating(builder);
         }
@@ -58,6 +61,76 @@ namespace Microsoft.QueueManager.Infrastructure.Data
                 }
             }
             return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void ConfigureOffice(EntityTypeBuilder<Office> builder)
+        {
+            builder.HasQueryFilter(x => x.Activo == true);
+            builder.Property(x => x.Name).HasMaxLength(30).IsRequired();
+            builder.Property(x => x.Description).HasMaxLength(200);
+        }
+
+        private void ConfigureTask(EntityTypeBuilder<TaskEntity> builder)
+        {
+            builder.Property(x => x.Name).HasMaxLength(50).IsRequired();
+            builder.Property(x => x.Prefix).HasMaxLength(1).IsRequired();
+            builder.HasQueryFilter(x => x.Activo == true);
+        }
+
+        private void ConfigureOfficeTask(EntityTypeBuilder<OfficeTask> builder)
+        {
+            builder.HasKey(x => new { x.OfficeId, x.TaskId });
+            builder.HasQueryFilter(x => x.Activo == true);
+        }
+
+        private void ConfigureOfficeOperator(EntityTypeBuilder<OfficeOperator> builder)
+        {
+            builder.HasKey(x => new { x.OfficeId, x.ApplicationUserId });
+            builder.HasQueryFilter(x => x.Activo == true);
+        }
+
+        private void ConfigureMedia(EntityTypeBuilder<Media> builder)
+        {
+            builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
+            builder.Property(x => x.ContentType).HasMaxLength(30).IsRequired();
+            builder.Property(x => x.FullPath).HasMaxLength(500).IsRequired();
+            builder.Property(x => x.Url).HasMaxLength(300).IsRequired();
+        }
+
+        private void ConfigurePriority(EntityTypeBuilder<Priority> builder)
+        {
+            builder.Property(x => x.Name).HasMaxLength(30).IsRequired();
+        }
+
+        private void ConfigureStatus(EntityTypeBuilder<Status> builder)
+        {
+            builder.Property(x => x.Id).ValueGeneratedNever();
+            builder.Property(x => x.Name).HasMaxLength(30).IsRequired();
+        }
+
+        private void ConfigureTicket(EntityTypeBuilder<Ticket> builder)
+        {
+            builder.Property(x => x.DisplayTokenName).HasMaxLength(4);
+        }
+
+        private void ConfigureDisplayMedia(EntityTypeBuilder<DisplayMedia> builder)
+        {
+            builder.HasIndex(x => x.MediaId).IsUnique();
+        }
+
+        private void ConfigureDisplayMessages(EntityTypeBuilder<DisplayMessage> builder)
+        {
+            builder.Property(x => x.Message).HasMaxLength(200).IsRequired();
+        }
+
+        private void ConfigureComments(EntityTypeBuilder<Comment> builder)
+        {
+            builder.Property(x => x.Message).HasMaxLength(500).IsRequired();
+        }
+
+        private void ConfigureApplicationUser(EntityTypeBuilder<ApplicationUser> builder)
+        {
+            builder.HasQueryFilter(x => x.Activo == true);
         }
     }
 }

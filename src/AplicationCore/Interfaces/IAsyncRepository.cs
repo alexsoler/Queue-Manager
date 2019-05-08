@@ -18,5 +18,6 @@ namespace ApplicationCore.Interfaces
         Task<bool> ExistAsync(ISpecification<T> spec);
         Task DeleteAsync(T entity);
         Task<int> CountAsync(ISpecification<T> spec);
+        Task<int> CountAsync();
     }
 }

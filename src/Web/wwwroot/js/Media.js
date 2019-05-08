@@ -92,10 +92,10 @@ function loadTable(url) {
     });
 }
 
-function loadView(id, contentType) {
+function loadView(url, contentType) {
     if (contentType.includes("image")) {
         var img = document.getElementById("img");
-        img.src = `/Medias/GetMedia/${id}`;
+        img.src = url;
         $(img).show();
     }
     else if (contentType.includes("video")) {
@@ -105,7 +105,7 @@ function loadView(id, contentType) {
             return;
 
         var source = document.getElementById("vid");
-        source.src = `/Medias/GetMedia/${id}`;
+        source.src = url;
         source.type = contentType;
 
         $("#embedVideo").show();
@@ -118,7 +118,7 @@ function loadView(id, contentType) {
             return;
 
         var sourceAud = document.getElementById("aud");
-        sourceAud.src = `/Medias/GetMedia/${id}`;
+        sourceAud.src = url;
         sourceAud.type = contentType;
 
         $("#embedAudio").show();
