@@ -1,12 +1,12 @@
 {
   "DisplayTickets": {
-    "ActualTicket": "M001",
+    "ActualTicket": "E003",
     "ActualOffice": "VENTANILLA 1",
-    "TicketH1": "P002",
+    "TicketH1": "M002",
     "OfficeH1": "VENTANILLA 1",
     "TicketH2": "M001",
     "OfficeH2": "VENTANILLA 1",
-    "TicketH3": "E013",
+    "TicketH3": "M001",
     "OfficeH3": "VENTANILLA 1"
   },
   "DisplayCustom": {
@@ -34,8 +34,8 @@
     "MensajeNotificacion": "Por favor espere su turno"
   },
   "TicketCustom": {
-    "ShowLogo": false,
-    "Logo": null,
+    "ShowLogo": true,
+    "Logo": "queue",
     "ShowTitle": false,
     "Title": "Queue Manager",
     "SizeTitle": 5,
