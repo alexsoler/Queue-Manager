@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Web.Interfaces;
@@ -13,6 +15,7 @@ using Web.ViewModels;
 
 namespace Web.Controllers
 {
+    [Authorize(Roles = RolesStatic.Admin)]
     public class CustomTouchController : Controller
     {
         private readonly IWritableOptions<TouchCustom> _optionsTouch;

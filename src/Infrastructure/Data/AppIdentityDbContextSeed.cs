@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Entities;
+﻿using ApplicationCore;
+using ApplicationCore.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -22,10 +23,15 @@ namespace Microsoft.QueueManager.Infrastructure.Data
 
             await userManager.CreateAsync(defaultUser, "Pass@word1");
 
-            await roleManager.CreateAsync(new IdentityRole("Administrador"));
-            await roleManager.CreateAsync(new IdentityRole("Agente de Atención"));
+            await roleManager.CreateAsync(new IdentityRole(RolesStatic.Admin));
+            await roleManager.CreateAsync(new IdentityRole(RolesStatic.Operator));
+            await roleManager.CreateAsync(new IdentityRole(RolesStatic.TouchScreen));
+            await roleManager.CreateAsync(new IdentityRole(RolesStatic.DisplayScreen));
 
-            await userManager.AddToRolesAsync(defaultUser, new string[] { "Administrador", "Agente de Atención" });
+            await userManager.AddToRolesAsync(defaultUser, new string[] {
+                RolesStatic.Admin, RolesStatic.Operator,
+                RolesStatic.TouchScreen, RolesStatic.DisplayScreen
+            });
         }
     }
 }

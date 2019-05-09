@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -16,6 +18,7 @@ using Web.ViewModels;
 
 namespace Web.Controllers
 {
+    [Authorize(Roles = RolesStatic.TouchScreen)]
     public class TouchController : Controller
     {
         private readonly ITaskService _taskService;

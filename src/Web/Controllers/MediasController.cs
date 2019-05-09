@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using AutoMapper;
@@ -14,7 +15,7 @@ using Web.ViewModels;
 
 namespace Web.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = RolesStatic.Admin)]
     public class MediasController : Controller
     {
         private readonly IMediaService _mediaService;
@@ -50,6 +51,7 @@ namespace Web.Controllers
         }
 
         // GET: Medias/GetMedia
+        [Authorize]
         public async Task<IActionResult> GetMedia(int? id)
         {
             if (!id.HasValue)

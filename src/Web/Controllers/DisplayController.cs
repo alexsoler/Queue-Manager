@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Interfaces;
 using Web.Models;
@@ -12,6 +14,7 @@ using Web.ViewModels;
 
 namespace Web.Controllers
 {
+    [Authorize(Roles = RolesStatic.DisplayScreen)]
     public class DisplayController : Controller
     {
         private readonly IWritableOptions<DisplayTickets> _options;
