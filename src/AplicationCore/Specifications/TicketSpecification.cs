@@ -49,5 +49,32 @@ namespace ApplicationCore.Specifications
         {
 
         }
+
+        public TicketSpecification(string idUser, DateTime? initialDate, DateTime? endDate)
+            : base(x => x.ApplicationUserId == idUser && (!initialDate.HasValue || x.CreationDate >= initialDate)
+                && (!endDate.HasValue || x.CreationDate <= endDate))
+        {
+            AddInclude(x => x.Priority);
+            AddInclude(x => x.TaskEntity);
+            AddInclude(x => x.Status);
+        }
+
+        public TicketSpecification(int idOffice, DateTime? initialDate, DateTime? endDate)
+            : base(x => x.OfficeId == idOffice && (!initialDate.HasValue || x.CreationDate >= initialDate)
+                && (!endDate.HasValue || x.CreationDate <= endDate))
+        {
+            AddInclude(x => x.Priority);
+            AddInclude(x => x.TaskEntity);
+            AddInclude(x => x.Status);
+        }
+
+        public TicketSpecification(DateTime? initialDate, DateTime? endDate)
+            : base(x => (!initialDate.HasValue || x.CreationDate >= initialDate)
+                && (!endDate.HasValue || x.CreationDate <= endDate))
+        {
+            AddInclude(x => x.Priority);
+            AddInclude(x => x.TaskEntity);
+            AddInclude(x => x.Status);
+        }
     }
 }
