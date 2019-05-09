@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ApplicationCore;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Interfaces;
 using Web.Models;
@@ -13,6 +15,7 @@ using Web.ViewModels;
 
 namespace Web.Controllers
 {
+    [Authorize(Roles = RolesStatic.Admin)]
     public class CustomDisplayController : Controller
     {
         private readonly IMediaService _mediaService;

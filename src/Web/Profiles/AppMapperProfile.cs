@@ -110,6 +110,31 @@ namespace Web.Profiles
                     dest.Office,
                     opt => opt.MapFrom(x => x.Office.Name));
 
+            CreateMap<Ticket, TicketReportViewModel>()
+                .ForMember(dest =>
+                    dest.NamePriority,
+                    opt => opt.MapFrom(x => x.Priority.Name))
+                .ForMember(dest =>
+                    dest.NameTask,
+                    opt => opt.MapFrom(x => x.TaskEntity.Name))
+                .ForMember(dest =>
+                    dest.CreationDate,
+                    opt => opt.MapFrom(x => x.CreationDate.ToString("dd/MM/yyyy hh:mm tt")))
+                .ForMember(dest =>
+                    dest.Estado,
+                    opt => opt.MapFrom(x => x.Status.Name))
+                .ForMember(dest =>
+                    dest.Duracion,
+                    opt => opt.MapFrom((ticket, ticketReport) =>
+                    {
+                        if(ticket.CompletionAttentionDate.HasValue)
+                        {
+                            return (ticket.CompletionAttentionDate - ticket.CreationDate).Value.ToString(@"mm\m\ ss\s");
+                        }
+
+                        return "0m";
+                    }));
+
             CreateMap<DisplayMessage, DisplayMessageViewModel>();
             CreateMap<Comment, CommentViewModel>();
             CreateMap<CommentViewModel, Comment>();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using AutoMapper;
@@ -12,7 +13,7 @@ using Web.ViewModels;
 
 namespace Web.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = RolesStatic.Admin)]
     public class TasksController : Controller
     {
         private readonly ITaskService _taskService;

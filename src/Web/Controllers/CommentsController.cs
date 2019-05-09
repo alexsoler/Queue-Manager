@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Interfaces;
 using Web.ViewModels;
 
 namespace Web.Controllers
 {
+    [Authorize(Roles = RolesStatic.Admin)]
     public class CommentsController : Controller
     {
         private readonly IAsyncRepository<Comment> _commentsRepository;
@@ -41,6 +44,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = RolesStatic.TouchScreen)]
         public async Task<IActionResult> SaveComment(CommentViewModel commentViewModel)
         {
             var comment = _mapper.Map<Comment>(commentViewModel);

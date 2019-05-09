@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore;
 using ApplicationCore.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +12,7 @@ using Web.Areas.Identity.ViewModels;
 
 namespace Web.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = RolesStatic.Admin)]
     [Route("Usuarios")]
     public class UsuariosController : Controller
     {

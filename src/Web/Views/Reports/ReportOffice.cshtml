@@ -1,0 +1,82 @@
+﻿@model Web.ViewModels.OfficeReportViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Reporte Oficina - @DateTime.Now.ToString("dd-MM-yyyy")</title>
+
+    <link rel="stylesheet" href="~/css/style.css" />
+</head>
+<body style="background-color: white;">
+    <div class="container-fluid">
+        <h1 class="text-center">@Model.Oficina</h1>
+        <h3 class="text-center">
+            Fecha de inicio:
+            @if (Model.InitialDate.HasValue)
+            {
+                @Model.InitialDate.Value.ToString("dd/MM/yyyy hh:mm tt")
+            }
+            else
+            {
+                <text>0/0/0</text>
+            }
+            Fecha de finalizacion:
+            @if (Model.EndDate.HasValue)
+            {
+                @Model.EndDate.Value.ToString("dd/MM/yyyy hh:mm tt")
+            }
+            else
+            {
+                @DateTime.Now.ToString("dd/MM/yyyy hh:mm tt")
+            }
+        </h3>
+        <h3 class="text-center">Creado: @DateTime.Today.ToString("dd/MM/yyyy")</h3>
+        <br />
+
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Boleto</th>
+                            <th>Servicio</th>
+                            <th>Prioridad</th>
+                            <th>Status</th>
+                            <th>Tirado</th>
+                            <th>Duración</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Tickets)
+                        {
+                            <tr>
+                                <td>@item.DisplayTokenName</td>
+                                <td>@item.NameTask</td>
+                                <td>
+                                    <span class="@(item.NamePriority == ApplicationCore.PrioritiesStatic.Normal ? "badge badge-success" : "badge badge-warning")">
+                                        @item.NamePriority
+                                    </span>
+                                </td>
+                                <td>@item.Estado</td>
+                                <td>@item.CreationDate</td>
+                                <td>@item.Duracion</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="~/lib/popper.js/popper.js"></script>
+    <script src="~/lib/@@coreui/coreui/js/coreui.min.js"></script>
+</body>
+</html>

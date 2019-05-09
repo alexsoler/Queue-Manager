@@ -15,7 +15,7 @@ using Web.ViewModels;
 
 namespace Web.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = RolesStatic.Admin)]
     public class OfficesController : Controller
     {
         private readonly IOfficeService _officeService;
