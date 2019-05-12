@@ -20,9 +20,10 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Pantalla de visualización</title>
-    
+
     <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="~/css/DisplayStyle.css" />
+    <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <style>
         body {
             font-family: "@Regex.Replace(FontFamily, "[+]", " ")";
@@ -132,20 +133,25 @@
 
     </div>
 
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/popper.js/popper.js"></script>
-    <script src="~/lib/@@coreui/coreui/js/coreui.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="~/lib/@@aspnet/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/Clock.js"></script>
+    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <button id="btnSignOut" type="submit" class="btn btn-light btn-lg"><i class="fa fa-sign-out"></i></button>
+    </form>
 
-    <script>
+
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/popper.js/popper.js"></script>
+        <script src="~/lib/@@coreui/coreui/js/coreui.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="~/lib/@@aspnet/signalr/dist/browser/signalr.js"></script>
+        <script src="~/js/Clock.js"></script>
+
+        <script>
         var volumenMultimedia = JSON.parse(@Json.Serialize(_optionsStyle.CurrentValue.VolumenMultimedia));
         var volumenVoz = JSON.parse(@Json.Serialize(_optionsStyle.CurrentValue.VolumenVoz));
         var duracionMensajes = JSON.parse(@Json.Serialize(_optionsStyle.CurrentValue.DuracionMensajes));
         var duracionImagenes = JSON.parse(@Json.Serialize(_optionsStyle.CurrentValue.DuracionImagen));
-    </script>
-    <script src="~/js/Display.js" asp-append-version="true"></script>
-    <link type="text/css" href="https://fonts.googleapis.com/css?family=@FontFamily" rel="stylesheet">
+        </script>
+        <script src="~/js/Display.js" asp-append-version="true"></script>
+        <link type="text/css" href="https://fonts.googleapis.com/css?family=@FontFamily" rel="stylesheet">
 </body>
 </html>

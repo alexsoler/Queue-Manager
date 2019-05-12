@@ -94,6 +94,11 @@ $('#commentsModal').on('hidden.bs.modal', function (e) {
     document.getElementById("FormComment").reset();
 });
 
+$('#signoutModal').on('hidden.bs.modal', function (e) {
+    // do something...
+    document.getElementById("FormLogOut").reset();
+});
+
 //Remueve la pantalla touch del grupo signalR 
 window.addEventListener("beforeunload", function (event) {
     connection.invoke("RemoveFromGroup", "touch").catch(function (err) {

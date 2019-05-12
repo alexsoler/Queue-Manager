@@ -1,4 +1,5 @@
-﻿let listaDeReproduccion, contadorMedia;
+﻿
+let listaDeReproduccion, contadorMedia;
 
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/queueHub").build();
@@ -214,3 +215,19 @@ function speak(text) {
 
     window.speechSynthesis.speak(msg);
 }
+
+var timer;
+
+$(window).on('mousemove', function () {
+    $('#btnSignOut').addClass('show');
+    try {
+        clearTimeout(timer);
+    } catch (e) {
+        console.error(e);
+    }
+
+    timer = setTimeout(function () {
+        $('#btnSignOut').removeClass('show');
+        }, 1000);
+});
+
