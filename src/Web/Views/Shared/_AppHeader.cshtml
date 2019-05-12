@@ -1,4 +1,5 @@
-﻿<header class="app-header navbar">
+﻿@using ApplicationCore
+<header class="app-header navbar">
     <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -11,14 +12,21 @@
     </button>
     <ul class="nav navbar-nav d-md-down-none">
         <li class="nav-item px-3">
-            <a class="nav-link" href="#">Dashboard</a>
+            <a class="nav-link" asp-controller="Home" asp-action="Index">Dashboard</a>
         </li>
+        @if(User.IsInRole(RolesStatic.TouchScreen))
+        {
         <li class="nav-item px-3">
-            <a class="nav-link" href="#">Users</a>
+            <a class="nav-link" target="_blank" asp-controller="Touch" asp-action="Index">Pantalla Tactil</a>
         </li>
+        }
+        @if(User.IsInRole(RolesStatic.DisplayScreen))
+        {
         <li class="nav-item px-3">
-            <a class="nav-link" href="#">Settings</a>
+            <a class="nav-link" target="_blank" asp-controller="Display" asp-action="Index">Pantalla de visualización</a>
         </li>
+        }
+        
     </ul>
     <partial name="_LoginPartial" />
 </header>
