@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore;
+using ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Interfaces;
@@ -14,18 +16,35 @@ namespace Web.Controllers
     public class HomeController : Controller
     {
         private readonly IIndexViewModel _indexViewModel;
+        private readonly IAppLogger<HomeController> _logger;
 
-        public HomeController(IIndexViewModel indexViewModel)
+        public HomeController(IIndexViewModel indexViewModel,
+            IAppLogger<HomeController> logger)
         {
             _indexViewModel = indexViewModel;
+            _logger = logger;
         }
 
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            await _indexViewModel.Loaded();
+            if (User.IsInRole(RolesStatic.Admin) || User.IsInRole(RolesStatic.Operator))
+            {
+                await _indexViewModel.Loaded();
 
-            return View(_indexViewModel.GetViewModel());
+                _logger.LogInformation("Usuario Admin o Operator");
+                return View(_indexViewModel.GetViewModel());
+            }
+            else if(User.IsInRole(RolesStatic.TouchScreen))
+            {
+                _logger.LogInformation("Usuario touch");
+                return RedirectToAction("Index", "Touch");
+            }
+            else
+            {
+                _logger.LogInformation("Usuario display");
+                return RedirectToAction("Index", "Display");
+            }
         }
 
         public IActionResult Privacy()
