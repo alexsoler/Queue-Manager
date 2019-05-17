@@ -16,7 +16,7 @@
 
 }
 <ol class="breadcrumb">
-    <li class="breadcrumb-item">
+    @*<li class="breadcrumb-item">
         @if (values.ContainsKey("action"))
         {
             @Html.ActionLink(controllerName, "Index", controllerName);
@@ -39,7 +39,7 @@
             }
 
         </li>
-    }
+    }*@
     @if (ViewData["Title"] != null)
     {
         <li class="breadcrumb-item active">
