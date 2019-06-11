@@ -68,10 +68,10 @@
   },
   "SystemCustom": {
     "Logo": "queue",
-    "LogoMin": null,
-    "Nombre": null,
-    "Email": null,
-    "Telefono": null,
+    "LogoMin": "queuemin",
+    "Nombre": "Universidad Politecnica de Honduras",
+    "Email": "upolitecnica@gmail.com",
+    "Telefono": "+50422838212",
     "Descripcion": null
   }
 }

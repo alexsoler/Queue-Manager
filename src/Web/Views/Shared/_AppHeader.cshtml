@@ -1,11 +1,28 @@
 ﻿@using ApplicationCore
+@using Web.Interfaces
+@inject IWritableOptions<SystemCustom> options
+
 <header class="app-header navbar">
     <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
         <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="#">
-        <img class="navbar-brand-full" src="~/img/brand/queue.svg" width="89" height="25" alt="CoreUI Logo">
-        <img class="navbar-brand-minimized" src="~/img/brand/queuemin.svg" width="30" height="30" alt="CoreUI Logo">
+        @if (options.Value.Logo != "queue")
+        {
+            <img class="navbar-brand-full" src="@options.Value.Logo" width="89" height="25" alt="CoreUI Logo">
+        }
+        else
+        {
+            <img class="navbar-brand-full" src="~/img/brand/queue.svg" width="89" height="25" alt="CoreUI Logo">
+        }
+        @if (options.Value.LogoMin != "queuemin")
+        {
+            <img class="navbar-brand-minimized" src="@options.Value.LogoMin" width="30" height="30" alt="CoreUI Logo">
+        }
+        else
+        {
+            <img class="navbar-brand-minimized" src="~/img/brand/queuemin.svg" width="30" height="30" alt="CoreUI Logo">
+        }
     </a>
     <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
         <span class="navbar-toggler-icon"></span>
