@@ -1,0 +1,35 @@
+﻿@model SystemCustom
+@{
+    ViewData["Title"] = "Acerca";
+}
+
+<div class="animated fadeIn">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    @if (Model.Logo != "queue")
+                    {
+                        <img class="img-thumbnail" src="@Model.Logo" alt="Logo"/>
+                    }
+                    else
+                    {
+                        <img class="img-thumbnail" src="~/img/brand/queue.svg" alt="Logo" />
+                    }
+                    <hr />
+                    <dl class="row">
+                        <dt class="col-sm-3">Nombre</dt>
+                        <dd class="col-sm-9">@Model.Nombre</dd>
+                        <dt class="col-sm-3">Email</dt>
+                        <dd class="col-sm-9"><a href="mailto:@Model.Email" class="text-white">@Model.Email</a></dd>
+                        <dt class="col-sm-3">Telefóno</dt>
+                        <dd class="col-sm-9">@Model.Telefono</dd>
+                        <dt class="col-sm-3">Descripción</dt>
+                        <dd class="col-sm-9">@Model.Descripcion</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

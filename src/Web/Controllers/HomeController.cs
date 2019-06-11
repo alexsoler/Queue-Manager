@@ -17,12 +17,15 @@ namespace Web.Controllers
     {
         private readonly IIndexViewModel _indexViewModel;
         private readonly IAppLogger<HomeController> _logger;
+        private readonly IWritableOptions<SystemCustom> _options;
 
         public HomeController(IIndexViewModel indexViewModel,
-            IAppLogger<HomeController> logger)
+            IAppLogger<HomeController> logger,
+            IWritableOptions<SystemCustom> options)
         {
             _indexViewModel = indexViewModel;
             _logger = logger;
+            _options = options;
         }
 
         [Authorize]
@@ -45,6 +48,16 @@ namespace Web.Controllers
                 _logger.LogInformation("Usuario display");
                 return RedirectToAction("Index", "Display");
             }
+        }
+
+        public IActionResult About()
+        {
+            return View(_options.Value);
+        }
+        
+        public IActionResult Contact()
+        {
+            return View();
         }
 
         public IActionResult Privacy()
