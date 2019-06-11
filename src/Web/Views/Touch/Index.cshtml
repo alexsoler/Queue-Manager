@@ -214,12 +214,15 @@
     <script src="~/lib/@@coreui/coreui/js/coreui.min.js"></script>
     <script src="~/lib/@@aspnet/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/print.min.js"></script>
-    <script src="~/js/Touch.js" asp-append-version="true"></script>
-    <script>    
+    <script>
+
     setTimeout(function () {
         document.getElementById("FormLogOut").reset();
     }, 1000);
+
+    var mensajeNotificacion = '@optionsTouch.CurrentValue.MensajeNotificacion';
     </script>
+    <script src="~/js/Touch.js" asp-append-version="true"></script>
     <link type="text/css" href="https://fonts.googleapis.com/css?family=@optionsTouch.CurrentValue.FontFamily" rel="stylesheet">
 </body>
 </html>

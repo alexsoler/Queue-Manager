@@ -20,7 +20,7 @@ connection.on("ReceiveToken", function (ticketParameter) {
         printable: `/touch/ticket?DisplayTokenName=${ticketParameter.displayTokenName}&NameTask=${ticketParameter.nameTask}&NamePriority=${ticketParameter.namePriority}`,
         type: 'pdf',
         showModal: true,
-        modalMessage: 'Espere mientras se imprime el ticket'
+        modalMessage: mensajeNotificacion
     });
 
     closeNav();
