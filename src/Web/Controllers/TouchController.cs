@@ -71,7 +71,7 @@ namespace Web.Controllers
 
         public IActionResult Ticket([FromServices]IOptionsMonitor<TicketCustom> options, TicketParameter ticketParameter, TicketCustom ticketCustom)
         {
-            if (ticketCustom.PageWidth == default)
+            if (ticketCustom.PageWidth == 0)
                 ticketCustom = options.CurrentValue;
 
             var ticketvm = new TicketViewModel()
