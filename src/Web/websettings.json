@@ -1,12 +1,12 @@
 {
   "DisplayTickets": {
-    "ActualTicket": "M001",
+    "ActualTicket": "P002",
     "ActualOffice": "VENTANILLA 1",
-    "TicketH1": "M002",
+    "TicketH1": "M001",
     "OfficeH1": "VENTANILLA 1",
-    "TicketH2": "E001",
+    "TicketH2": "M001",
     "OfficeH2": "VENTANILLA 1",
-    "TicketH3": "P004",
+    "TicketH3": "M002",
     "OfficeH3": "VENTANILLA 1"
   },
   "DisplayCustom": {
@@ -65,5 +65,13 @@
     "FontFamily": "Consolas",
     "PageWidth": 58.0,
     "PageHeight": 58.0
+  },
+  "SystemCustom": {
+    "Logo": "queue",
+    "LogoMin": null,
+    "Nombre": null,
+    "Email": null,
+    "Telefono": null,
+    "Descripcion": null
   }
 }
