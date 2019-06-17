@@ -209,7 +209,7 @@ function speak(text) {
     var msg = new SpeechSynthesisUtterance();
     msg.text = text;
     msg.volume = volumenVoz;
-    msg.rate = 0.8;
+    msg.rate = 0.6;
     msg.pitch = 1;
     msg.lang = "es-MX";
 
