@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Web.ViewModels.CommentViewModel>
+
+    <table class="table table-responsive-md table-striped">
+        <thead>
+            <tr>
+                <th>Comentario</th>
+                <th>Fecha</th>
+                <th class="text-center">¿Visto?</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Message</td>
+                    <td>@item.CreationDate</td>
+                    <td class="text-center">
+                        @if (item.IsView)
+                        {
+                            <i class="fa fa-check fa-lg"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-close fa-lg"></i>
+                        }
+                    </td>
+                    <td>
+                        @if(!item.IsView)
+                        {
+                            <button type="button" class="btn btn-primary" onclick="changeCommentToView(@item.Id, this)">Visto</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

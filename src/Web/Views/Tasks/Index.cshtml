@@ -1,0 +1,197 @@
+﻿@model Web.ViewModels.TaskIndexViewModel
+@{
+    ViewData["Title"] = "Lista de Tareas";
+}
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Tareas
+                </div>
+                <div id="cardPrincipalBody" class="card-body">
+                    <div>
+                        <button id="addNewTask" type="button" class="btn btn-primary mb-3" data-toggle="modal" 
+                                data-target="#modalAddTask" onclick="loadCreate()">
+                            Agregar nueva tarea
+                        </button>
+                    </div>
+                    <div id="divTabla">
+                        <partial name="_TableAndPagination" model="Model" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAddTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Agregar Tarea</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodyCreate" class="modal-body">
+                <!--Contenido Create-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" form="FormCreateTask" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-success" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Editar</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodyEdit" class="modal-body">
+                <!--Contenido Edit-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" form="FormEdit" class="btn btn-success">Guardar Cambios</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-danger" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Eliminar</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodyDelete" class="modal-body">
+                <!--Contenido Delete-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" onclick="EliminarTarea()">Eliminar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+@Html.AntiForgeryToken()
+
+@section Scripts{
+    <script>
+        function CrearTarea(event) {
+            event.preventDefault();
+            let formIsValid = $("#FormCreateTask").valid();
+
+            if (formIsValid) {
+                var data = $("#FormCreateTask").serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Tasks/Create',
+                    data: data
+                }).done(function (result) {
+                    console.log(result);
+                    loadTable();
+                }).fail(function (result) {
+                    console.log(result);
+                });
+
+                $("#modalAddTask").modal("hide");
+            }
+        }
+
+        function loadTable() {
+            var pag = $("#pageItemActive").data("val");
+            $("#divTabla").load(`/Tasks/TableTasks?pag=${pag}`);
+        }
+
+        function loadCreate() {
+            $("#bodyCreate").load(`/Tasks/Create`);
+        }
+
+        function loadEdit(Id) {
+            $("#bodyEdit").load(`/Tasks/Edit/${Id}`);
+        }
+
+        function loadDelete(Id) {
+            $("#bodyDelete").load(`/Tasks/Delete/${Id}`);
+        }
+
+        function EditarTarea(event) {
+            event.preventDefault();
+
+            var formIsValid = $("#FormEdit").valid();
+
+            if (!formIsValid)
+                return;
+            const data = $("#FormEdit").serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: '/Tasks/Edit',
+                data: data
+            }).done((response) => {
+                console.log(response);
+                loadTable();
+                loadAlert("Se edito la tarea con exito", "Exito", "alert-success");
+            }).fail((response) => {
+                console.log(response);
+                loadAlert("No se pudo editar la tarea", "Error", "alert-danger");
+            });
+
+            $("#editarModal").modal('hide');
+        }
+
+        function EliminarTarea() {
+            const id = $("#deleteTask").val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/Tasks/Delete',
+                data: { id },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("MY-XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+                }
+            }).done((response) => {
+                console.log(response);
+                loadTable();
+                loadAlert("La tarea fue eliminada con exito", "Exito", "alert-success");
+            }).fail((response) => {
+                console.log(response);
+                loadAlert("No se pudo eliminar la tarea", "Error", "alert-danger");
+            });
+
+            $("#eliminarModal").modal('hide');
+        }
+
+        function loadAlert(mensaje, tipoMensaje, nameClass) {
+            $("#cardPrincipalBody").prepend(`<div class="alert ${nameClass} alert-dismissible fade show" role="alert">
+        <strong>${tipoMensaje}!</strong > ${mensaje}<button class="close" type = "button" data-dismiss="alert" aria-label="Close" >
+        <span aria-hidden="true">×</span></button></div>`);
+
+            setTimeout(function () {
+                $(".alert").alert('close');
+            }, 5000);
+        }
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Microsoft.QueueManager.Infrastructure.Identity;
+using ApplicationCore.Entities;
 
 namespace Web.Areas.Identity.Pages.Account
 {
@@ -37,9 +37,8 @@ namespace Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required(ErrorMessage = "Email es un campor requerido")]
-            [EmailAddress]
-            public string Email { get; set; }
+            [Required(ErrorMessage = "Usuario es un campo requerido")]
+            public string UserName { get; set; } 
 
             [Required]
             [DataType(DataType.Password)]
@@ -69,12 +68,12 @@ namespace Web.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
-
+            
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

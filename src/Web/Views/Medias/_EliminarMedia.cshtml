@@ -1,0 +1,7 @@
+﻿@model Web.ViewModels.MediaViewModel
+
+<p class="lead">¿Seguro que quiere eliminar el archivo @Model.Name?</p>
+
+<form method="post">
+    <input type="hidden" id="deleteMedia" value="@Model.Id" />
+</form>

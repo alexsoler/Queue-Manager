@@ -13,7 +13,23 @@ using Microsoft.EntityFrameworkCore;
 using Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.QueueManager.Infrastructure.Identity;
+using Web.Models.IdentityError;
+using ApplicationCore.Entities;
+using Microsoft.QueueManager.Infrastructure.Data;
+using ApplicationCore.Interfaces;
+using ApplicationCore.Services;
+using Microsoft.QueueManager.Infrastructure.Logging;
+using AutoMapper;
+using Web.Profiles;
+using Web.Interfaces;
+using Web.ViewModels;
+using Web.Services;
+using Web.Hubs;
+using Web.Extensions;
+using Web.Models;
+using Rotativa.AspNetCore;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace Web
 {
@@ -28,16 +44,16 @@ namespace Web
 
         public void ConfigureProductionServices(IServiceCollection services)
         {
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<QueueContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("QueueConnection")));
 
             ConfigureServices(services);
         }
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            services.AddDbContext<AppIdentityDbContext>(options => 
-                options.UseInMemoryDatabase("Identity"));
+            services.AddDbContext<QueueContext>(options => 
+                options.UseInMemoryDatabase("Queue"));
 
             ConfigureServices(services);
         }
@@ -52,10 +68,54 @@ namespace Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddAutoMapper();
+            Mapper.Initialize(cfg => cfg.AddProfile<AppMapperProfile>());
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
-                .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<QueueContext>()
+                .AddDefaultTokenProviders()
+                .AddErrorDescriber<IdentityError_es>();
+
+            services.Configure<IdentityOptions>(config =>
+            {
+                //Password settings
+                config.Password.RequireUppercase = false;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Password.RequiredLength = 6;
+                config.Password.RequireDigit = false;
+
+            });
+
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
+            services.AddScoped<IOfficeService, OfficeService>();
+            services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<IMediaService, MediaService>();
+            services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<IOperatorService, OperatorService>();
+            services.AddScoped<IDisplayMediaService, DisplayMediaService>();
+            services.AddScoped<IReportService, ReportService>();
+
+            services.AddScoped<IOfficeViewModel, OfficeViewModelService>();
+            services.AddScoped<ITaskIndexViewModel, TaskViewModelService>();
+            services.AddScoped<IMediaViewModel, MediaViewModelService>();
+            services.AddScoped<ICommentViewModel, CommentViewModelService>();
+            services.AddScoped<IAddTasksOperatorsToNewOfficeViewModel, AddTasksOperatorsToNewOfficeViewModelService>();
+            services.AddScoped<IIndexViewModel, IndexViewModel>();
+
+            services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+
+            services.ConfigureWritable<DisplayTickets>(Configuration.GetSection("DisplayTickets"), "websettings.json");
+            services.ConfigureWritable<DisplayCustom>(Configuration.GetSection("DisplayCustom"), "websettings.json");
+            services.ConfigureWritable<TouchCustom>(Configuration.GetSection("TouchCustom"), "websettings.json");
+            services.ConfigureWritable<TicketCustom>(Configuration.GetSection("TicketCustom"), "websettings.json");
+            services.ConfigureWritable<SystemCustom>(Configuration.GetSection("SystemCustom"), "websettings.json");
+
+            services.AddAntiforgery(options => options.HeaderName = "MY-XSRF-TOKEN");
+
+            services.AddSignalR();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -75,11 +135,27 @@ namespace Web
                 app.UseHsts();
             }
 
+            Directory.SetCurrentDirectory(env.ContentRootPath);
+            var directoryResources = Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "Resources"));
+            directoryResources.CreateSubdirectory("Images");
+            directoryResources.CreateSubdirectory("Videos");
+            directoryResources.CreateSubdirectory("Audios");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<QueueHub>("/queueHub");
+            });
 
             app.UseMvc(routes =>
             {
@@ -87,6 +163,8 @@ namespace Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            RotativaConfiguration.Setup(env);
         }
     }
 }

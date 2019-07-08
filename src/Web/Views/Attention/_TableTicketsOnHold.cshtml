@@ -1,0 +1,63 @@
+﻿@using Web.Hubs.ParametersObject
+
+@model IEnumerable<TicketParameter>
+
+<form>
+    <div class="form-row align-items-center">
+        <div class="col-sm-3 my-1">
+            <label class="sr-only" for="selectTask">Tareas:</label>
+            <select id="selectTask" class="form-control" asp-items="@ViewData["tasks"] as IEnumerable<SelectListItem>" onchange="filterTable(this, 1)">
+                <option value="">Todos los servicios</option>
+            </select>
+        </div>
+        <div class="col-sm-3 my-1">
+            <label class="sr-only" for="selectPriority">Prioridad</label>
+            <select id="selectPriority" class="form-control" onchange="filterTable(this, 2)">
+                <option value="">Todas las prioridades</option>
+                <option value="Normal">Normal</option>
+                <option value="Especial">Especial</option>
+            </select>
+        </div>
+        <div class="col-auto my-1">
+            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#limpiarModal">Quitar todos</button>
+        </div>
+    </div>
+</form>
+
+<table id="tableTickets" class="table table-responsive-sm table-hover mt-1">
+    <thead>
+        <tr>
+            <th scope="col" class="text-primary" style="cursor: pointer" onclick="sortTable(0, event, this)">
+                Boleto
+            </th>
+            <th scope="col" class="text-primary" style="cursor: pointer" onclick="sortTable(1, event, this)">
+                Servicio
+            </th>
+            <th scope="col" class="text-primary" style="cursor: pointer" onclick="sortTable(2, event, this)">
+                Prioridad
+            </th>
+            <th scope="col" class="text-primary" style="cursor: pointer" onclick="sortTable(3, event, this)">
+                Creación <i id="sortIcon" class="fa fa-sort-numeric-asc"></i>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr id="@item.Id">
+                <td>@item.DisplayTokenName</td>
+                <td>@item.NameTask</td>
+                <td>
+                    <span class="@(item.NamePriority == ApplicationCore.PrioritiesStatic.Normal ? "badge badge-success" : "badge badge-warning")">
+                        @item.NamePriority
+                    </span>
+                </td>
+                <td>@item.CreationDate</td>
+                <td>
+                    <a class="btn btn-sm btn-info mr-1" data-toggle="modal" data-target="#verModal" onclick="callClient('@item.Id', this)">Llamar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

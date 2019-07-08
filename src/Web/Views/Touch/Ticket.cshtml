@@ -1,0 +1,96 @@
+﻿@model Web.ViewModels.TicketViewModel
+@using System.Text.RegularExpressions;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Ticket</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: "@Regex.Replace(Model.Custom.FontFamily, "[+]", " ")";
+        }
+
+        #titulo {
+            font-size: @Html.Raw(Model.Custom.SizeTitle)mm;
+            font-style: @Model.Custom.FontStyleTitle;
+            font-weight: @Model.Custom.FontWeightTitle;
+        }
+
+        #displayTicket {
+            font-size: @Html.Raw(Model.Custom.SizeDisplayTicket)mm;
+            font-style: @Model.Custom.FontStyleDisplayTicket;
+            font-weight: @Model.Custom.FontWeightDisplayTicket;
+            line-height: 90%;
+        }
+
+        #task {
+            font-size: @Html.Raw(Model.Custom.SizeTask)mm;
+            font-style: @Model.Custom.FontStyleTask;
+            font-weight: @Model.Custom.FontWeightTask;
+        }
+
+        #priority {
+            font-size: @Html.Raw(Model.Custom.SizePriority)mm;
+            font-style: @Model.Custom.FontStylePriority;
+            font-weight: @Model.Custom.FontWeightPriority;
+        }
+
+        #date {
+            font-size: @Html.Raw(Model.Custom.SizeDate)mm;
+            font-style: @Model.Custom.FontStyleDate;
+            font-weight: @Model.Custom.FontWeightDate;
+        }
+
+        #telefono {
+            font-size: @Html.Raw(Model.Custom.SizeTelefono)mm;
+            font-style: @Model.Custom.FontStyleTelefono;
+            font-weight: @Model.Custom.FontWeightTelefono;
+        }
+    </style>
+</head>
+<body>
+    @if (Model.Custom.ShowLogo)
+    {
+        if (Model.Custom.Logo == "queue")
+        {
+            <img id="logo" src="~/img/brand/queue.svg" height="40" />
+        }
+        else
+        {
+            <img id="logo" src="@Model.Custom.Logo" height="40" />
+        }
+            }
+            @if (Model.Custom.ShowTitle)
+    {
+        <div id="titulo">@Model.Custom.Title</div>
+    }
+    @if (Model.Custom.ShowTicket)
+    {
+        <div id="displayTicket">@Model.Ticket.DisplayTokenName</div>
+    }
+    @if (Model.Custom.ShowTask)
+    {
+        <div id="task">@Model.Ticket.NameTask</div>
+    }
+    @if (Model.Custom.ShowPriority)
+    {
+        <div id="priority">@Model.Ticket.NamePriority</div>
+    }
+    @if (Model.Custom.ShowDate)
+    {
+        <div id="date">@DateTime.Now.ToString("d/M/yyyy hh:mm tt")</div>
+    }
+    @if (Model.Custom.ShowTelefono)
+    {
+        <div id="telefono">@Model.Custom.Telefono</div>
+    }
+
+<link type="text/css" href="https://fonts.googleapis.com/css?family=@Model.Custom.FontFamily" rel="stylesheet">
+</body>
+</html>

@@ -1,0 +1,73 @@
+﻿@model SystemCustom
+@{
+    ViewData["Title"] = "Personalizar Sistema";
+    var listImages = (SelectList)ViewData["listImages"];
+}
+
+@section Styles  {
+    <style>
+        .alert {
+            position: fixed;
+            min-width: 367px;
+            margin-left: -183.5px;
+            z-index: 100;
+            left: 50%;
+            top: 70px;
+        }
+    </style>
+}
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Personalizar
+                </div>
+                <div class="card-body">
+                    <form id="FormEditSystem" method="post" onsubmit="EditSystemCustom(event)">
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label asp-for="Logo"></label>
+                                <select asp-for="Logo" asp-items="listImages" class="form-control">
+                                    <option value="queue">Queue</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label asp-for="LogoMin"></label>
+                                <select asp-for="LogoMin" asp-items="listImages" class="form-control">
+                                    <option value="queuemin">Queue</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label asp-for="Nombre"></label>
+                                <input asp-for="Nombre" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label asp-for="Email"></label>
+                                <input asp-for="Email" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label asp-for="Telefono"></label>
+                                <input asp-for="Telefono" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <label asp-for="Descripcion"></label>
+                                <textarea asp-for="Descripcion" rows="3" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/CustomSystem.js" asp-append-version="true"></script>
+}

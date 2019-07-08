@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewData["Title"] = "Generar reporte por periodos";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/lib/datetime-picker/css/bootstrap-datetimepicker.min.css" />
+}
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <form id="FormReport" onsubmit="loadReport(event, this)">
+                        <div class="form-row">
+                            <div class="form-group col-md-6 col-lg-3">
+                                <label for="initialDate">Fecha de Inicio</label>
+                                <input type="text" id="initialDate" name="initialDate" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-6 col-lg-3">
+                                <label for="endDate">Fecha de finalización</label>
+                                <input type="text" id="endDate" name="endDate" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-3 col-lg-2">
+                                <label for="size">Tamaño</label>
+                                <select asp-items="Html.GetEnumSelectList<Rotativa.AspNetCore.Options.Size>()" id="size" name="size" class="form-control"></select>
+                            </div>
+                            <div class="d-flex">
+                                <button type="submit" class="btn btn-primary align-self-end mb-3">Reporte</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe id="frameReport" class="embed-responsive-item"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/datetime-picker/js/moment.js" type="text/javascript"></script>
+    <script src="~/lib/datetime-picker/js/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        $(function () {
+            $('#initialDate').datetimepicker();
+            $('#endDate').datetimepicker();
+
+            var selectSize = document.getElementById("size");
+            selectSize.selectedIndex = selectSize.options.length - 2;
+        });
+
+        function loadReport(event, e) {
+            event.preventDefault();
+
+            document.getElementById("frameReport").src = `/Reports/ReportPeriod?${$(e).serialize()}`;
+        }
+    </script>
+}

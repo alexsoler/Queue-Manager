@@ -1,0 +1,93 @@
+﻿@model Web.ViewModels.AddTasksOperatorsToNewOfficeViewModel
+@{
+    ViewData["Title"] = "Agregar tareas y Operadores";
+}
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Agregar tareas y Operadores
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">¡Bien Hecho!</h4>
+                        <p>La nueva oficina <strong>@Model.Office.Name</strong> ha sido creada con exito.</p>
+                        <hr>
+                        <p class="mb-0">Si lo desea puede asignarle ahora las tareas y operadores o hacerlo más tarde.</p>
+                    </div>
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Tareas</a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Operadores</a>
+                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Finalizar</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <partial name="_AddTasks" model="Model.Tasks" />
+                            <button id="addNewTask" type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#modalAddTask">
+                                Agregar nueva tarea
+                            </button>
+                        </div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <partial name="_AddOperators" model="Model.Operators" />
+                        </div>
+                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                            <button id="btnGuardar" class="btn btn-primary" type="button" onclick="Guardar()">
+                                <i class="fa fa-dot-circle-o"></i> Guardar
+                            </button>
+                            <button id="btnCancelar" class="btn btn-danger" type="button" onclick="Cancelar()">
+                                <i class="fa fa-ban"></i> Cancelar
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAddTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Agregar Tarea</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <partial name="_CreateTask" model="new Web.ViewModels.TaskViewModel()" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" form="FormCreateTask" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+@section Scripts{
+    <script type="text/javascript">
+        var office = {
+            Id: '@Model.Office.Id',
+            Name: '@Model.Office.Name',
+            Description: '@Model.Office.Description',
+            CreationDate: '@Model.Office.CreationDate',
+            Tasks: [],
+            Operators: []
+        };
+
+
+    </script>
+    <script src="~/js/Tasks.js" asp-append-version="true"></script>
+    <script src="~/js/OfficeAddTO.js" asp-append-version="true"></script>
+
+    <partial name="_ValidationScriptsPartial" />
+}

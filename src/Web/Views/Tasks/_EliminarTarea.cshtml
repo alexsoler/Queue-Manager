@@ -1,0 +1,7 @@
+﻿@model Web.ViewModels.TaskViewModel
+
+<p class="lead">¿Seguro que quiere eliminar la tarea @Model.Name?</p>
+
+<form method="post">
+    <input type="hidden" id="deleteTask" value="@Model.Id" />
+</form>

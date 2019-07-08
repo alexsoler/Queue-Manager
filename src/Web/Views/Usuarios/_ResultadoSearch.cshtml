@@ -1,0 +1,50 @@
+﻿@model Web.Areas.Identity.ViewModels.UsuariosViewModel
+
+@{
+    Layout = "";
+    var mode = (string)ViewData["typeResult"];
+    int i = 0;
+}
+
+@if (Model.Usuarios.Count > 0)
+{
+    <table class="table table-responsive-xl table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Telefono</th>
+                <th>Roles</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Usuarios)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.UserName</td>
+                    <td><a href="mailto:@item.Email">@item.Email</a></td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@Model.Roles[i]</td>
+                    <td class="d-flex">
+                        @if (mode.Equals("edit"))
+                        {
+                            <a class="btn btn-success mr-1" data-toggle="modal" data-target="#editarModal" onclick="loadEdit('@item.UserName')">Editar</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-danger" data-toggle="modal" data-target="#eliminarModal" onclick="loadDelete('@item.UserName')">Eliminar</a>
+                        }
+                    </td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="lead text-center">No se encontraron resultados</p>
+}

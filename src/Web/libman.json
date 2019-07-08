@@ -39,6 +39,16 @@
         "Chart.min.js",
         "Chart.js"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/lib/jqueryui/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "@aspnet/signalr@1.1.2",
+      "destination": "wwwroot/lib/@aspnet/signalr/"
     }
   ]
 }

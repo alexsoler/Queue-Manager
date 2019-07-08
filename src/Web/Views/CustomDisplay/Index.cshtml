@@ -1,0 +1,450 @@
+﻿@using Microsoft.Extensions.Options
+@{
+    ViewData["Title"] = "Personalización Display";
+    var medias = (IEnumerable<Web.ViewModels.MediaViewModel>)ViewData["listMedia"];
+    var displayMedias = (IEnumerable<Web.ViewModels.DisplayMediaViewModel>)ViewData["listDisplayMedia"];
+    var displayMessages = (IEnumerable<Web.ViewModels.DisplayMessageViewModel>)ViewData["listDisplayMessage"];
+    var displayStyle = _optionsStyle.CurrentValue;
+}
+
+@inject IOptionsMonitor<DisplayCustom> _optionsStyle
+
+@section Styles{
+    <link rel="stylesheet" href="~/lib/fontselect-jquery/styles/fontselect-alternate.css" />
+    <style>
+        #listDisplay, #listMedia {
+            position: relative;
+            height: 300px;
+        }
+
+        .alert {
+            position: fixed;
+            min-width: 367px;
+            margin-left: -183.5px;
+            z-index: 100;
+            left: 50%;
+            top: 70px;
+        }
+    </style>
+}
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Multimedia a mostrar
+                </div>
+                <div id="cardPrincipalBody" class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="text-center mb-2">
+                                <span class="h3">Multimedia a mostrar:</span>
+                            </div>
+                            <div id="divLoadDisplay">
+                                @if (displayMedias.Count() == 0)
+                                {
+                                    <p class="lead text-center">No hay ningun archivo multimedia</p>
+                                }
+                                else
+                                {
+                                    <partial name="_listDisplay" model="displayMedias" />
+                                }
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-center mb-2">
+                                <span class="h3">Multimedia disponible:</span>
+                            </div>
+                            <div id="divLoadMedia">
+                                @if (medias.Count() == 0)
+                                {
+                                    <p class="lead text-center">No hay ningun archivo multimedia</p>
+                                }
+                                else
+                                {
+                                    <partial name="_listMedia" model="medias" />
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Mensajes
+                </div>
+                <div id="cardMessagesBody" class="card-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Mensaje</span>
+                        </div>
+                        <textarea id="txtAreaMessage" class="form-control" aria-label="With textarea" rows="4" maxlength="200"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-block my-3" onclick="NuevoMensaje()">Agregar</button>
+                    <ul id="listMensajes" class="list-group pre-scrollable" style="height: 300px;">
+                        @foreach (var item in displayMessages)
+                        {
+                            <li class="list-group-item list-group-item-action" data-id="@item.Id">
+                                <p contenteditable="true">@item.Message</p>
+                                <button type="button" class="btn btn-success btn-sm" onclick="EditarMensaje(@item.Id, this)">Guardar</button>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="EliminarMensaje(@item.Id, this)">Eliminar</button>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Personalización
+                </div>
+                <div class="card-body">
+                    <form id="FormEditDisplay" method="post" onsubmit="EditDisplayStyle(event)">
+                        <div class="form-group">
+                            <label asp-for="@displayStyle.ColorPrimario"></label>
+                            <input asp-for="@displayStyle.ColorPrimario" type="color" class="form-control" placeholder="Color primario">
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@displayStyle.ColorSecundario"></label>
+                            <input asp-for="@displayStyle.ColorSecundario" type="color" class="form-control" placeholder="Color secundario">
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@displayStyle.ColorFuentePrimario"></label>
+                            <input asp-for="@displayStyle.ColorFuentePrimario" type="color" class="form-control" placeholder="Color de fuente primario">
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@displayStyle.ColorFuenteSecundario"></label>
+                            <input asp-for="@displayStyle.ColorFuenteSecundario" type="color" class="form-control" placeholder="Color de fuente secundario">
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@displayStyle.FontFamily"></label> <br>
+                            <input asp-for="@displayStyle.FontFamily" class="form-control" placeholder="Fuente">
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@displayStyle.VolumenMultimedia"></label>
+                            <input asp-for="@displayStyle.VolumenMultimedia" type="range" class="custom-range" step="0.1" min="0" max="1">
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@displayStyle.VolumenVoz"></label>
+                            <input asp-for="@displayStyle.VolumenVoz" type="range" class="custom-range" step="0.1" min="0" max="1">
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@displayStyle.DuracionImagen"></label>
+                            <input asp-for="@displayStyle.DuracionImagen" type="number" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@displayStyle.DuracionMensajes"></label>
+                            <input asp-for="@displayStyle.DuracionMensajes" type="number" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
+    <script src="~/lib/fontselect-jquery/jquery.fontselect.js"></script>
+    <script>
+        let ps1, ps2;
+        if ($("#listDisplay").length > 0) {
+            ps1 = new PerfectScrollbar("#listDisplay");
+        }
+        if ($("#listMedia").length > 0) {
+            ps2 = new PerfectScrollbar("#listMedia");
+        }
+
+    $("#displayStyle_FontFamily").fontselect({
+        fonts: [
+            "Agency FB",
+            "Aharoni",
+            "Andalus",
+            "AngsanaUPC",
+            "Angsana New",
+            "Aparajita",
+            "Arabic+Typesetting",
+            "Batang+&+BatangChe",
+            "BrowalliaUPC",
+            "Browallia New",
+            "Calibri",
+            "Cambria",
+            "Cambria Math",
+            "Candara",
+            "Comic+Sans+MS",
+            "Consolas",
+            "Constantia",
+            "Corbel",
+            "CordiaUPC",
+            "Cordia New",
+            "Courier New",
+            "DaunPenh",
+            "David",
+            "DFKai-SB",
+            "DilleniaUPC",
+            "DokChampa",
+            "Ebrima",
+            "Dotum+&+DotumChe",
+            "Estrangelo+Edessa",
+            "Franklin Gothic",
+            "FrankRuehl",
+            "FreesiaUPC",
+            "Gabriola",
+            "Gautami",
+            "Georgia",
+            "Gisha",
+            "Impact",
+            "KaiTi",
+            "Kalinga",
+            "Kartika",
+            "Kokila",
+            "Malgun+Gothic",
+            "Mangal",
+            "Marlett",
+            "MoolBoran",
+            "MS+Gothic",
+            "Segoe+Print",
+            "Segoe+Script",
+            "Segoe+UI",
+            "Tahoma",
+            "Times+New+Roman",
+            "Verdana",
+            "Segoe+UI",
+            "Nyala",
+            "Antiqua",
+            "Aclonica",
+            "Allan",
+            "Arial",
+            "Arial+Black",
+            "Annie+Use+Your+Telescope",
+            "Anonymous+Pro",
+            "Allerta+Stencil",
+            "Allerta",
+            "Amaranth",
+            "Anton",
+            "Architects+Daughter",
+            "Arimo",
+            "Artifika",
+            "Arvo",
+            "Asset",
+            "Astloch",
+            "Bangers",
+            "Bentham",
+            "Bevan",
+            "Bigshot+One",
+            "Bowlby+One",
+            "Bowlby+One+SC",
+            "Brawler",
+            "Buda:300",
+            "Cabin",
+            "Calligraffitti",
+            "Candal",
+            "Cantarell",
+            "Cardo",
+            "Carter One",
+            "Caudex",
+            "Cedarville+Cursive",
+            "Cherry+Cream+Soda",
+            "Chewy",
+            "Coda",
+            "Coming+Soon",
+            "Copse",
+            "Corben:700",
+            "Cousine",
+            "Covered+By+Your+Grace",
+            "Crafty+Girls",
+            "Crimson+Text",
+            "Crushed",
+            "Cuprum",
+            "Damion",
+            "Dancing+Script",
+            "Dawning+of+a+New+Day",
+            "Didact+Gothic",
+            "Droid+Sans",
+            "Droid+Sans+Mono",
+            "Droid+Serif",
+            "EB+Garamond",
+            "Expletus+Sans",
+            "Fontdiner+Swanky",
+            "Forum",
+            "Francois+One",
+            "Geo",
+            "Give+You+Glory",
+            "Goblin+One",
+            "Goudy+Bookletter+1911",
+            "Gravitas+One",
+            "Gruppo",
+            "Hammersmith+One",
+            "Holtwood+One+SC",
+            "Homemade+Apple",
+            "Inconsolata",
+            "Indie+Flower",
+            "IM+Fell+DW+Pica",
+            "IM+Fell+DW+Pica+SC",
+            "IM+Fell+Double+Pica",
+            "IM+Fell+Double+Pica+SC",
+            "IM+Fell+English",
+            "IM+Fell+English+SC",
+            "IM+Fell+French+Canon",
+            "IM+Fell+French+Canon+SC",
+            "IM+Fell+Great+Primer",
+            "IM+Fell+Great+Primer+SC",
+            "Irish+Grover",
+            "Irish+Growler",
+            "Istok+Web",
+            "Josefin+Sans",
+            "Josefin+Slab",
+            "Judson",
+            "Jura",
+            "Jura:500",
+            "Jura:600",
+            "Just+Another+Hand",
+            "Just+Me+Again+Down+Here",
+            "Kameron",
+            "Kenia",
+            "Kranky",
+            "Kreon",
+            "Kristi",
+            "La+Belle+Aurore",
+            "Lato:100",
+            "Lato:100italic",
+            "Lato:300",
+            "Lato",
+            "Lato:bold",
+            "Lato:900",
+            "League+Script",
+            "Lekton",
+            "Limelight",
+            "Lobster",
+            "Lobster Two",
+            "Lora",
+            "Love+Ya+Like+A+Sister",
+            "Loved+by+the+King",
+            "Luckiest+Guy",
+            "Maiden+Orange",
+            "Mako",
+            "Maven+Pro",
+            "Maven+Pro:500",
+            "Maven+Pro:700",
+            "Maven+Pro:900",
+            "Meddon",
+            "MedievalSharp",
+            "Megrim",
+            "Merriweather",
+            "Metrophobic",
+            "Michroma",
+            "Miltonian Tattoo",
+            "Miltonian",
+            "Modern Antiqua",
+            "Monofett",
+            "Molengo",
+            "Mountains of Christmas",
+            "Muli:300",
+            "Muli",
+            "Neucha",
+            "Neuton",
+            "News+Cycle",
+            "Nixie+One",
+            "Nobile",
+            "Nova+Cut",
+            "Nova+Flat",
+            "Nova+Mono",
+            "Nova+Oval",
+            "Nova+Round",
+            "Nova+Script",
+            "Nova+Slim",
+            "Nova+Square",
+            "Nunito:light",
+            "Nunito",
+            "OFL+Sorts+Mill+Goudy+TT",
+            "Old+Standard+TT",
+            "Open+Sans:300",
+            "Open+Sans",
+            "Open+Sans:600",
+            "Open+Sans:800",
+            "Open+Sans+Condensed:300",
+            "Orbitron",
+            "Orbitron:500",
+            "Orbitron:700",
+            "Orbitron:900",
+            "Oswald",
+            "Over+the+Rainbow",
+            "Reenie+Beanie",
+            "Pacifico",
+            "Patrick+Hand",
+            "Paytone+One",
+            "Permanent+Marker",
+            "Philosopher",
+            "Play",
+            "Playfair+Display",
+            "Podkova",
+            "PT+Sans",
+            "PT+Sans+Narrow",
+            "PT+Sans+Narrow:regular,bold",
+            "PT+Serif",
+            "PT+Serif Caption",
+            "Puritan",
+            "Quattrocento",
+            "Quattrocento+Sans",
+            "Radley",
+            "Raleway:100",
+            "Redressed",
+            "Rock+Salt",
+            "Rokkitt",
+            "Ruslan+Display",
+            "Schoolbell",
+            "Shadows+Into+Light",
+            "Shanti",
+            "Sigmar+One",
+            "Six+Caps",
+            "Slackey",
+            "Smythe",
+            "Sniglet:800",
+            "Special+Elite",
+            "Stardos+Stencil",
+            "Sue+Ellen+Francisco",
+            "Sunshiney",
+            "Swanky+and+Moo+Moo",
+            "Syncopate",
+            "Tangerine",
+            "Tenor+Sans",
+            "Terminal+Dosis+Light",
+            "The+Girl+Next+Door",
+            "Tinos",
+            "Ubuntu",
+            "Ultra",
+            "Unkempt",
+            "UnifrakturCook:bold",
+            "UnifrakturMaguntia",
+            "Varela",
+            "Varela Round",
+            "Vibur",
+            "Vollkorn",
+            "VT323",
+            "Waiting+for+the+Sunrise",
+            "Wallpoet",
+            "Walter+Turncoat",
+            "Wire+One",
+            "Yanone+Kaffeesatz",
+            "Yanone+Kaffeesatz:300",
+            "Yanone+Kaffeesatz:400",
+            "Yanone+Kaffeesatz:700",
+            "Yeseva+One",
+            "Zeyada"
+        ]
+    });
+
+
+    </script>
+    <script src="~/lib/@@aspnet/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/CustomDisplay.js" asp-append-version="true"></script>
+}
