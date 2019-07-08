@@ -16,8 +16,14 @@ function TicketParameter (Id, DisplayTokenName, NumberTicket, NameTask, NamePrio
 var connection = new signalR.HubConnectionBuilder().withUrl("/queueHub").build();
 
 connection.on("ReceiveToken", function (ticketParameter) {
-    printJS(
-        `/touch/ticket?DisplayTokenName=${ticketParameter.displayTokenName}&NameTask=${ticketParameter.nameTask}&NamePriority=${ticketParameter.namePriority}`);
+    printJS({
+        printable: `/touch/ticket?DisplayTokenName=${ticketParameter.displayTokenName}&NameTask=${ticketParameter.nameTask}&NamePriority=${ticketParameter.namePriority}`,
+        type: 'pdf',
+        showModal: true,
+        modalMessage: mensajeNotificacion
+    });
+
+    closeNav();
     console.log(ticketParameter);
 });
 
@@ -92,6 +98,11 @@ function SendComment(event) {
 $('#commentsModal').on('hidden.bs.modal', function (e) {
     // do something...
     document.getElementById("FormComment").reset();
+});
+
+$('#signoutModal').on('hidden.bs.modal', function (e) {
+    // do something...
+    document.getElementById("FormLogOut").reset();
 });
 
 //Remueve la pantalla touch del grupo signalR 

@@ -15,7 +15,7 @@ using Web.Hubs.ParametersObject;
 
 namespace Web.Controllers
 {
-    [Authorize(Roles = RolesStatic.Admin)]
+    [Authorize(Roles = RolesStatic.Operator)]
     public class AttentionController : Controller
     {
         private readonly ITicketService _ticketService;

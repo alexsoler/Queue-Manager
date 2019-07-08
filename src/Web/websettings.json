@@ -1,12 +1,12 @@
 {
   "DisplayTickets": {
-    "ActualTicket": "M001",
+    "ActualTicket": "P002",
     "ActualOffice": "VENTANILLA 1",
-    "TicketH1": "M002",
+    "TicketH1": "M001",
     "OfficeH1": "VENTANILLA 1",
-    "TicketH2": "E001",
+    "TicketH2": "P002",
     "OfficeH2": "VENTANILLA 1",
-    "TicketH3": "P004",
+    "TicketH3": "M001",
     "OfficeH3": "VENTANILLA 1"
   },
   "DisplayCustom": {
@@ -65,5 +65,13 @@
     "FontFamily": "Consolas",
     "PageWidth": 58.0,
     "PageHeight": 58.0
+  },
+  "SystemCustom": {
+    "Logo": "queue",
+    "LogoMin": "queuemin",
+    "Nombre": "Universidad Politecnica de Honduras",
+    "Email": "upolitecnica@gmail.com",
+    "Telefono": "+50422838212",
+    "Descripcion": null
   }
 }

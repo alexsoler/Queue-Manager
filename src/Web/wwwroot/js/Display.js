@@ -1,4 +1,5 @@
-﻿let listaDeReproduccion, contadorMedia;
+﻿
+let listaDeReproduccion, contadorMedia;
 
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/queueHub").build();
@@ -208,9 +209,25 @@ function speak(text) {
     var msg = new SpeechSynthesisUtterance();
     msg.text = text;
     msg.volume = volumenVoz;
-    msg.rate = 0.8;
+    msg.rate = 0.6;
     msg.pitch = 1;
     msg.lang = "es-MX";
 
     window.speechSynthesis.speak(msg);
 }
+
+var timer;
+
+$(window).on('mousemove', function () {
+    $('#btnSignOut').addClass('show');
+    try {
+        clearTimeout(timer);
+    } catch (e) {
+        console.error(e);
+    }
+
+    timer = setTimeout(function () {
+        $('#btnSignOut').removeClass('show');
+        }, 1000);
+});
+
